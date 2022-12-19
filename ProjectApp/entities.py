@@ -40,7 +40,13 @@ class Librarian(User):
         return book
 
     def borrow_handle(self, borrow):
-        pass
+        # check if the book available in the branch
+        # fix the broken if statement
+        if 1:
+            borrow.request_status = "Accept"
+        else:
+            borrow.request_status = "Denied"
+
 
     def extension_handle(self, extension):
         pass
@@ -60,7 +66,7 @@ class Reader(User):
         Reader.counter += 1
 
     def borrow_request(self, borrow):
-        pass
+        Borrow.create_borrow(borrow)
 
     def search_book(self, book):
         pass
@@ -117,4 +123,13 @@ class Borrow:
         self.reader = reader_email
         self.librarian = librarian_email
         self.request_status = None
+
+    def create_borrow(self, borrow):
+        self.book = borrow.book
+        Borrow.counter += 1
+        self.borrow_id = Borrow.counter
+        self.date_of_borrowing = borrow.datetime.now().date()
+        self.reader = borrow.reader_email
+        self.librarian = borrow.librarian_email
+        self.request_status = "Request"
 
