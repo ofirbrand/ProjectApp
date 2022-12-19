@@ -33,7 +33,11 @@ class Librarian(User):
         #chack if the book is exists
         # if its exist, change book amount at copies
         # if book isn't exist create new Book instance and change book amount at copies
-        pass
+        if book.book_id in books:
+            add_copy(book)
+        else:
+            book = Book(book)
+        return book
 
     def borrow_handle(self, borrow):
         pass
@@ -87,7 +91,10 @@ class Book:
 class Copy(Book):
     def __init__(self, book_id, book_name, auther, year_published, publisher):
         super(Copy, self).__init__(book_id, book_name, auther, year_published, publisher)
+        self.amount = 0
 
+    def add_copy(self):
+        self.amount += 1
 
 class Branch:
     counter = 0
@@ -101,12 +108,13 @@ class Branch:
 
 class Borrow:
     counter = 0
-    def __init__(self, book, reader, librarian):
+
+    def __init__(self, book, reader_email, librarian_email):
         self.book = book
         Borrow.counter += 1
         self.borrow_id = Borrow.counter
         self.date_of_borrowing = datetime.now().date()
-        self.reader = reader
-        self.librarian = librarian
+        self.reader = reader_email
+        self.librarian = librarian_email
         self.request_status = None
 
