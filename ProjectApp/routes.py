@@ -14,13 +14,15 @@ def register_librarian():
 @app.route('/registerReader', methods=['POST', 'GET'])
 def registerReader():
     if request.method == 'POST':
-        reader = en.Reader()
-        reader.email = str(request.form['email'])
-        reader.name = str(request.form['name'])
-        reader.phone_num = int(request.form['phone'])
-        reader.address = str(request.form['address'])
-        reader.password = int(request.form['password'])
-        return render_template('homepageReader.html', reader=reader)  # create homepageReader.html to show readers details
+        email = str(request.form['email'])
+        name = str(request.form['name'])
+        phone_num = int(request.form['phone'])
+        address = str(request.form['address'])
+        password = int(request.form['password'])
+        date = request.form['date']
+        reader = en.Reader(email, name, phone_num, address, password, date)
+        items = reader.__dict__.items()
+        return render_template('homepageReader.html', reader=reader, items=items)  # create homepageReader.html to show readers details
     else:
         return render_template('registerReader.html')
 
@@ -28,6 +30,6 @@ def registerReader():
 def homepage_librarian():
     return render_template('homepage_librarian.html')
 
-@app.route('/homepageReader')
+@app.route('/homepageReader', methods=['GET', 'POST'])
 def homepageReader():
     return render_template('homepageReader.html')

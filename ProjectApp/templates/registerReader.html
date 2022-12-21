@@ -1,7 +1,7 @@
 {% extends "basic_layout.html" %}
 {% block content %}
 <h1> Reader Inputs </h1>
-    <form action="/homepageReader" method="POST">
+    <form action="/registerReader" method="POST">
         <table>
             <tr>
                 <td>Email</td>
@@ -31,6 +31,12 @@
                 <td>Password</td>
                 <td>
                     <input type="number" name="password">
+                </td>
+            </tr>
+            <tr>
+                <td>date</td>
+                <td>
+                    <input type="date" name="date">
                 </td>
             </tr>
             <tr>
