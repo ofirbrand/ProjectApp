@@ -1,5 +1,5 @@
-from __init__ import app
-from flask import render_template
+from flask import render_template, url_for
+from ProjectApp import app
 
 @app.route('/')
 @app.route('/welcome')
