@@ -1,7 +1,7 @@
-1) finish the ERD
-2) check that our tables are 3NF
-3) finish build the database - and connect it to the python
-4) create the package of the project properly
-5) build welcome page
-6) build logo
-7) build navigator bar
+1) finish the ERD - waiting for Michael's answer -> everyone
+2) check that our tables are 3NF - finish Order and Copies Tables -> everyone
+3) finish build the database and connect it to the python -> doron
+4) create logo -> amit
+4) create welcome navbar -> amit
+5) create reader_home navbar -> amit
+6) create librarian_home navbar -> amit

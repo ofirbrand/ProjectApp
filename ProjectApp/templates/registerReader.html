@@ -1,9 +1,8 @@
 {% extends "basic_layout.html" %}
 {% block content %}
-<h1 class="important-text"> A Lot Of Fun </h1>
-    <form action="/" method="post">
+<h1> Reader Inputs </h1>
+    <form action="/homepageReader" method="POST">
         <table>
-            <tr><td colspan="2" >Reader Inputs</td></tr>
             <tr>
                 <td>Email</td>
                 <td>
@@ -13,30 +12,30 @@
             <tr>
                 <td>Full Name</td>
                 <td>
-                    <input type="number" name="name">
+                    <input type="text" name="name">
                 </td>
             </tr>
             <tr>
                 <td>Phone</td>
                 <td>
-                    <input type="number" name="email">
+                    <input type="number" name="phone">
                 </td>
             </tr>
             <tr>
                 <td>Address</td>
                 <td>
-                    <input type="text" name="name">
+                    <input type="text" name="address">
                 </td>
             </tr>
             <tr>
                 <td>Password</td>
                 <td>
-                    <input type="number" name="name">
+                    <input type="number" name="password">
                 </td>
             </tr>
             <tr>
                 <td>
-                    <input type="submit" value="Show Planner">
+                    <input type="submit" value="Submit">
                 </td>
                 <td></td>
             </tr>
