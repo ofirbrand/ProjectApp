@@ -66,7 +66,7 @@ class Reader(User):
         Reader.counter += 1
 
     def borrow_request(self, borrow):
-        Borrow.create_borrow(borrow)
+        borrow.create_borrow(borrow)
 
     def search_book(self, book):
         pass
