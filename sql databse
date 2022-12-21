@@ -1,0 +1,104 @@
+create schema project;
+use project;
+
+
+CREATE TABLE Users
+(
+  phone_number INT NOT NULL,
+  email varchar(45) NOT NULL,
+  full_name varchar(45) NOT NULL,
+  PRIMARY KEY (email)
+);
+
+CREATE TABLE Reader
+(
+  date_of_birth DATE,
+  reader_email varchar(45) NOT NULL,
+  PRIMARY KEY (email),
+  FOREIGN KEY (reader_email) REFERENCES User(email)
+);
+
+CREATE TABLE Branch
+(
+  branch_name varchar(45) NOT NULL,
+  phone_number INT NOT NULL,
+  PRIMARY KEY (branch_name)
+);
+
+CREATE TABLE Book
+(
+  book_name varchar(45) NOT NULL,
+  author varchar(45) NOT NULL,
+  publisher varchar(45) NOT NULL,
+  publish_year YEAR NOT NULL,
+  book_id INT NOT NULL,
+  PRIMARY KEY (book_id)
+);
+
+CREATE TABLE User_address
+(
+  city  varchar(45) NOT NULL,
+  street  varchar(45) NOT NULL,
+  house_number INT NOT NULL,
+  email  varchar(45) NOT NULL,
+  PRIMARY KEY (city, street, house_number, email),
+  FOREIGN KEY (email) REFERENCES User(email)
+);
+
+CREATE TABLE Branch_address
+(
+  city  varchar(45) NOT NULL,
+  street varchar(45) NOT NULL,
+  house_number INT NOT NULL,
+  branch_name  varchar(45) NOT NULL,
+  PRIMARY KEY (city, street, house_number),
+  FOREIGN KEY (branch_name) REFERENCES Branch(branch_name)
+);
+drop table Librarian;
+CREATE TABLE Librarian
+(
+  begin_work_date DATE NOT NULL,
+  branch_name  varchar(45) NOT NULL,
+  librerian_email  varchar(45) NOT NULL,
+  PRIMARY KEY (email),
+  FOREIGN KEY (branch_name) REFERENCES Branch(branch_name),
+  FOREIGN KEY (email) REFERENCES User(email)
+);
+
+CREATE TABLE Copies
+(
+  book_id INT NOT NULL,
+  branch_name varchar(45) NOT NULL,
+  PRIMARY KEY (book_id),
+  FOREIGN KEY (book_id) REFERENCES book(book_id),
+  FOREIGN KEY (branch_name) REFERENCES Branch(branch_name)
+);
+
+CREATE TABLE Orders
+(
+  order_status varchar(45) NOT NULL,
+  date_of_approve date NOT NULL,
+  book_id INT NOT NULL,
+  reader_email varchar(45) NOT NULL,
+  librerian_email varchar(45) NOT NULL,
+  PRIMARY KEY (book_id),
+  FOREIGN KEY (book_id) REFERENCES copies(book_id),
+  FOREIGN KEY (email) REFERENCES Librarian(email),
+  FOREIGN KEY (email) REFERENCES Reader(email)
+);
+drop table Borrow_and_extension;
+CREATE TABLE Borrow_and_extension
+(
+  date_of_borrowing date NOT NULL,
+  request_id INT NOT NULL,
+  status_of_request varchar(45) NOT NULL,
+  request_type varchar(45) NOT NULL,
+  book_id INT NOT NULL,
+  reader_email varchar(45) NOT NULL,
+  librerian_email varchar(45) NOT NULL,
+  PRIMARY KEY (request_id),
+  FOREIGN KEY (book_id) REFERENCES book(book_id),
+  FOREIGN KEY (email) REFERENCES Reader(reader_email),
+  FOREIGN KEY (librerian_email) REFERENCES Librarian(librerian_email),
+  FOREIGN KEY (book_id) REFERENCES copies(book_id)
+);
