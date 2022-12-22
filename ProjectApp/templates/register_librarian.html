@@ -1,10 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "basic_layout.html" %}
+{% block content %}
+<h1> Librarian Inputs </h1>
+    <form action="/register_librarian" method="POST">
+        <table>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <input type="email" name="email">
+                </td>
+            </tr>
+            <tr>
+                <td>Full Name</td>
+                <td>
+                    <input type="text" name="name">
+                </td>
+            </tr>
+            <tr>
+                <td>Phone</td>
+                <td>
+                    <input type="number" name="phone">
+                </td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>
+                    <input type="text" name="address">
+                </td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>
+                    <input type="number" name="password">
+                </td>
+            </tr>
+            <tr>
+                <td>Date</td>
+                <td>
+                    <input type="date" name="begin_work_date">
+                </td>
+            </tr>
+            <tr>
+                <td>Branch</td>
+                <td>
+                    <input type="text" name="branch_name">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Submit">
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+{% endblock content %}

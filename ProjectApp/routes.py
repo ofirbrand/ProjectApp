@@ -1,14 +1,23 @@
 from flask import render_template, url_for, request
 from ProjectApp import app
 import ProjectApp.entities as en
+# from ProjectApp import connection, cursor  # importing the functions that deals with SQL from __init__ page
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/welcome', methods=['POST', 'GET'])
 def welcome():
     return render_template('welcome.html')
 
-@app.route('/register_librarian')
+@app.route('/register_librarian', methods=['GET', 'POST'])
 def register_librarian():
+    if request.method == 'POST':
+        email = str(request.form['email'])
+        name = str(request.form['name'])
+        phone_num = int(request.form['phone'])
+        address = str(request.form['address'])
+        password = int(request.form['password'])
+        begin_work_date = request.form['begin_work_date']
+        branch_name = request.form['branch_name']
     return render_template('register_librarian.html')
 
 @app.route('/registerReader', methods=['POST', 'GET'])
