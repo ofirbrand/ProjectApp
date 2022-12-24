@@ -27,7 +27,10 @@
           <div class="collapse navbar-collapse" id="navbarToggle">
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-              <a class="nav-item nav-link" href="/registerReader">Register</a>
+              <a class="nav-item nav-link" href="{{ url_for('registerReader') }}">Register As Reader</a>
+            </div>
+             <div class="navbar-nav">
+              <a class="nav-item nav-link" href="{{ url_for('registerLibrarian') }}">Register As Librarian</a>
             </div>
           </div>
         </div>

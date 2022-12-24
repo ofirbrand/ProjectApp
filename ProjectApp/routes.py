@@ -8,8 +8,8 @@ import ProjectApp.entities as en
 def welcome():
     return render_template('welcome.html')
 
-@app.route('/register_librarian', methods=['GET', 'POST'])
-def register_librarian():
+@app.route('/registerLibrarian', methods=['GET', 'POST'])
+def registerLibrarian():
     if request.method == 'POST':
         email = str(request.form['email'])
         name = str(request.form['name'])
@@ -18,7 +18,12 @@ def register_librarian():
         password = int(request.form['password'])
         begin_work_date = request.form['begin_work_date']
         branch_name = request.form['branch_name']
-    return render_template('register_librarian.html')
+        librarian = en.Librarian(email, name, phone_num, address, password, begin_work_date, branch_name)
+        properties = librarian.__dict__.items()
+        return render_template('homepageLibrarian.html', librarian=librarian, properties=properties)
+    else:
+        title = "Librarian Register"
+        return render_template('registerLibrarian.html', title=title)
 
 @app.route('/registerReader', methods=['POST', 'GET'])
 def registerReader():
@@ -31,13 +36,14 @@ def registerReader():
         date = request.form['date']
         reader = en.Reader(email, name, phone_num, address, password, date)
         items = reader.__dict__.items()
-        return render_template('homepageReader.html', reader=reader, items=items)  # create homepageReader.html to show readers details
+        return render_template('homepageReader.html', reader=reader, items=items)
     else:
-        return render_template('registerReader.html')
+        title = "Reader Register"
+        return render_template('registerReader.html', title=title)
 
-@app.route('/homepage_librarian')
-def homepage_librarian():
-    return render_template('homepage_librarian.html')
+@app.route('/homepageLibrarian')
+def homepageLibrarian():
+    return render_template('homepageLibrarian.html')
 
 @app.route('/homepageReader', methods=['GET', 'POST'])
 def homepageReader():

@@ -1,7 +1,7 @@
 {% extends "basic_layout.html" %}
 {% block content %}
 <h1> Reader Inputs </h1>
-    <form action="/registerReader" method="POST">
+    <form action="{{ url_for('registerReader') }}" method="POST">
         <table>
             <tr>
                 <td>Email</td>

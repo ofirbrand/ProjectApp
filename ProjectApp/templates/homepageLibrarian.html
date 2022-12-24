@@ -1,0 +1,12 @@
+{% extends "basic_layout.html" %}
+{% block content %}
+      <table>
+        <h2>{{ librarian.name }}'s details:</h2>
+        {% for property in properties %}
+          <tr>
+            <td>{{ property[0] }}</td>
+            <td>{{ property[1] }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+{% endblock content %}
