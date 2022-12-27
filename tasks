@@ -1,6 +1,4 @@
-1) finish the ERD - waiting for Michael's answer
-* ליצור את המפתח הראשי של ספריryoneם לפי שם ספר+מחבר, כלומר עבור כל עותק ולא עבור כל ספר כפריט.
-מאפשר פתרון ליישות עותק.
+1) finish the ERD - go threw the changes iv'e made in the ERD and in the tabke scheme
 2) check that our tables are 3NF - finish Order and Copies Tables 
 3) finish build the database
 4) create logo -> amit
@@ -11,3 +9,5 @@
 8) building reader hompepage (html structure + css)
 9) buildig view functions for librarian hompepage
 10) buildig view functions for reader hompepage
+11) create sesion for user connection
+
