@@ -1,4 +1,26 @@
 {% extends "basic_layout.html" %}
 {% block content %}
-    <div class="container">welcome test</div>
+<h1> Reader Inputs </h1>
+    <form action="{{ url_for('registerReader') }}" method="POST">
+        <table>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <input type="email" name="email">
+                </td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>
+                    <input type="number" name="password">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Sign In">
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
 {% endblock content %}

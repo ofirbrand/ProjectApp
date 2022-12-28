@@ -22,9 +22,24 @@
                 </td>
             </tr>
             <tr>
-                <td>Address</td>
+                <td collspan="2">Address</td>
+            </tr>
+            <tr>
+                <td>City Name</td>
                 <td>
-                    <input type="text" name="address">
+                    <input type="text" name="city">
+                </td>
+            </tr>
+            <tr>
+                <td>Street Name</td>
+                <td>
+                    <input type="text" name="street">
+                </td>
+            </tr>
+            <tr>
+                <td>House Number</td>
+                <td>
+                    <input type="number" name="house">
                 </td>
             </tr>
             <tr>
@@ -42,7 +57,15 @@
             <tr>
                 <td>Branch</td>
                 <td>
-                    <input type="text" name="branch_name">
+                      <!--select name="cars" id="cars">
+                          {% for name in branch_names %}
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                        <option value="opel">Opel</option>
+                        <option value="audi">Audi</option>
+                          {% endfor %}
+                      </select-->
+                    <input type="date" name="begin_work_date">
                 </td>
             </tr>
             <tr>
