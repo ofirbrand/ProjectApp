@@ -1,6 +1,6 @@
 {% extends "basic_layout.html" %}
 {% block content %}
-<h1> Librarian Inputs </h1>
+<h1> Please Insert Your Details </h1>
     <form action="{{ url_for('registerLibrarian') }}" method="POST">
         <table>
             <tr>
@@ -65,7 +65,7 @@
                         <option value="audi">Audi</option>
                           {% endfor %}
                       </select-->
-                    <input type="date" name="begin_work_date">
+                    <input type="text" name="branch">
                 </td>
             </tr>
             <tr>
