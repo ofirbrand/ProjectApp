@@ -1,13 +1,16 @@
-1) finish the ERD - go threw the changes iv'e made in the ERD and in the tabke scheme
-2) check that our tables are 3NF - finish Order and Copies Tables 
-3) finish build the database
-4) create logo -> amit
-4) create welcome navbar
-5) create reader_home navbar
-6) create librarian_home navbar
-7) building librarian hompepage (html structure + css)
-8) building reader hompepage (html structure + css)
-9) buildig view functions for librarian hompepage
-10) buildig view functions for reader hompepage
-11) create sesion for user connection
+finish the ERD & table scheme
 
+welcome page - finish logic correct buttons on navbar
+
+librarian register - create select option for the branch name
+
+register function (user and librarian) - check if the email already exists and raise error.
+
+login function:
+  1) set session
+  2) check if the password and the email match
+  3) direct to the right page
+  
+reader homepage - build page
+
+librarian homepage - build page
