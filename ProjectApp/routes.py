@@ -1,7 +1,6 @@
 from flask import render_template, url_for, request, flash, redirect, session
-from ProjectApp import app
+from ProjectApp import app, connection, cursor, Session
 import ProjectApp.entities as en
-from ProjectApp import connection, cursor, Session
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -47,6 +46,8 @@ def registerLibrarian():
 def registerReader():
     if request.method == 'POST':
         email = str(request.form['email'])
+
+        # if
         name = str(request.form['name'])
         phone_num = int(request.form['phone'])
         city = str(request.form['city'])
@@ -57,7 +58,7 @@ def registerReader():
         # if there will be any necessary for reader python class implementation
         # address = city + " " + str(street) + " " + str(house_num)
         # reader = en.Reader(email, name, phone_num, address, password, date)
-        # insert data to Librarian table
+        # insert data to Librarian table!
         cursor.execute("INSERT INTO Reader(phone_number, reader_email, full_name, reader_password, "
                        "date_of_birth) VALUES(%s, %s, %s, %s, %s)",
                        (phone_num, email, name, password, date))
