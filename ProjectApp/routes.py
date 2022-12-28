@@ -63,7 +63,7 @@ def registerReader():
                        "date_of_birth) VALUES(%s, %s, %s, %s, %s)",
                        (phone_num, email, name, password, date))
         connection.commit()
-        # insert data to Librarian_address table
+        # insert data to Librarian_address table!
         cursor.execute("INSERT INTO Reader_address(city, street, house_number, reader_email) "
                        "VALUES(%s, %s, %s, %s)",
                        (city, street, house_num, email))
