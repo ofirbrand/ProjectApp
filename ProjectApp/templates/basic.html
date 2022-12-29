@@ -19,7 +19,7 @@
         <li><a class="active" href="/">Home</a></li>
         <li><a href="{{ url_for('registerReader') }}">Register As Reader</a></li>
         <li><a href="{{ url_for('registerLibrarian') }}">Register As Librarian</a></li>
-    </ul>
+      </ul>
 
 </head>
 <body>
@@ -42,12 +42,22 @@
     </div>
   </main>
 
-    <p class ="middle">
+    <p class ="middle">We have so many books waiting just for you
       <i class="glyphicon glyphicon-book"></i>
     </p>
+    <form>
+        <label for="search books">Search by title or author</label>
+        <input type="text" id="fname" name="fname">
+      </form>
 </body>
 <img src="https://images.contentstack.io/v3/assets/bltf6a42d9e46f07d48/blt8ae88c31eeeed222/62d03aaf1b2225113da05acd/brickwork-covers-top.jpg" alt="books">
+  <p class="branches">Our Beloved Branches:
 
+  </p>
+  <h2>Our Policy:</h2>
+  <div class="center">
+    <p>1.The maximum of books that reader can borrow is 3.</p>
+  </div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

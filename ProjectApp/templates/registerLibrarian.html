@@ -57,15 +57,11 @@
             <tr>
                 <td>Branch</td>
                 <td>
-                      <!--select name="cars" id="cars">
-                          {% for name in branch_names %}
-                        <option value="volvo">Volvo</option>
-                        <option value="saab">Saab</option>
-                        <option value="opel">Opel</option>
-                        <option value="audi">Audi</option>
+                      <select name="cars" id="cars">
+                          {% for branch in branches %}
+                        <option value="branch"> {{ branch }} </option>
                           {% endfor %}
-                      </select-->
-                    <input type="text" name="branch">
+                      </select>
                 </td>
             </tr>
             <tr>
