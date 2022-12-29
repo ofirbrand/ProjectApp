@@ -6,6 +6,8 @@ import ProjectApp.entities as en
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/welcome', methods=['POST', 'GET'])
 def welcome():
+    # check if the user exists
+    # catch the user info and pass to the next page
     return render_template('welcome.html')
 
 
@@ -86,3 +88,11 @@ def homepageLibrarian():  # create librarian home page
 @app.route('/homepageReader', methods=['GET', 'POST'])
 def homepageReader():
     return render_template('homepageReader.html')
+
+@app.route('/reader', methods=['GET', 'POST'])
+def reader():
+    return render_template('reader.html')
+
+@app.route('/librarian', methods=['GET', 'POST'])
+def librarian():
+    return render_template('librarian.html')

@@ -1,4 +1,4 @@
-{% extends "basic_layout.html" %}
+{% extends "basic.html" %}
 {% block content %}
 <h1> Sign In </h1>
     <form action="{{ url_for('registerReader') }}" method="POST">
@@ -23,4 +23,15 @@
             </tr>
         </table>
     </form>
+
+    <p class ="middle">We have so many books waiting just for you
+      <i class="glyphicon glyphicon-book"></i>
+    </p>
+  <p class="branches">Our Beloved Branches:
+
+  </p>
+  <h2>Our Policy:</h2>
+  <div class="center">
+    <p>1.The maximum of books that reader can borrow is 3.</p>
+  </div>
 {% endblock content %}
