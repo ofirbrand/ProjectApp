@@ -114,20 +114,40 @@ def registerReader():
 
 
 # create librarian home page and delete the example in librarian register view function
-@app.route('/homepageLibrarian')
-def homepageLibrarian():  # create librarian home page
-    return render_template('homepageLibrarian.html')
+# @app.route('/homepageLibrarian')
+# def homepageLibrarian():  # create librarian home page
+#     return render_template('homepageLibrarian.html')
 
 
 # create reader home page and delete the example in reader register view function
-@app.route('/homepageReader', methods=['GET', 'POST'])
-def homepageReader():
-    return render_template('homepageReader.html')
+# @app.route('/homepageReader', methods=['GET', 'POST'])
+# def homepageReader():
+#     return render_template('homepageReader.html')
 
 @app.route('/reader', methods=['GET', 'POST'])
 def reader():
-    return render_template('reader.html')
+    session1 = session["email"]
+    cursor.execute('SELECT * from Reader WHERE reader_email = %s', session1)
+    user_reader = cursor.fetchone()
+    cursor.execute('SELECT * from Librarian WHERE Librarian_email = %s', session1)
+    user_librarian = cursor.fetchone()
+    if user_reader:
+        reader_name = user_reader[2]
+        return render_template('reader.html', reader_name=reader_name)
+    else:
+        librarian_name = user_librarian[2]
+        return render_template('librarian.html', librarian_name=librarian_name)
 
 @app.route('/librarian', methods=['GET', 'POST'])
 def librarian():
-    return render_template('librarian.html')
+    session1 = session["email"]
+    cursor.execute('SELECT * from Reader WHERE reader_email = %s', session1)
+    user_reader = cursor.fetchone()
+    cursor.execute('SELECT * from Librarian WHERE Librarian_email = %s', session1)
+    user_librarian = cursor.fetchone()
+    if user_reader:
+        reader_name = user_reader[2]
+        return render_template('reader.html', reader_name=reader_name)
+    else:
+        librarian_name = user_librarian[2]
+        return render_template('librarian.html', librarian_name=librarian_name)
