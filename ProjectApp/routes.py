@@ -31,6 +31,10 @@ def welcome():
     else:
         return render_template('welcome.html')
 
+@app.route('/logout')
+def logout():
+    session["email"] = None
+    return redirect('/')
 
 @app.route('/registerLibrarian', methods=['GET', 'POST'])
 def registerLibrarian():
@@ -41,9 +45,11 @@ def registerLibrarian():
         city = str(request.form['city'])
         street = str(request.form['street'])
         house_num = int(request.form['house'])
+        address = str(city + ", " + street + ", " + str(house_num))
         password = str(request.form['password'])
         begin_work_date = request.form['begin_work_date']
         branch_name = request.form['branch_name']
+        # creating python Librarian class
         cursor.execute("SELECT reader_email FROM Reader WHERE reader_email = %s", email)
         is_email_exist = cursor.fetchone()
         connection.commit()
@@ -51,9 +57,6 @@ def registerLibrarian():
             flash("This Email Address Already Exists. Please Try New One", 'error')
             return redirect('/registerLibrarian')
         else:
-            # if there will be any necessary for librarian python class implementation
-            # address = city + " " + str(street) + " " + str(house_num)
-            # librarian = en.Librarian(email, name, phone_num, address, password, begin_work_date, branch_name)
             # insert data to Librarian table
             cursor.execute("INSERT INTO Librarian(phone_number, librarian_email, full_name, librarian_password, "
                            "begin_work_date, branch_name) VALUES(%s, %s, %s, %s, %s, %s)",
@@ -92,10 +95,11 @@ def registerReader():
             house_num = int(request.form['house'])
             password = str(request.form['password'])
             date = request.form['date']
-            # if there will be any necessary for reader python class implementation
-            # address = city + " " + str(street) + " " + str(house_num)
-            # reader = en.Reader(email, name, phone_num, address, password, date)
-            # insert data to Librarian table!
+            # creating python Librarian class
+            address = city + " " + str(street) + " " + str(house_num)
+            # implement the Reader class  to the full_name content
+            user = en.Reader(email, name, phone_num, address, password, date)
+            # insert data to Librarian table
             cursor.execute("INSERT INTO Reader(phone_number, reader_email, full_name, reader_password, "
                            "date_of_birth) VALUES(%s, %s, %s, %s, %s)",
                            (phone_num, email, name, password, date))
@@ -151,3 +155,11 @@ def librarian():
     else:
         librarian_name = user_librarian[2]
         return render_template('librarian.html', librarian_name=librarian_name)
+
+@app.route('/reader2', methods=['GET', 'POST'])
+def reader2():
+    return render_template('reader2.html')
+
+@app.route('/mybooks', methods=['GET', 'POST'])
+def mybooks():
+    return render_template('mybooks.html')

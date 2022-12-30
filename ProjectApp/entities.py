@@ -1,4 +1,5 @@
 from datetime import datetime
+from ProjectApp import cursor, connection
 #No need for argument testing inside the classes - it will be testing during the form building/testing
 #User arguments (common for Librarian's and Reader's) - email, name, phone_num, address
 #No need for using @property and @setter
