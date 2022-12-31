@@ -35,8 +35,7 @@ elif librarian_temp:
 else:
     print('Password Incorrect')
 # email, name, phone_num, address, password, work_date_begin, branch_name
-
-if session.user_type == "Reader":
-    print("its a reader")
-else:
-    print("its a librarian")
+keys = list(session.__dict__.keys())
+values = list(session.__dict__.values())
+for key, value in session.__dict__.items():
+    print(key + " :" + str(value))

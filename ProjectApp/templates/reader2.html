@@ -5,5 +5,12 @@
     <p>
         great success of loging in with reader's class
     </p>
+        {% for key, value in user_dict %}
+        <article class="media content-section">
+          <div class="media-body">
+            <h2>{{ key }} : {{ value }}</h2>
+          </div>
+        </article>
+    {% endfor %}
 </div>
 {% endblock content %}

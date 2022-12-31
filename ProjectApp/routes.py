@@ -138,9 +138,11 @@ def reader2():
     # cursor.execute('SELECT * from Librarian WHERE Librarian_email = %s', session1.email)
     # user_librarian = cursor.fetchone()
     if session1.user_type == "Reader":
-        return render_template('reader2.html', user=session1)
+        user_dict = session1.__dict__.items()
+        return render_template('reader2.html', user=session1, user_dict=user_dict)
     else:
-        return render_template('librarian2.html', user=session1)
+        user_dict = session1.__dict__.items()
+        return render_template('librarian2.html', user=session1, user_dict=user_dict)
 
 
 @app.route('/librarian2', methods=['GET', 'POST'])
@@ -151,9 +153,11 @@ def librarian2():
     # cursor.execute('SELECT * from Librarian WHERE Librarian_email = %s', session1)
     # user_librarian = cursor.fetchone()
     if session1.user_type == "Librarian":
-        return render_template('librarian2.html', user=session1)
+        user_dict = session1.__dict__.items()
+        return render_template('librarian2.html', user=session1, user_dict=user_dict)
     else:
-        return render_template('reader2.html', user=session1)
+        user_dict = session1.__dict__.items()
+        return render_template('reader2.html', user=session1, user_dict=user_dict)
 
 
 @app.route('/reader', methods=['GET', 'POST'])
