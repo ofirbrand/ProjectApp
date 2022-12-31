@@ -9,32 +9,45 @@ def welcome():
     if request.method == 'POST':
         email = str(request.form['email'])
         password = str(request.form['password'])
-        cursor.execute("SELECT reader_email, reader_password FROM Reader WHERE reader_email = %s", email)
+        cursor.execute("SELECT * FROM Reader WHERE reader_email = %s", email)
         reader_temp = cursor.fetchone()
-        cursor.execute("SELECT librarian_email, librarian_password FROM Librarian WHERE librarian_email = %s", email)
+        cursor.execute("SELECT * FROM Librarian WHERE librarian_email = %s", email)
         librarian_temp = cursor.fetchone()
         if reader_temp:
-            if reader_temp[1] == password:
-                session["email"] = request.form.get("email")
-                return redirect('/reader')
+            if reader_temp[3] == password:
+                cursor.execute("SELECT city, street, house_number FROM Reader_Address WHERE reader_email = %s", email)
+                address = cursor.fetchone()
+                session["email"] = en.Reader(email=reader_temp[1], name=reader_temp[2], phone_num=reader_temp[0],
+                                             address=address, password=reader_temp[3], d_birth=reader_temp[4])
+                # session["email"] = request.form.get("email")  # change the session value to the correct class
+                return redirect('/reader2')
             else:
                 flash('Password Incorrect', 'error')
         elif librarian_temp:
-            if librarian_temp[1] == password:
-                session["email"] = request.form.get("email")
-                return redirect('/reader')
+            if librarian_temp[3] == password:
+                cursor.execute("SELECT city, street, house_number FROM Librarian_Address WHERE librarian_email = %s",
+                               email)
+                address = cursor.fetchone()
+                session["email"] = en.Librarian(email=librarian_temp[1], name=librarian_temp[2],
+                                                phone_num=librarian_temp[0], address=address,
+                                                password=librarian_temp[3], work_date_begin=librarian_temp[4],
+                                                branch_name=librarian_temp[5])
+                # session["email"] = request.form.get("email")  # change the session value to the correct class
+                return redirect('/librarian2')
             else:
                 flash('Password Incorrect', 'error')
         else:
-            flash('The Email Address Is Not Saved In The System. Sign-Up Or Check For A Typo')
+            flash('The Email Address Is Not Saved In The System. Sign-Up Or Check For Email Typo')
             return redirect('/')
     else:
         return render_template('welcome.html')
+
 
 @app.route('/logout')
 def logout():
     session["email"] = None
     return redirect('/')
+
 
 @app.route('/registerLibrarian', methods=['GET', 'POST'])
 def registerLibrarian():
@@ -74,7 +87,7 @@ def registerLibrarian():
         cursor.execute("SELECT branch_name FROM Branch")
         branches_query = cursor.fetchall()
         branches_fixed = [''.join(i) for i in branches_query]
-        return render_template('registerLibrarian.html', title=title, branches=branches_fixed)
+        return render_template('registerLibrarian.html', title=title, branches_fixed=branches_fixed)
 
 
 @app.route('/registerReader', methods=['POST', 'GET'])
@@ -117,49 +130,46 @@ def registerReader():
         return render_template('registerReader.html', title=title)
 
 
-# create librarian home page and delete the example in librarian register view function
-# @app.route('/homepageLibrarian')
-# def homepageLibrarian():  # create librarian home page
-#     return render_template('homepageLibrarian.html')
+@app.route('/reader2', methods=['GET', 'POST'])
+def reader2():
+    session1 = session["email"]
+    # cursor.execute('SELECT * from Reader WHERE reader_email = %s', session1.email)
+    # user_reader = cursor.fetchone()
+    # cursor.execute('SELECT * from Librarian WHERE Librarian_email = %s', session1.email)
+    # user_librarian = cursor.fetchone()
+    if session1.user_type == "Reader":
+        return render_template('reader2.html', user=session1)
+    else:
+        return render_template('librarian2.html', user=session1)
 
 
-# create reader home page and delete the example in reader register view function
-# @app.route('/homepageReader', methods=['GET', 'POST'])
-# def homepageReader():
-#     return render_template('homepageReader.html')
+@app.route('/librarian2', methods=['GET', 'POST'])
+def librarian2():
+    session1 = session["email"]
+    # cursor.execute('SELECT * from Reader WHERE reader_email = %s', session1)
+    # user_reader = cursor.fetchone()
+    # cursor.execute('SELECT * from Librarian WHERE Librarian_email = %s', session1)
+    # user_librarian = cursor.fetchone()
+    if session1.user_type == "Librarian":
+        return render_template('librarian2.html', user=session1)
+    else:
+        return render_template('reader2.html', user=session1)
+
 
 @app.route('/reader', methods=['GET', 'POST'])
 def reader():
-    session1 = session["email"]
-    cursor.execute('SELECT * from Reader WHERE reader_email = %s', session1)
-    user_reader = cursor.fetchone()
-    cursor.execute('SELECT * from Librarian WHERE Librarian_email = %s', session1)
-    user_librarian = cursor.fetchone()
-    if user_reader:
-        reader_name = user_reader[2]
-        return render_template('reader.html', reader_name=reader_name)
-    else:
-        librarian_name = user_librarian[2]
-        return render_template('librarian.html', librarian_name=librarian_name)
+    return render_template('reader.html')
 
 @app.route('/librarian', methods=['GET', 'POST'])
 def librarian():
-    session1 = session["email"]
-    cursor.execute('SELECT * from Reader WHERE reader_email = %s', session1)
-    user_reader = cursor.fetchone()
-    cursor.execute('SELECT * from Librarian WHERE Librarian_email = %s', session1)
-    user_librarian = cursor.fetchone()
-    if user_reader:
-        reader_name = user_reader[2]
-        return render_template('reader.html', reader_name=reader_name)
-    else:
-        librarian_name = user_librarian[2]
-        return render_template('librarian.html', librarian_name=librarian_name)
-
-@app.route('/reader2', methods=['GET', 'POST'])
-def reader2():
-    return render_template('reader2.html')
+    return render_template('librarian.html')
 
 @app.route('/mybooks', methods=['GET', 'POST'])
 def mybooks():
     return render_template('mybooks.html')
+
+
+# borrow and order
+@app.route('/borroworder', methods=['GET', 'POST'])
+def borrow_order():
+    return render_template('borroworder.html')

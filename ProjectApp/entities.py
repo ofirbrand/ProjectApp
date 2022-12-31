@@ -28,7 +28,12 @@ class Librarian(User):
         super().__init__(email, name, phone_num, address, password)
         self.work_date_begin = work_date_begin
         self.branch_name = branch_name
+        self.user_type = "Librarian"
         Librarian.counter += 1
+
+    def test(self):
+        msg = f"Librarian {self.name} is connecteddddddd"
+        return msg
 
     def insert_new_book(self, book):
         #chack if the book is exists
@@ -64,7 +69,11 @@ class Reader(User):
     def __init__(self, email, name, phone_num, address, password, d_birth):
         super().__init__(email, name, phone_num, address, password)
         self.d_birth = d_birth
+        self.user_type = "Reader"
         Reader.counter += 1
+
+    def test(self):
+        return print(f"Reader {self.name} is connected")
 
     def borrow_request(self, borrow):
         borrow.create_borrow(borrow)
