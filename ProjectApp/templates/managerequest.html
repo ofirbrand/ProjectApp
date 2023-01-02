@@ -1,0 +1,27 @@
+{% extends "librarian_layout.html" %}
+{% block content %}
+    <legend class="border-bottom mb-4">Manage Borrow Requests</legend>
+    </div>
+    <div class="container">
+        <article class="media content-section">
+          <div class="media-body">
+            <h2><a class="article-title" href="#">Request By: Reader's Name</a></h2>
+            <p class="article-content">
+              <ul>
+                <li>
+                  Request ID
+                </li>
+                <li>
+                  Copy ID
+                </li>
+                <li>
+                  Borrower's Email
+                </li>
+                <input class="btn btn-outline-info" type="submit" value="Approve">
+                <input class="btn btn-outline-info" type="submit" value="Decline">
+              </ul>
+            </p>
+          </div>
+        </article>
+    </div>
+{% endblock content %}

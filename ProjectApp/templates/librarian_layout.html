@@ -30,7 +30,7 @@
               </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-              <a class="nav-item nav-link" href="#">Manage Borrows & Orders</a>
+              <a class="nav-item nav-link" href="{{ url_for('managerequest') }}">Manage Borrows & Orders</a>
               <a class="nav-item nav-link" href="{{ url_for('newbook') }}">Add Books</a>
             </div>
           </div>
@@ -50,6 +50,17 @@
           {% endwith %}
           {% block content %}{% endblock %}
         </div>
+        <div class="col-md-4">
+          <div class="content-section">
+            <h3>{{ user.name }}'s profile:</h3>
+            <p class='text-muted'>
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-light">Email: {{ user.email }}</li>
+                <li class="list-group-item list-group-item-light">Phone Number: {{ user.phone_num }}</li>
+                <li class="list-group-item list-group-item-light">Branch : {{ user.branch_name }}</li>
+              </ul>
+            </p>
+          </div>
         </div>
       </div>
     </main>

@@ -178,9 +178,10 @@ def mybooks():
     session1 = session["email"]
     return render_template('mybooks.html', user=session1)
 
-# @app.route('/reader', methods=['GET', 'POST'])
-# def reader():
-#     return render_template('reader.html')
+@app.route('/managerequest', methods=['GET', 'POST'])
+def managerequest():
+    session1 = session["email"]
+    return render_template('managerequest.html', user=session1)
 #
 # @app.route('/librarian', methods=['GET', 'POST'])
 # def librarian():
