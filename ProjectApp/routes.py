@@ -61,7 +61,7 @@ def registerLibrarian():
         address = str(city + ", " + street + ", " + str(house_num))
         password = str(request.form['password'])
         begin_work_date = request.form['begin_work_date']
-        branch_name = request.form['branch_name']
+        branch_name = request.form['branch']
         # creating python Librarian class
         cursor.execute("SELECT reader_email FROM Reader WHERE reader_email = %s", email)
         is_email_exist = cursor.fetchone()
@@ -109,9 +109,9 @@ def registerReader():
             password = str(request.form['password'])
             date = request.form['date']
             # creating python Librarian class
-            address = city + " " + str(street) + " " + str(house_num)
+            # address = city + " " + str(street) + " " + str(house_num)
             # implement the Reader class  to the full_name content
-            user = en.Reader(email, name, phone_num, address, password, date)
+            # user = en.Reader(email, name, phone_num, address, password, date)
             # insert data to Librarian table
             cursor.execute("INSERT INTO Reader(phone_number, reader_email, full_name, reader_password, "
                            "date_of_birth) VALUES(%s, %s, %s, %s, %s)",
@@ -161,16 +161,31 @@ def librarian2():
 
 @app.route('/newbook', methods=['GET', 'POST'])
 def newbook():
+    title = "Add New Book"
+    session1 = session["email"]
     if request.method == 'POST':
         book_name = str(request.form['book_name'])
         author = str(request.form['author'])
         publisher = str(request.form['publisher'])
-        publish_year = str(request.form['publish_year'])
-        cursor.execute('SELECT * FROM Book WHERE book_name = %s AND author - %s', (book_name, author))
-        # create an instance of book class
+        publish_year = request.form['publish_year']
+        cursor.execute('SELECT book_id FROM Book WHERE book_name like %s AND author like %s',
+                       (book_name, author))
+        is_book = cursor.fetchone()
+        if is_book:
+            book = en.Book(book_id=is_book[0], book_name=book_name, author=author, publisher=publisher,
+                           year_published=publish_year)
+            session1.add_new_book(book)
+            return render_template('newbook.html', user=session1, title=title)
+        else:
+            cursor.execute("SELECT max(book_id) FROM Book")
+            id_num = cursor.fetchone()
+            book_id = int(''.join(map(str, id_num))) + 1
+            book = en.Book(book_id=book_id, book_name=book_name, author=author, publisher=publisher,
+                           year_published=publish_year)
+            session1.add_new_book(book)
+            return render_template('newbook.html', user=session1, title=title)
+            # create an instance of book class
     else:
-        session1 = session["email"]
-        title = "Add New Book"
         return render_template('newbook.html', user=session1, title=title)
 
 @app.route('/mybooks', methods=['GET', 'POST'])

@@ -1,7 +1,7 @@
 {% extends "basic_layout.html" %}
 {% block content %}
-<h1> Sign In </h1>
-    <form action="{{ url_for('welcome') }}" method="POST">
+<h2> WELCOME ! </h2>
+    <!--form action="{{ url_for('welcome') }}" method="POST">
         <table>
             <tr>
                 <td>Email</td>
@@ -22,8 +22,27 @@
                 <td></td>
             </tr>
         </table>
+    </form-->
+     <form action="{{ url_for('welcome') }}" method="POST">
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Sign In</legend>
+                <div class="form-group">
+                    <div class="form-control-label">
+                        Email
+                    </div>
+                        <input class="form-control form-control-lg" type="email" name="email">
+                </div>
+                <div class="form-group">
+                    <div class="form-control-label">
+                        Password
+                    </div>
+                        <input class="form-control form-control-lg" type="number" name="password">
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-outline-info" type="submit" value="Sign In">
+                </div>
+        </fieldset>
     </form>
-
     <p class ="middle">We have so many books waiting just for you
       <i class="glyphicon glyphicon-book"></i>
     </p>
@@ -39,3 +58,5 @@
     <p>1.The maximum of books that reader can borrow is 3.</p>
   </div>
 {% endblock content %}
+
+
