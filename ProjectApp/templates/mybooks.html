@@ -1,7 +1,34 @@
+{% extends "reader_layout.html" %}
 {% block content %}
   <div class="container">
     <p>
-      {{ reader.name }}'s Books
+      {{ user.name }}'s Books
     </p>
-  </div>
+    <div class="container">
+      <!-->  deising headline  <-->
+      <legend class="border-bottom mb-4">Currently Borrowed</legend>
+    </div>
+        <article class="media content-section">
+          <div class="media-body">
+            <h2><a class="article-title" href="#">Book Name</a></h2>
+            <p class="article-content">
+              <ul>
+                <li>
+                  Author Name:
+                </li>
+                <li>
+                  Borrowed Date:
+                </li>
+                <li>
+                  Return Date:
+                </li>
+                <li>
+                  Branch Name:
+                </li>
+                <input class="btn btn-outline-info" type="submit" value="Return">
+                <input class="btn btn-outline-info" type="submit" value="Extension">
+              </ul>
+            </p>
+          </div>
+        </article>
 {% endblock %}

@@ -113,3 +113,10 @@ h2{
   width: 90%;
 
 }
+
+img {
+    max-width: 80%;
+    height: auto;
+    padding: 5px;
+    margin: 2px;
+}

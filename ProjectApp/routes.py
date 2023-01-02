@@ -22,7 +22,7 @@ def welcome():
                 # session["email"] = request.form.get("email")  # change the session value to the correct class
                 return redirect('/reader2')
             else:
-                flash('Password Incorrect', 'error')
+                flash('Password Incorrect', 'danger')
         elif librarian_temp:
             if librarian_temp[3] == password:
                 cursor.execute("SELECT city, street, house_number FROM Librarian_Address WHERE librarian_email = %s",
@@ -35,9 +35,9 @@ def welcome():
                 # session["email"] = request.form.get("email")  # change the session value to the correct class
                 return redirect('/librarian2')
             else:
-                flash('Password Incorrect', 'error')
+                flash('Password Incorrect', 'danger')
         else:
-            flash('The Email Address Is Not Saved In The System. Sign-Up Or Check For Email Typo')
+            flash('The Email Address Is Not Saved In The System. Sign-Up Or Check For Email Typo', 'danger')
             return redirect('/')
     else:
         return render_template('welcome.html')
@@ -67,7 +67,7 @@ def registerLibrarian():
         is_email_exist = cursor.fetchone()
         connection.commit()
         if is_email_exist:
-            flash("This Email Address Already Exists. Please Try New One", 'error')
+            flash("This Email Address Already Exists. Please Try New One", 'danger')
             return redirect('/registerLibrarian')
         else:
             # insert data to Librarian table
@@ -166,6 +166,8 @@ def newbook():
         author = str(request.form['author'])
         publisher = str(request.form['publisher'])
         publish_year = str(request.form['publish_year'])
+        cursor.execute('SELECT * FROM Book WHERE book_name = %s AND author - %s', (book_name, author))
+        # create an instance of book class
     else:
         session1 = session["email"]
         title = "Add New Book"
@@ -173,7 +175,8 @@ def newbook():
 
 @app.route('/mybooks', methods=['GET', 'POST'])
 def mybooks():
-    return render_template('mybooks.html')
+    session1 = session["email"]
+    return render_template('mybooks.html', user=session1)
 
 # @app.route('/reader', methods=['GET', 'POST'])
 # def reader():

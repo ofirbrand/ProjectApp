@@ -13,7 +13,7 @@
     {% if title %}
         <title> {{ title }}</title>
     {% else %}
-        <title>Home Page</title>
+        <title>Librarian</title>
     {% endif %}
 </head>
 <body>
@@ -31,7 +31,7 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               <a class="nav-item nav-link" href="#">Manage Borrows & Orders</a>
-              <a class="nav-item nav-link" href="{{ url_for('newbook') }}">Add Book</a>
+              <a class="nav-item nav-link" href="{{ url_for('newbook') }}">Add Books</a>
             </div>
           </div>
         </div>
