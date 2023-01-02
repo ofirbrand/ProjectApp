@@ -37,13 +37,14 @@ CREATE TABLE Librarian
   FOREIGN KEY (branch_name) REFERENCES Branch(branch_name)
 );
 
-CREATE TABLE book
+-- drop table if exists Book;
+CREATE TABLE Book
 (
+  book_id INT AUTO_INCREMENT,
   book_name VARCHAR(100) NOT NULL,
   author VARCHAR(100) NOT NULL,
   publisher VARCHAR(100) NOT NULL,
   publish_year DATE NOT NULL,
-  book_id INT NOT NULL,
   PRIMARY KEY (book_id)
 );
 
@@ -77,6 +78,7 @@ CREATE TABLE Branch_address
   FOREIGN KEY (branch_name) REFERENCES Branch(branch_name)
 );
 
+-- drop table if exists Borrow_Extension;
 CREATE TABLE Borrow_Extension
 (
   date_of_borrowing DATE NOT NULL,
@@ -92,17 +94,20 @@ CREATE TABLE Borrow_Extension
   FOREIGN KEY (librarian_email) REFERENCES Librarian(librarian_email)
 );
 
+-- drop table if exists Copies;
 CREATE TABLE Copies
 (
-  amount INT NOT NULL,
-  copy_id INT NOT NULL,
-  branch_name VARCHAR(30) NOT NULL,
+  copy_id INT AUTO_INCREMENT,
   book_id INT NOT NULL,
+  branch_name VARCHAR(30) NOT NULL,
+  amount INT NOT NULL,
+  copy_status VARCHAR(15) NOT NULL,
   PRIMARY KEY (copy_id),
   FOREIGN KEY (branch_name) REFERENCES Branch(branch_name),
   FOREIGN KEY (book_id) REFERENCES book(book_id)
 );
 
+-- drop table if exists Order_book;
 CREATE TABLE Order_book
 (
   order_status INT NOT NULL,

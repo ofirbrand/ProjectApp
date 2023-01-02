@@ -159,21 +159,28 @@ def librarian2():
         user_dict = session1.__dict__.items()
         return render_template('reader2.html', user=session1, user_dict=user_dict)
 
-
-@app.route('/reader', methods=['GET', 'POST'])
-def reader():
-    return render_template('reader.html')
-
-@app.route('/librarian', methods=['GET', 'POST'])
-def librarian():
-    return render_template('librarian.html')
+@app.route('/newbook', methods=['GET', 'POST'])
+def newbook():
+    if request.method == 'POST':
+        book_name = str(request.form['book_name'])
+        author = str(request.form['author'])
+        publisher = str(request.form['publisher'])
+        publish_year = str(request.form['publish_year'])
+    else:
+        session1 = session["email"]
+        title = "Add New Book"
+        return render_template('newbook.html', user=session1, title=title)
 
 @app.route('/mybooks', methods=['GET', 'POST'])
 def mybooks():
     return render_template('mybooks.html')
 
+# @app.route('/reader', methods=['GET', 'POST'])
+# def reader():
+#     return render_template('reader.html')
+#
+# @app.route('/librarian', methods=['GET', 'POST'])
+# def librarian():
+#     return render_template('librarian.html')
 
-# borrow and order
-@app.route('/borroworder', methods=['GET', 'POST'])
-def borrow_order():
-    return render_template('borroworder.html')
+

@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design.css') }}">
 
     {% if title %}
-        <title>Flask Blog - {{ title }}</title>
+        <title> {{ title }}</title>
     {% else %}
         <title>Home Page</title>
     {% endif %}
@@ -26,12 +26,12 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
               <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" href="#">Logout</a>
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
               </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               <a class="nav-item nav-link" href="#">Manage Borrows & Orders</a>
-              <a class="nav-item nav-link" href="#">Add Book</a>
+              <a class="nav-item nav-link" href="{{ url_for('newbook') }}">Add Book</a>
             </div>
           </div>
         </div>

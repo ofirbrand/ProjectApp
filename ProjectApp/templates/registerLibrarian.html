@@ -1,75 +1,75 @@
 {% extends "basic_layout.html" %}
 {% block content %}
-<h1> Please Insert Your Details </h1>
     <form action="{{ url_for('registerLibrarian') }}" method="POST">
-        <table>
-            <tr>
-                <td>Email</td>
-                <td>
-                    <input type="email" name="email">
-                </td>
-            </tr>
-            <tr>
-                <td>Full Name</td>
-                <td>
-                    <input type="text" name="name">
-                </td>
-            </tr>
-            <tr>
-                <td>Phone</td>
-                <td>
-                    <input type="number" name="phone">
-                </td>
-            </tr>
-            <tr>
-                <td collspan="2">Address</td>
-            </tr>
-            <tr>
-                <td>City Name</td>
-                <td>
-                    <input type="text" name="city">
-                </td>
-            </tr>
-            <tr>
-                <td>Street Name</td>
-                <td>
-                    <input type="text" name="street">
-                </td>
-            </tr>
-            <tr>
-                <td>House Number</td>
-                <td>
-                    <input type="number" name="house">
-                </td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td>
-                    <input type="number" name="password">
-                </td>
-            </tr>
-            <tr>
-                <td>Date</td>
-                <td>
-                    <input type="date" name="begin_work_date">
-                </td>
-            </tr>
-            <tr>
-                <td>Branch</td>
-                <td>
-                      <select name="cars" id="cars">
-                          {% for branch in branches_fixed %}
-                        <option value="branch"> {{ branch }} </option>
-                          {% endfor %}
-                      </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" value="Submit">
-                </td>
-                <td></td>
-            </tr>
-        </table>
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Please Insert Your Details To Register As A Librarian</legend>
+                <div class="form-group">
+                    <div class="form-control-label">
+                        Email
+                    </div>
+                        <input class="form-control form-control-lg" type="email" name="email">
+                </div>
+                <div class="form-group">
+                    <div class="form-control-label">
+                        Full Name
+                    </div>
+                        <input class="form-control form-control-lg" type="text" name="name">
+                </div>
+                 <div class="form-group">
+                    <div class="form-control-label">
+                        Phone
+                    </div>
+                        <input class="form-control form-control-lg" type="number" name="phone">
+                </div>
+                <div class="form-group">
+                    <div class="form-control-label">
+                        Password
+                    </div>
+                        <input class="form-control form-control-lg" type="number" name="password">
+                </div>
+                <div class="form-group">
+                    <div class="form-control-label">
+                        Start Working Date
+                    </div>
+                        <input class="form-control form-control" type="date" name="begin_work_date">
+                </div>
+                <div class="form-group">
+                    <div class="form-control-label">
+                        <h5>Address</h5>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <div class="form-control-label">
+                        City Name
+                    </div>
+                        <input class="form-control form-control-lg" type="text" name="city">
+                </div>
+                <div class="form-group">
+                    <div class="form-control-label">
+                        Street Name
+                    </div>
+                        <input class="form-control form-control-lg" type="text" name="street">
+                </div>
+                <div class="form-group">
+                    <div class="form-control-label">
+                        House Number
+                    </div>
+                        <input class="form-control form-control-lg" type="number" name="house">
+                </div>
+                <div class="form-group">
+                    <div class="form-control-label">
+                        Library Branch
+                    </div>
+                <div class="form-group">
+                    <select class="form-control" name="cars" id="cars">
+                              {% for branch in branches_fixed %}
+                            <option value="branch"> {{ branch }} </option>
+                              {% endfor %}
+                          </select>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-outline-info" type="submit" value="Submit">
+                </div>
+        </fieldset>
     </form>
 {% endblock content %}

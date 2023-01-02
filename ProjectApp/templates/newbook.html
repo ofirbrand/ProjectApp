@@ -1,0 +1,41 @@
+{% extends "librarian_layout.html" %}
+{% block content %}
+ <form action="{{ url_for('newbook') }}" method="POST">
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Please Insert The Book Details</legend>
+        <div class="container">
+            <ul>
+                <li>If the book already exits only the amount in your branch will be change</li>
+                <li>Note that the books will automatically be entered into the branch you belong to</li>
+            </ul>
+        </div>
+            <div class="form-group">
+                <div class="form-control-label">
+                    Book Name
+                </div>
+                    <input class="form-control form-control-lg" type="text" name="book_name">
+            </div>
+            <div class="form-group">
+                <div class="form-control-label">
+                    Author
+                </div>
+                    <input class="form-control form-control-lg" type="text" name="author">
+            </div>
+            <div class="form-group">
+                <div class="form-control-label">
+                    Publisher
+                </div>
+                    <input class="form-control form-control-lg" type="text" name="publisher">
+            </div>
+            <div class="form-group">
+                <div class="form-control-label">
+                    Published Date
+                </div>
+                    <input class="form-control form-control-lg" type="date" name="publish_year">
+            </div>
+            <div class="form-group">
+                <input class="btn btn-outline-info" type="submit" value="Submit">
+            </div>
+    </fieldset>
+ </form>
+{% endblock content %}
