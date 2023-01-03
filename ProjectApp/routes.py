@@ -197,6 +197,11 @@ def mybooks():
 def managerequest():
     session1 = session["email"]
     return render_template('managerequest.html', user=session1)
+
+@app.route('/borroworder', methods=['GET', 'POST'])
+def borroworder():
+    session1 = session["email"]
+    return render_template('borroworder.html', user=session1)
 #
 # @app.route('/librarian', methods=['GET', 'POST'])
 # def librarian():

@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design.css') }}">
 
     {% if title %}
-        <title>Flask Blog - {{ title }}</title>
+        <title>{{ title }}</title>
     {% else %}
         <title>Home Page</title>
     {% endif %}
@@ -31,7 +31,7 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               <a class="nav-item nav-link" href="{{ url_for('mybooks') }}">My Books</a>
-              <a class="nav-item nav-link" href="#">Another Option</a>
+              <a class="nav-item nav-link" href="{{ url_for('borroworder') }}">Borrow&Order</a>
             </div>
           </div>
         </div>
