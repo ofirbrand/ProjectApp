@@ -44,7 +44,7 @@ elif is_book_exist:
 else:
     print(f"No Book Or Author In The System Such As {search_word}")
 
-### my books query:
+### my current books query:
 """
 select Book.book_name, C.copy_id, C.branch_name,Bor.date_of_borrowing ,Bor.request_id
 from Reader as R, Borrow_Extension as Bor, Copies as C, Book
@@ -53,3 +53,5 @@ and Bor.copy_id = C.copy_id
 and C.book_id = Book.book_id
 and Bor.status_of_request = 'borrowed';
 """
+
+### my books history
