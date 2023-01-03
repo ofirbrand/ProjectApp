@@ -92,8 +92,48 @@ class Reader(User):
         self.user_type = "Reader"
         Reader.counter += 1
 
-    def test(self):
-        return print(f"Reader {self.name} is connected")
+    def search_book(self, word):
+        word = "%" + word + "%"
+        cursor.execute("SELECT book_name FROM Book WHERE book_name LIKE %s", word)
+        is_book_exist = cursor.fetchall()
+        cursor.execute("SELECT author FROM Book WHERE author LIKE %s", word)
+        is_author_exist = cursor.fetchall()
+        if is_author_exist:
+            authors = [''.join(i) for i in is_author_exist]
+            books_list = []
+            for author in authors:
+                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount),
+                                SUM(CASE WHEN C.copy_status LIKE 'available' THEN 1 ELSE 0 END),
+                                SUM(CASE WHEN C.copy_status LIKE 'orderable' THEN 1 ELSE 0 END)
+                                FROM Copies AS C JOIN Book AS B ON C.book_id = B.book_id
+                                WHERE B.author LIKE %s
+                                GROUP BY 1 , 2 , 3""", author)
+                books_catch = cursor.fetchall()
+                for b in books_catch:
+                    lst = list(b)
+                    books_list.append(lst)
+            return books_list
+            # for book in books_list:
+            #     print(book)
+        elif is_book_exist:
+            books = [''.join(i) for i in is_book_exist]
+            books_list = []
+            for book in books:
+                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount),
+                                SUM(CASE WHEN C.copy_status LIKE 'available' THEN 1 ELSE 0 END),
+                                SUM(CASE WHEN C.copy_status LIKE 'orderable' THEN 1 ELSE 0 END)
+                                FROM Copies AS C JOIN Book AS B ON C.book_id = B.book_id
+                                WHERE B.book_name LIKE %s
+                                GROUP BY 1 , 2 , 3""", book)
+                books_catch = cursor.fetchall()
+                for b in books_catch:
+                    lst = list(b)
+                    books_list.append(lst)
+            return books_list
+            # for book in books_list:
+            #     print(book)
+        else:
+            return flash(f"No Book Or Author In The System Such As {word}", 'danger')
 
     def borrow_request(self, borrow):
         borrow.create_borrow(borrow)
