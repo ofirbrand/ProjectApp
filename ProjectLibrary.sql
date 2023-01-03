@@ -9,7 +9,7 @@ reader_email VARCHAR(50) NOT NULL,
 full_name VARCHAR(50) NOT NULL,
 reader_password VARCHAR(50) NOT NULL,
 date_of_birth DATE NOT NULL,
-	PRIMARY KEY (reader_email)
+PRIMARY KEY (reader_email)
 );
 
 CREATE TABLE Branch
@@ -79,19 +79,15 @@ CREATE TABLE Branch_address
 );
 
 -- drop table if exists Borrow_Extension;
-CREATE TABLE Borrow_Extension
+CREATE TABLE Borrow
 (
   date_of_borrowing DATE NOT NULL,
   request_id INT NOT NULL,
   status_of_request VARCHAR(20) NOT NULL,
-  request_type VARCHAR(20) NOT NULL,
   book_id INT NOT NULL,
   reader_email VARCHAR(50) NOT NULL,
-  librarian_email VARCHAR(50) NOT NULL,
   PRIMARY KEY (request_id),
-  FOREIGN KEY (book_id) REFERENCES book(book_id),
-  FOREIGN KEY (reader_email) REFERENCES Reader(reader_email),
-  FOREIGN KEY (librarian_email) REFERENCES Librarian(librarian_email)
+  FOREIGN KEY (book_id) REFERENCES book(book_id)
 );
 
 -- drop table if exists Copies;
