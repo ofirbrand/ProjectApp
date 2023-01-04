@@ -1,15 +1,15 @@
 {% extends "reader_layout.html" %}
 {% block content %}
 
-<legend>Which Book Are You Looking For?</legend>
+<legend class="headline">Which Book Are You Looking For?</legend>
 
 <footer class="container-fluid text-center">
-
-  <form class="form-inline">Search by title or author:
-    <input type="email" class="form-control" size="50" placeholder="Name">
-    <button type="button" class="btn btn-danger">Search</button>
+  <form class="form-inline">Search By Title Or Author :
+    <input type="word" class="form-control" size="50" placeholder="Book Name Or Author Name">
+    <button type="button" class="btn btn-info">Search</button>
   </form>
 </footer>
+
 
   <div class="container">
         <article class="media content-section">
@@ -32,7 +32,7 @@
             <li>
                   Stock:
                 </li>
-                <input class="btn btn-outline-info" type="submit" value="Borrow">
+                <input class="btn btn-primary active" type="submit" value="Borrow">
               </ul>
             </p>
           </div>
@@ -60,7 +60,7 @@
             <li>
                   Stock:
                 </li>
-                <input class="btn btn-outline-info" type="submit" value="Order">
+                <input class="btn btn-primary active" type="submit" value="Order">
               </ul>
             </p>
           </div>

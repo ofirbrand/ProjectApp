@@ -1,6 +1,7 @@
 {% extends "basic_layout.html" %}
 {% block content %}
-<h2> WELCOME ! </h2>
+<h2> WELCOME TO OUR LIBRARY! </h2>
+
     <!--form action="{{ url_for('welcome') }}" method="POST">
         <table>
             <tr>
@@ -39,12 +40,12 @@
                         <input class="form-control form-control-lg" type="number" name="password">
                 </div>
                 <div class="form-group">
-                    <input class="btn btn-outline-info" type="submit" value="Sign In">
+                    <input class="btn btn-primary" type="submit" value="Sign In">
                 </div>
         </fieldset>
     </form>
+
     <p class ="middle">We have so many books waiting just for you
-      <i class="glyphicon glyphicon-book"></i>
     </p>
   <p class="branches">Our Beloved Branches:
 
@@ -54,9 +55,14 @@
 
 
   <h2>Our Policy:</h2>
-  <div class="center">
-    <p>1.The maximum of books that reader can borrow is 3.</p>
-  </div>
+  <ul class="list-group">
+  <li class="list-group-item">The maximum of books that reader can borrow at the same time is 3</li>
+  <li class="list-group-item">The borrowing time is 14 days</li>
+  <li class="list-group-item">The reader can request to extend the time for a week</li>
+   <li class="list-group-item">Be nice to the librarian</li>
+
+</ul>
+
 {% endblock content %}
 
 
