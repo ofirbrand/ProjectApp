@@ -5,13 +5,13 @@
       {{ user.name }}'s Books
     </p>
     <div class="container">
-      <!-->  deising headline  <-->
-      <legend class="border-bottom mb-4">Currently Borrowed</legend>
+
+      <legend class="headline">Currently Borrowed</legend>
     </div>
     <div class="container">
         <article class="media content-section">
           <div class="media-body">
-            <h2><a class="article-title" href="#">Book Name</a></h2>
+            <h1><a class="article-title" href="#">Book Name</a></h1>
             <p class="article-content">
               <ul>
                 <li>
@@ -26,20 +26,20 @@
                 <li>
                   Branch Name:
                 </li>
-                <input class="btn btn-outline-info" type="submit" value="Return">
-                <input class="btn btn-outline-info" type="submit" value="Extension">
+                <input class="btn btn-outline-primary" type="submit" value="Return">
+                <input class="btn btn-outline-primary" type="submit" value="Extension">
               </ul>
             </p>
           </div>
         </article>
     </div>
 
-    <legend class="border-bottom mb-4">Borrow History</legend>
+    <legend class="headline">Borrow History</legend>
     </div>
     <div class="container">
         <article class="media content-section">
           <div class="media-body">
-            <h2><a class="article-title" href="#">Book Name</a></h2>
+            <h1><a class="article-title" href="#">Book Name</a></h1>
             <p class="article-content">
               <ul>
                 <li>
@@ -59,4 +59,5 @@
           </div>
         </article>
     </div>
+
 {% endblock %}
