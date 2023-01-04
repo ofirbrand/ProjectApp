@@ -74,11 +74,11 @@ class Librarian(User):
             borrow.request_status = "Denied"
 
 
-    def extension_handle(self, extension):
-        pass
-
-    def order_handle(self, order):
-        pass
+    # def extension_handle(self, extension):
+    #     pass
+    #
+    # def order_handle(self, order):
+    #     pass
 
 # inherit basic argument from User class
 # Reader's arguments - email, name, d_birth, phone_num, address
