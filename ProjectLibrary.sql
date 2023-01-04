@@ -103,7 +103,7 @@ CREATE TABLE Copies
   FOREIGN KEY (book_id) REFERENCES book(book_id)
 );
 
--- drop table if exists Order_book updatedd;
+-- drop table if exists Order_book updated;
 CREATE TABLE Order_book
 (
   order_status INT NOT NULL,
