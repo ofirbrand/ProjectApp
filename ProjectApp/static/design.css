@@ -97,9 +97,22 @@ text-align: center;
     color:#2d185f;
 }
 footer {
-      background-color:  #f2f2f2;
-      padding: 15px;
-      font size: 180%
-      border-width:thin medium;
+    background-color: #e0e7e7;
+    font size: 180%;
+    width: 50px;
+   margin-bottom: 5px;
+
 
     }
+.container-fluid {
+    padding-top: 20px;
+    padding-bottom: 40px;
+  }
+.bg-3 {
+    color: #555555;
+  }
+.warning{
+color: red;
+}
+
+
