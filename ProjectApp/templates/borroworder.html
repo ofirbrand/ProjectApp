@@ -4,66 +4,68 @@
 <legend class="headline">Which Book Are You Looking For?</legend>
 
 <footer class="container-fluid text-center">
-  <form class="form-inline">Search By Title Or Author :
-    <input type="word" class="form-control" size="50" placeholder="Book Name Or Author Name">
-    <button type="button" class="btn btn-info">Search</button>
+  <form class="form-inline" action="{{ url_for('borroworder') }}" method="POST"> Search By Title Or Author :
+    <input type="text" class="form-control" size="50" placeholder="Book Name Or Author Name" name="word">
+    <button type="submit" value="Submit" class="btn btn-info">Search</button>
   </form>
 </footer>
-
-
-  <div class="container">
-        <article class="media content-section">
-          <div class="media-body">
-            <h2><a class="article-title" href="#">Book Name</a></h2>
-            <p class="article-content">
-              <ul>
-                <li>
-                  Author Name:
-                </li>
-                <li>
-                  Branch Name:
-                </li>
-            <li>
-                  Phone Number Branch:
-                </li>
-            <li>
-                  Address Branch:
-                </li>
-            <li>
-                  Stock:
-                </li>
-                <input class="btn btn-primary active" type="submit" value="Borrow">
-              </ul>
-            </p>
-          </div>
-        </article>
-    </div>
-
-<div class="container">
-        <article class="media content-section">
-          <div class="media-body">
-            <h2><a class="article-title" href="#">Book Name</a></h2>
-            <p class="article-content">
-              <ul>
-                <li>
-                  Author Name:
-                </li>
-                <li>
-                  Branch Name:
-                </li>
-            <li>
-                  Phone Number Branch:
-                </li>
-            <li>
-                  Address Branch:
-                </li>
-            <li>
-                  Stock:
-                </li>
-                <input class="btn btn-primary active" type="submit" value="Order">
-              </ul>
-            </p>
-          </div>
-        </article>
-    </div>
+    {% for book in books %}
+        {% if book[5] > 0 and  book[4]%}
+          <div class="container">
+                <article class="media content-section">
+                  <div class="media-body">
+                    <h2><a class="article-title" href="#">{{ book[0] }}</a></h2>
+                    <p class="article-content">
+                      <ul>
+                        <li>
+                          Author Name: {{ book[1] }}
+                        </li>
+                        <li>
+                          Branch Name: {{ book[2] }}
+                        </li>
+                    <li>
+                          Phone Number Branch: {{ book[4] }}
+                        </li>
+                    <li>
+                          Address Branch:
+                        </li>
+                    <li>
+                          Stock: {{ book[3] }}
+                        </li>
+                        <input class="btn btn-primary active" type="submit" value="Borrow">
+                      </ul>
+                    </p>
+                  </div>
+                </article>
+            </div>
+          {% elif  book[6] < 1 %}
+            <div class="container">
+                    <article class="media content-section">
+                      <div class="media-body">
+                        <h2><a class="article-title" href="#">{{ book[0] }}</a></h2>
+                        <p class="article-content">
+                          <ul>
+                            <li>
+                              Author Name: {{ book[1] }}
+                            </li>
+                            <li>
+                              Branch Name: {{ book[2] }}
+                            </li>
+                        <li>
+                              Phone Number Branch:
+                            </li>
+                        <li>
+                              Address Branch: {{ book[4] }}
+                            </li>
+                        <li>
+                              Stock: {{ book[3] }}
+                            </li>
+                            <input class="btn btn-primary active" type="submit" value="Order">
+                          </ul>
+                        </p>
+                      </div>
+                    </article>
+                </div>
+          {% endif %}
+    {% endfor %}
 {% endblock %}

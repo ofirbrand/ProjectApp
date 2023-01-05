@@ -201,10 +201,22 @@ def managerequest():
 @app.route('/borroworder', methods=['GET', 'POST'])
 def borroworder():
     session1 = session["email"]
-    return render_template('borroworder.html', user=session1)
-#
-# @app.route('/librarian', methods=['GET', 'POST'])
-# def librarian():
-#     return render_template('librarian.html')
+    title = "Search Books"
+    if request.method == 'POST':
+        word = str(request.form['word'])
+        books = session1.search_book(word)
+        session['books'] = books
+        session_books = session['books']
+        return render_template('requestbook.html', user=session1, title=title, books=session_books)
+    else:
+        return render_template('borroworder.html', user=session1, title=title)
 
+# @app.route('/requestbook', methods=['GET', 'POST'])
+# def requestbook():
+#     session1 = session["email"]
+#     title = "Borrow/Order Book"
+#     session_books = session['books']
+#     if request.method == 'POST':
+#
+#         redirect()
 

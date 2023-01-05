@@ -1,9 +1,8 @@
 from datetime import datetime
 from ProjectApp.routes import flash
 from ProjectApp import cursor, connection
-#No need for argument testing inside the classes - it will be testing during the form building/testing
-#User arguments (common for Librarian's and Reader's) - email, name, phone_num, address
-#No need for using @property and @setter
+
+
 class User:
     counter = 0
 
@@ -15,9 +14,7 @@ class User:
         self.password = password
         User.counter += 1
 
-#inherit basic argument from User class
-#Librarian's unique arguments = work_date_begin, branch
-###create tests for email, work_date_begin(valid date argument)
+
 class Librarian(User):
     counter = 0
 
@@ -103,15 +100,6 @@ class Librarian(User):
             return flash("Borrow Request Denied Because The Book Isn't Available In Stock", 'success')
 
 
-
-
-            # update amount by minus 1, update copy_status to orderable, check if there's an order and if so update to orderable
-            #update date of approve
-
-
-# inherit basic argument from User class
-# Reader's arguments - email, name, d_birth, phone_num, address
-# build valid date test for d_birth
 class Reader(User):
     counter = 0
 
@@ -131,11 +119,13 @@ class Reader(User):
             authors = [''.join(i) for i in is_author_exist]
             books_list = []
             for author in authors:
-                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount),
+                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount), BR.phone_number,
                                 SUM(CASE WHEN C.copy_status LIKE 'available' THEN 1 ELSE 0 END),
                                 SUM(CASE WHEN C.copy_status LIKE 'orderable' THEN 1 ELSE 0 END)
-                                FROM Copies AS C JOIN Book AS B ON C.book_id = B.book_id
-                                WHERE B.author LIKE %s
+                                FROM Copies AS C, Book AS B, Branch as BR
+                                WHERE C.book_id = B.book_id 
+                                AND B.author LIKE %s 
+                                AND BR.branch_name = C.branch_name 
                                 GROUP BY 1 , 2 , 3""", author)
                 # show orderable copies only when there are no available copies
                 books_catch = cursor.fetchall()
@@ -149,11 +139,13 @@ class Reader(User):
             books = [''.join(i) for i in is_book_exist]
             books_list = []
             for book in books:
-                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount),
+                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount), BR.phone_number,
                                 SUM(CASE WHEN C.copy_status LIKE 'available' THEN 1 ELSE 0 END),
                                 SUM(CASE WHEN C.copy_status LIKE 'orderable' THEN 1 ELSE 0 END)
-                                FROM Copies AS C JOIN Book AS B ON C.book_id = B.book_id
-                                WHERE B.book_name LIKE %s
+                                FROM Copies AS C, Book AS B, Branch as BR
+                                WHERE C.book_id = B.book_id 
+                                AND B.book_name LIKE %s 
+                                AND BR.branch_name = C.branch_name
                                 GROUP BY 1 , 2 , 3""", book)
                 books_catch = cursor.fetchall()
                 for b in books_catch:
@@ -163,7 +155,7 @@ class Reader(User):
             # for book in books_list:
             #     print(book)
         else:
-            return flash(f"No Book Or Author In The System Such As {word}", 'danger')
+            return flash(f"No Book Or Author In The System Such As {word[1:-1]}", 'danger')
 
     def borrow_request(self, copy_id):
         cursor.execute("SELECT count(request_id) FROM Borrow WHERE reader_email = %s", self.email)
@@ -172,9 +164,6 @@ class Reader(User):
             return flash(f'{self.name}, We Are Sorry, But Reader Can Hold Only 3 Books Every Time')
         else:
             pass
-
-    def search_book(self, book):
-        pass
 
     def return_book(self, book):
         pass
@@ -185,8 +174,6 @@ class Reader(User):
     def book_extension(self, book):
         pass
 
-    def extension_request(self, book):
-        pass
 
 class Book:
     counter = 0

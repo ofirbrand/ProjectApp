@@ -3,6 +3,12 @@ from ProjectApp.routes import session, request
 from ProjectApp.entities import Librarian, Reader, Copy, Book
 from datetime import datetime
 
+reader_demo = Reader('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 1111, datetime.now().date())
+librarian_demo = Librarian('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 1111, datetime.now().date(), 'Ramat Aviv')
+word = 'harry'
+books = reader_demo.search_book(word)
+print(books[1])
+### search function
 # search_word = "moshe"
 # search_word = "%" + search_word + "%"
 # cursor.execute("SELECT book_name FROM Book WHERE book_name LIKE %s", search_word)
@@ -55,13 +61,13 @@ from datetime import datetime
 # """
 
 ### my books history
-"""SELECT Book.book_name, C.amount, C.copy_status
-    FROM Borrow AS Bor, Copies AS C, Book
-    WHERE Bor.book_id = C.book_id
-    AND Book.book_id = C.book_id
-    AND C.branch_name = 'Ramat Aviv'
-    AND Bor.request_id = 1; 
-"""
+# """SELECT Book.book_name, C.amount, C.copy_status
+#     FROM Borrow AS Bor, Copies AS C, Book
+#     WHERE Bor.book_id = C.book_id
+#     AND Book.book_id = C.book_id
+#     AND C.branch_name = 'Ramat Aviv'
+#     AND Bor.request_id = 1;
+# """
 ### Borrow_show
 #need to add connect to the database
 
@@ -74,19 +80,21 @@ from datetime import datetime
 #     AND Bor.request_id = %s; """, (librarian_branch, request_id))
 # requests = cursor.fetchall()
 
-# Check if the book is available- לא בטוח על ה copy status
-request_id = ""
-librarian_branch = ""
-cursor.execute("SELECT * FROM copies WHERE book_id = %s "
-               "AND copy_status = available "
-               "AND branch_name = %s ", (request[1], librarian_branch))
-book = cursor.fetchone()
-if book:
-    # Approve the request-
-    cursor.execute("UPDATE borrow SET status_of_request= approved WHERE request_id = %s", request_id)
-    connection.commit()
-    cursor.execute("UPDATE Copies SET copy_status = orderable AND amount =  WHERE request_id = %s", request_id)
-    connection.commit()
-    print("Request approved")
-else:
-    print("Book is not available")
+
+
+### Borrow function
+# request_id = ""
+# librarian_branch = ""
+# cursor.execute("SELECT * FROM copies WHERE book_id = %s "
+#                "AND copy_status = available "
+#                "AND branch_name = %s ", (request[1], librarian_branch))
+# book = cursor.fetchone()
+# if book:
+#     # Approve the request-
+#     cursor.execute("UPDATE borrow SET status_of_request= approved WHERE request_id = %s", request_id)
+#     connection.commit()
+#     cursor.execute("UPDATE Copies SET copy_status = orderable AND amount =  WHERE request_id = %s", request_id)
+#     connection.commit()
+#     print("Request approved")
+# else:
+#     print("Book is not available")
