@@ -3,28 +3,26 @@
 
 <legend class="headline">Search Results:</legend>
     {% for book in books %}
-        {% if book[5] > 0 and  book[4]%}
-            <from class="form-inline" action="{{ url_for('requestbook') }}" method="POST">
+        {% if book[5] > 0 %}
+            <form class="form-inline" action="{{ url_for('requestbook') }}" method="POST">
               <div class="container">
                     <article class="media content-section">
                       <div class="media-body">
-                        <h2><a class="article-title" href="#">{{ book[0] }}</a></h2>
+                        <h2>{{ book[0] }}</h2>
                         <p class="article-content">
                           <ul>
                             <li>
+                              <input type="hidden" name="copy_id" value="{{ book[7] }}">
                               Author Name: {{ book[1] }}
                             </li>
                             <li>
                               Branch Name: {{ book[2] }}
                             </li>
-                        <li>
+                            <li>
                               Phone Number Branch: {{ book[4] }}
                             </li>
-                        <li>
-                              Address Branch:
-                            </li>
-                        <li>
-                              Stock: {{ book[3] }}
+                            <li>
+                              Stock: {{ book[5] }}
                             </li>
                             <input class="btn btn-primary active" type="submit" value="Borrow">
                           </ul>
@@ -32,8 +30,8 @@
                       </div>
                     </article>
                 </div>
-            </from>
-          {% elif  book[6] < 1 %}
+            </form>
+          {% else %}
             <form class="form-inline" action="{{ url_for('requestbook') }}" method="POST">
                 <div class="container">
                         <article class="media content-section">
@@ -54,7 +52,7 @@
                                   Address Branch: {{ book[4] }}
                                 </li>
                             <li>
-                                  Stock: {{ book[3] }}
+                                  Stock: {{ book[6] }}
                                 </li>
                                 <input class="btn btn-primary active" type="submit" value="Order">
                               </ul>
