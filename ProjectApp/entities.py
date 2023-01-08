@@ -1,9 +1,8 @@
 from datetime import datetime
 from ProjectApp.routes import flash
 from ProjectApp import cursor, connection
-#No need for argument testing inside the classes - it will be testing during the form building/testing
-#User arguments (common for Librarian's and Reader's) - email, name, phone_num, address
-#No need for using @property and @setter
+
+
 class User:
     counter = 0
 
@@ -15,9 +14,7 @@ class User:
         self.password = password
         User.counter += 1
 
-#inherit basic argument from User class
-#Librarian's unique arguments = work_date_begin, branch
-###create tests for email, work_date_begin(valid date argument)
+
 class Librarian(User):
     counter = 0
 
@@ -65,24 +62,44 @@ class Librarian(User):
             connection.commit()
             return flash(f"{book.book_name} Created As A New Book", 'success')
 
-    def borrow_handle(self, borrow):
-        # check if the book available in the branch
-        # fix the broken if statement
-        if 1:
-            borrow.request_status = "Accept"
+    def show_requests(self):
+        cursor.execute("""SELECT Book.book_name, C.amount, C.copy_status, Bor.request_id, 
+                          FROM Borrow AS Bor, Copies AS C, Book
+                          WHERE Bor.book_id = C.book_id
+                          AND Book.book_id = C.book_id
+                          AND C.branch_name = %s""", self.branch_name)
+        requests = cursor.fetchall()
+        return requests
+
+    def manage_request(self, request_id):
+        cursor.execute("""SELECT C.amount, C.copy_status, C.copy_id, O.reader_email, O.date_of_order
+                            FROM Borrow AS Bor, Copies AS C, Order_book AS O 
+                            WHERE Bor.book_id = C.book_id
+                            AND C.copy_id = O.copy_id
+                            AND Bor.request_id = %s;""", request_id)
+        temp_request = cursor.fetchone()
+        if temp_request[0] > 0 and temp_request[1] == "available":
+            cursor.execute("UPDATE Copies SET amount = amount - 1")
+            connection.commit()
+            cursor.execute("UPDATE Copies SET copy_status = 'orderable'")
+            connection.commit()
+            cursor.execute("SELECT order_status FROM Order_book "
+                           "WHERE copy_id = %s AND O.reader_email = %s AND O.date_of_order = %s",
+                           (temp_request[2], temp_request[3], temp_request[4]))
+            is_exist_order = cursor.fetchone()
+            if is_exist_order:
+                cursor.execute("UPDATE Order_book SET order_status = 'orderable'")
+                connection.commit()
+                cursor.execute("UPDATE Borrow SET date_of_borrowing = %s WHERE request_id = %s",
+                               (datetime.now().date(), request_id))
+                connection.commit()
+                return flash('Borrow Request Successfully Approved', 'success')
+            else:
+                return flash('Borrow Request Successfully Approved', 'success')
         else:
-            borrow.request_status = "Denied"
+            return flash("Borrow Request Denied Because The Book Isn't Available In Stock", 'success')
 
 
-    # def extension_handle(self, extension):
-    #     pass
-    #
-    # def order_handle(self, order):
-    #     pass
-
-# inherit basic argument from User class
-# Reader's arguments - email, name, d_birth, phone_num, address
-# build valid date test for d_birth
 class Reader(User):
     counter = 0
 
@@ -102,12 +119,15 @@ class Reader(User):
             authors = [''.join(i) for i in is_author_exist]
             books_list = []
             for author in authors:
-                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount),
+                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount), BR.phone_number,
                                 SUM(CASE WHEN C.copy_status LIKE 'available' THEN 1 ELSE 0 END),
                                 SUM(CASE WHEN C.copy_status LIKE 'orderable' THEN 1 ELSE 0 END)
-                                FROM Copies AS C JOIN Book AS B ON C.book_id = B.book_id
-                                WHERE B.author LIKE %s
+                                FROM Copies AS C, Book AS B, Branch as BR
+                                WHERE C.book_id = B.book_id 
+                                AND B.author LIKE %s 
+                                AND BR.branch_name = C.branch_name 
                                 GROUP BY 1 , 2 , 3""", author)
+                # show orderable copies only when there are no available copies
                 books_catch = cursor.fetchall()
                 for b in books_catch:
                     lst = list(b)
@@ -119,11 +139,13 @@ class Reader(User):
             books = [''.join(i) for i in is_book_exist]
             books_list = []
             for book in books:
-                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount),
+                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount), BR.phone_number,
                                 SUM(CASE WHEN C.copy_status LIKE 'available' THEN 1 ELSE 0 END),
                                 SUM(CASE WHEN C.copy_status LIKE 'orderable' THEN 1 ELSE 0 END)
-                                FROM Copies AS C JOIN Book AS B ON C.book_id = B.book_id
-                                WHERE B.book_name LIKE %s
+                                FROM Copies AS C, Book AS B, Branch as BR
+                                WHERE C.book_id = B.book_id 
+                                AND B.book_name LIKE %s 
+                                AND BR.branch_name = C.branch_name
                                 GROUP BY 1 , 2 , 3""", book)
                 books_catch = cursor.fetchall()
                 for b in books_catch:
@@ -133,13 +155,15 @@ class Reader(User):
             # for book in books_list:
             #     print(book)
         else:
-            return flash(f"No Book Or Author In The System Such As {word}", 'danger')
+            return flash(f"No Book Or Author In The System Such As {word[1:-1]}", 'danger')
 
-    def borrow_request(self, borrow):
-        borrow.create_borrow(borrow)
-
-    def search_book(self, book):
-        pass
+    def borrow_request(self, copy_id):
+        cursor.execute("SELECT count(request_id) FROM Borrow WHERE reader_email = %s", self.email)
+        amount_of_books = cursor.fetchone()
+        if amount_of_books >= 3:
+            return flash(f'{self.name}, We Are Sorry, But Reader Can Hold Only 3 Books Every Time')
+        else:
+            pass
 
     def return_book(self, book):
         pass
@@ -150,8 +174,6 @@ class Reader(User):
     def book_extension(self, book):
         pass
 
-    def extension_request(self, book):
-        pass
 
 class Book:
     counter = 0
@@ -197,24 +219,5 @@ class Branch:
         Branch.counter += 1
 
 
-class Borrow:
-    counter = 0
 
-    def __init__(self, book, reader_email, librarian_email):
-        self.book = book
-        Borrow.counter += 1
-        self.borrow_id = Borrow.counter
-        self.date_of_borrowing = datetime.now().date()
-        self.reader = reader_email
-        self.librarian = librarian_email
-        self.request_status = None
-
-    def create_borrow(self, borrow):
-        self.book = borrow.book
-        Borrow.counter += 1
-        self.borrow_id = Borrow.counter
-        self.date_of_borrowing = borrow.datetime.now().date()
-        self.reader = borrow.reader_email
-        self.librarian = borrow.librarian_email
-        self.request_status = "Request"
 
