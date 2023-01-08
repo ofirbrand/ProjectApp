@@ -63,12 +63,16 @@ class Librarian(User):
             return flash(f"{book.book_name} Created As A New Book", 'success')
 
     def show_requests(self):
-        cursor.execute("""SELECT Book.book_name, C.amount, C.copy_status, Bor.request_id, 
+        cursor.execute("""SELECT C.copy_id, Book.book_name, C.amount, C.copy_status, Bor.request_id, Bor.reader_email 
                           FROM Borrow AS Bor, Copies AS C, Book
-                          WHERE Bor.book_id = C.book_id
+                          WHERE Bor.copy_id = C.copy_id
                           AND Book.book_id = C.book_id
                           AND C.branch_name = %s""", self.branch_name)
-        requests = cursor.fetchall()
+        requests_caught = cursor.fetchall()
+        requests = []
+        for request in requests_caught:
+            lst = list(request)
+            requests.append(lst)
         return requests
 
     def manage_request(self, request_id):
@@ -79,10 +83,12 @@ class Librarian(User):
                             AND Bor.request_id = %s;""", request_id)
         temp_request = cursor.fetchone()
         if temp_request[0] > 0 and temp_request[1] == "available":
-            cursor.execute("UPDATE Copies SET amount = amount - 1")
+            cursor.execute("UPDATE Copies SET amount = amount - 1 WHERE Copy_id = %s", temp_request[2])
             connection.commit()
-            cursor.execute("UPDATE Copies SET copy_status = 'orderable'")
+            cursor.execute("UPDATE Copies SET copy_status = WHERE Copy_id = %s", temp_request[2])
             connection.commit()
+            # check if the copy was ordered
+            # if the current copy was ordered t the last 3 days
             cursor.execute("SELECT order_status FROM Order_book "
                            "WHERE copy_id = %s AND O.reader_email = %s AND O.date_of_order = %s",
                            (temp_request[2], temp_request[3], temp_request[4]))
@@ -174,6 +180,7 @@ class Reader(User):
             return flash(f"No Book Or Author In The System Such As {word[1:-1]}", 'danger')
 
     def borrow_request(self, copy_id):
+        # check if the reader holds more than 3 books
         cursor.execute("SELECT count(request_id) "
                        "FROM Borrow "
                        "WHERE reader_email = %s"
@@ -182,15 +189,13 @@ class Reader(User):
         if amount_of_books[0] >= 3:
             return flash(f"{self.name}, We Are Sorry But Reader's Can Hold Only 3 Books Every Time", 'success')
         else:
-            cursor.execute("SELECT C.copy_status, B.book_id "
-                           "FROM Copies AS C, Book AS B "
-                           "WHERE C.book_id = B.book_id "
-                           "AND copy_id = %s", copy_id)
+            cursor.execute("SELECT C.copy_status FROM Copies WHERE copy_id = %s", copy_id)
             is_copy_available = cursor.fetchone()
             if is_copy_available[0] == 'available':
-                cursor.execute("INSERT INTO Borrow (status_of_request, book_id, reader_email)"
+                # fix the insertion to Borrow table on column copy_id instead og book_id
+                cursor.execute("INSERT INTO Borrow (status_of_request, copy_id, reader_email)"
                                "VALUES (%s, %s, %s)",
-                               ('requested', is_copy_available[1], self.email))
+                               ('requested', copy_id, self.email))
                 connection.commit()
                 return flash(f"Your Borrow Request has been Received And Waiting To Be Approved", 'success')
             else:

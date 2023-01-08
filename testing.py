@@ -1,14 +1,24 @@
 from ProjectApp import connection, cursor
 from ProjectApp.routes import session, request
 from ProjectApp.entities import Librarian, Reader, Copy, Book
-from datetime import datetime
+from datetime import datetime, date
 
 reader_demo = Reader('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 1111, datetime.now().date())
-librarian_demo = Librarian('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 1111, datetime.now().date(), 'Ramat Aviv')
-word = 'david'
-books = reader_demo.search_book(word)
-for b in books:
-    print(b)
+librarian_demo = Librarian('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 1111, datetime.now().date(), 'City Center')
+# print(librarian_demo.show_requests())
+a = datetime.now().date()
+a1 = date(year=a.year, month=a.month, day=a.day)
+b = date(year=2023, month=1, day=2)
+c = a1-b
+# a = a + 3
+print(a)
+print(b)
+print(c)
+
+# word = 'david'
+# books = reader_demo.search_book(word)
+# for b in books:
+#     print(b)
 ### search function
 # search_word = "moshe"
 # search_word = "%" + search_word + "%"

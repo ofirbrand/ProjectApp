@@ -84,10 +84,10 @@ CREATE TABLE Borrow
   date_of_borrowing DATE,
   request_id INT AUTO_INCREMENT,
   status_of_request VARCHAR(20) NOT NULL,
-  book_id INT NOT NULL,
+  copy_id INT NOT NULL,
   reader_email VARCHAR(50) NOT NULL,
   PRIMARY KEY (request_id),
-  FOREIGN KEY (book_id) REFERENCES book(book_id)
+  FOREIGN KEY (copy_id) REFERENCES Copies(copy_id)
 );
 
 -- drop table if exists Copies;

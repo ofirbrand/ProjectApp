@@ -196,7 +196,11 @@ def mybooks():
 @app.route('/managerequest', methods=['GET', 'POST'])
 def managerequest():
     session1 = session["email"]
-    return render_template('managerequest.html', user=session1)
+    if request.method == 'POST':
+        flash('The Request')
+    else:
+        requests = session1.show_requests()
+        return render_template('managerequest.html', user=session1, requests=requests)
 
 @app.route('/borroworder', methods=['GET', 'POST'])
 def borroworder():
