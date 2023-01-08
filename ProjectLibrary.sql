@@ -78,11 +78,11 @@ CREATE TABLE Branch_address
   FOREIGN KEY (branch_name) REFERENCES Branch(branch_name)
 );
 
--- drop table if exists Borrow_Extension;
+-- drop table if exists Borrow;
 CREATE TABLE Borrow
 (
-  date_of_borrowing DATE NOT NULL,
-  request_id INT NOT NULL,
+  date_of_borrowing DATE,
+  request_id INT AUTO_INCREMENT,
   status_of_request VARCHAR(20) NOT NULL,
   book_id INT NOT NULL,
   reader_email VARCHAR(50) NOT NULL,

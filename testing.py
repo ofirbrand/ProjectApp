@@ -5,9 +5,10 @@ from datetime import datetime
 
 reader_demo = Reader('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 1111, datetime.now().date())
 librarian_demo = Librarian('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 1111, datetime.now().date(), 'Ramat Aviv')
-word = 'harry'
+word = 'david'
 books = reader_demo.search_book(word)
-print(books[1])
+for b in books:
+    print(b)
 ### search function
 # search_word = "moshe"
 # search_word = "%" + search_word + "%"

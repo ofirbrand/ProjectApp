@@ -109,7 +109,7 @@ class Reader(User):
         self.user_type = "Reader"
         Reader.counter += 1
 
-    def search_book(self, word):
+    def search_book(self, word):  # book[7] is the copy id with the smallest value from the same book.id in this branch
         word = "%" + word + "%"
         cursor.execute("SELECT book_name FROM Book WHERE book_name LIKE %s", word)
         is_book_exist = cursor.fetchall()
@@ -132,14 +132,23 @@ class Reader(User):
                 for b in books_catch:
                     lst = list(b)
                     books_list.append(lst)
+            #new content to catch the copy_id
+            for book in books_list:
+                cursor.execute("""SELECT C.copy_id
+                                    FROM Book AS B, Copies AS C
+                                    WHERE B.book_id = C.book_id
+                                    AND B.book_name = %s
+                                    AND B.author = %s
+                                    AND C.branch_name = %s""", (book[0], book[1], book[2]))
+                copy_id = cursor.fetchone()
+                book.append(copy_id[0])
+            # end new content
             return books_list
-            # for book in books_list:
-            #     print(book)
         elif is_book_exist:
             books = [''.join(i) for i in is_book_exist]
             books_list = []
             for book in books:
-                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount), BR.phone_number,
+                cursor.execute("""SELECT B.book_name, B.author, C.branch_name, MAX(C.amount), BR.phone_number, 
                                 SUM(CASE WHEN C.copy_status LIKE 'available' THEN 1 ELSE 0 END),
                                 SUM(CASE WHEN C.copy_status LIKE 'orderable' THEN 1 ELSE 0 END)
                                 FROM Copies AS C, Book AS B, Branch as BR
@@ -151,19 +160,41 @@ class Reader(User):
                 for b in books_catch:
                     lst = list(b)
                     books_list.append(lst)
+            for book in books_list:
+                cursor.execute("""SELECT C.copy_id
+                                    FROM Book AS B, Copies AS C
+                                    WHERE B.book_id = C.book_id
+                                    AND B.book_name = %s
+                                    AND B.author = %s
+                                    AND C.branch_name = %s""", (book[0], book[1], book[2]))
+                copy_id = cursor.fetchone()
+                book.append(copy_id[0])
             return books_list
-            # for book in books_list:
-            #     print(book)
         else:
             return flash(f"No Book Or Author In The System Such As {word[1:-1]}", 'danger')
 
     def borrow_request(self, copy_id):
-        cursor.execute("SELECT count(request_id) FROM Borrow WHERE reader_email = %s", self.email)
+        cursor.execute("SELECT count(request_id) "
+                       "FROM Borrow "
+                       "WHERE reader_email = %s"
+                       "AND status_of_request = 'approved'", self.email)
         amount_of_books = cursor.fetchone()
-        if amount_of_books >= 3:
-            return flash(f'{self.name}, We Are Sorry, But Reader Can Hold Only 3 Books Every Time')
+        if amount_of_books[0] >= 3:
+            return flash(f"{self.name}, We Are Sorry But Reader's Can Hold Only 3 Books Every Time", 'success')
         else:
-            pass
+            cursor.execute("SELECT C.copy_status, B.book_id "
+                           "FROM Copies AS C, Book AS B "
+                           "WHERE C.book_id = B.book_id "
+                           "AND copy_id = %s", copy_id)
+            is_copy_available = cursor.fetchone()
+            if is_copy_available[0] == 'available':
+                cursor.execute("INSERT INTO Borrow (status_of_request, book_id, reader_email)"
+                               "VALUES (%s, %s, %s)",
+                               ('requested', is_copy_available[1], self.email))
+                connection.commit()
+                return flash(f"Your Borrow Request has been Received And Waiting To Be Approved", 'success')
+            else:
+                return flash("This Book Isn't Available So It Cannot Be Borrowed", 'danger')
 
     def return_book(self, book):
         pass

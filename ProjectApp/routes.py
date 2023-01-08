@@ -204,16 +204,32 @@ def borroworder():
     title = "Search Books"
     if request.method == 'POST':
         word = str(request.form['word'])
-        books = session1.search_book(word)
-        session['books'] = books
-        session_books = session['books']
-        return render_template('requestbook.html', user=session1, title=title, books=session_books)
+        test_word = "%" + word + "%"
+        cursor.execute("SELECT book_name FROM Book WHERE book_name LIKE %s", test_word)
+        is_book_exist = cursor.fetchall()
+        cursor.execute("SELECT author FROM Book WHERE author LIKE %s", test_word)
+        is_author_exist = cursor.fetchall()
+        if is_author_exist or is_book_exist:
+            books = session1.search_book(word)
+            # session['books'] = books
+            # session_books = session['books']
+            return render_template('requestbook.html', user=session1, title=title, books=books)
+        else:
+            flash(f"No Book Or Author In The System Such As {word}", 'danger')
+            return render_template('borroworder.html', user=session1, title=title)
+
     else:
         return render_template('borroworder.html', user=session1, title=title)
 
-# @app.route('/requestbook', methods=['GET', 'POST'])
-# def requestbook():
-#     session1 = session["email"]
+@app.route('/requestbook', methods=['GET', 'POST'])
+def requestbook():
+    session1 = session["email"]
+    if request.method == 'POST':
+        copy_id = request.form['copy_id']
+        session1.borrow_request(copy_id)
+        return redirect('/borroworder')
+    else:
+        return render_template('requestbook.html', user=session1)
 #     title = "Borrow/Order Book"
 #     session_books = session['books']
 #     if request.method == 'POST':
