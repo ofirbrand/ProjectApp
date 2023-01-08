@@ -5,7 +5,7 @@ body {
   background-color: #edf4f4;
 }
 
-h1, h3, h4, h5, h6 {
+h1, h3, h4, h5 {
   color: #444444;
 }
 
@@ -13,6 +13,12 @@ h2{
  text-align: center;
     text-shadow: 0 0 3px #0f0118;
     font-size: 220%;
+}
+h6{
+ text-align: center;
+    text-shadow: 0 0 3px #0f0118;
+    font-size: 220%;
+    color: #bf9cd6:
 }
 
 .bg-steel {
@@ -93,13 +99,36 @@ img {
 .headline{
 text-align: center;
     text-shadow: 0 0 2.5px #330552;
-    font-size: 170%;
+    font-size: 220%;
     color:#2d185f;
 }
 footer {
-      background-color:  #f2f2f2;
-      padding: 15px;
-      font size: 180%
-      border-width:thin medium;
+    background-color: #e0e7e7;
+    font size: 180%;
+    width: 50px;
+   margin-bottom: 5px;
+
 
     }
+.container-fluid {
+    padding-top: 20px;
+    padding-bottom: 40px;
+  }
+.bg-3 {
+    color: #555555;
+  }
+.warning{
+color: red;
+}
+
+.fu{
+background-color: #cccfd2;
+padding-bottom: 15px;
+}
+
+.side{
+  height: auto;
+  padding: 15px;
+  margin-right: 20px;
+}
+
