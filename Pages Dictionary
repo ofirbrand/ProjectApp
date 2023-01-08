@@ -1,0 +1,25 @@
+The contents of the HTML pages in the project:
+
+good pages:
+basic_layout
+librarian_layout
+reader_layout
+welcome
+librarianRegister
+readerRegister
+librarian2
+reader2
+borroworder - search books to borrow/order (reader)
+requestbook - borrow / order books that found in the search page (reader)
+mybooks - books that i hold + history + requested books that waiting to be aproved (reader)
+newbook - (librarian)
+managerequests - Books for which a borow request has been sent and are awaiting approval (librarian)
+
+
+pages to the garbage:
+welcome1
+reader
+librarian
+readerHomepage
+librarianHomepage
+basic
