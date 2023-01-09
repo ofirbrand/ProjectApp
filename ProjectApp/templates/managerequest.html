@@ -1,30 +1,41 @@
 {% extends "librarian_layout.html" %}
 {% block content %}
   <legend class="border-bottom mb-4">Manage Borrow Requests</legend>
-    <form class="form-inline" action="{{ url_for('managerequest') }}" method="POST">
-    </div>
-      <div class="container">
-          <article class="media content-section">
-            <div class="media-body">
-              <h2><a class="article-title" href="#">Request Number: {{ request[4] }}</a></h2>
-              <p class="article-content">
-                <ul>
-                  <li>
-                    Copy ID: {{ request[0] }}
-                  </li>
-                  <li>
-                    Copy Status: {{ request[3] }}
-                  </li>
-                  <li>
-                    Borrower's Email: {{ request[5] }}
-                  </li>
-                  <input class="btn btn-outline-info" type="submit" value="Approve">
-                  <input class="btn btn-outline-info" type="submit" value="Decline">
-                </ul>
-              </p>
-            </div>
-          </article>
+    {% for request in requests %}
+      <form class="form-inline" action="{{ url_for('managerequest') }}" method="POST">
       </div>
-    </form>
+        <div class="container">
+            <article class="media content-section">
+              <div class="media-body">
+                <h2>Request ID: {{ request[4] }}</h2>
+                <input type="hidden" name="request_id" value="{{ request[4] }}">
+                <p class="article-content">
+                  <ul>
+                    <li>
+                      Copy ID: {{ request[0] }}
+                    </li>
+                    <li>
+                      Copy Status: {{ request[3] }}
+                    </li>
+                    <li>
+                      Borrower's Email: {{ request[5] }}
+                    </li>
+                    {% if request[6] == 'waiting' %}
+                        <li>
+                        Orders For This Copy: There Is An Order For This Copy. Deny This Borrow Request.
+                        </li>
+                    {% else %}
+                        <li>
+                        Orders For This Copy: There Is No Order For This Copy. Approve This Borrow Request.
+                        </li>
+                    {% endif %}
+                    <input class="btn btn-outline-info" type="submit" value="Approve">
+                    <input class="btn btn-outline-info" type="submit" value="Decline">
+                  </ul>
+                </p>
+              </div>
+            </article>
+        </div>
+      </form>
     {% endfor %}
 {% endblock content %}

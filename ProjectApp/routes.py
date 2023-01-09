@@ -203,7 +203,8 @@ def mybooks():
 def managerequest():
     session1 = session["email"]
     if request.method == 'POST':
-        flash('The Request')
+        request_id = request.form['request_id']
+        session1.manage_request(request_id)
     else:
         requests = session1.show_requests()
         return render_template('managerequest.html', user=session1, requests=requests)

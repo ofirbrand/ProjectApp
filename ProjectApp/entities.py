@@ -68,10 +68,24 @@ class Librarian(User):
                           WHERE Bor.copy_id = C.copy_id
                           AND Book.book_id = C.book_id
                           AND C.branch_name = %s""", self.branch_name)
-        requests_caught = cursor.fetchall()
+        requests_catch = cursor.fetchall()
+        requests_caught = list(map(list, requests_catch))
         requests = []
         for request in requests_caught:
             lst = list(request)
+            cursor.execute("SELECT order_status FROM Order_book WHERE copy_id = %s", request[0])
+            order_catch = cursor.fetchall()
+            order_status = 'orderable'
+            if order_catch:
+                orders = list(map(list, order_catch))
+                for order in orders:
+                    if order != 'waiting':
+                        order_status = 'orderable'
+                    else:
+                        order_status = 'waiting'
+                lst.append(order_status)
+            else:
+                lst.append(order_status)
             requests.append(lst)
         return requests
 
