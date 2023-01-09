@@ -217,6 +217,7 @@ def requestbook():
         session1.borrow_request(copy_id)
         return redirect('/reader2')
     else:
+        cursor.execute("SELECT ")
         return render_template('requestbook.html', user=session1)
 
 

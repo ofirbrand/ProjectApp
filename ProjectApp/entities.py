@@ -97,8 +97,8 @@ class Librarian(User):
                         cursor.execute("UPDATE Copies SET copy_status = 'available' WHERE Copy_id = %s",
                                        temp_request[2])
                         connection.commit()
-                        cursor.execute("UPDATE Borrow SET status_of_request = 'approved' WHERE request_id = %s",
-                                       request_id)
+                        cursor.execute("UPDATE Borrow SET status_of_request = 'approved', date_of_borrowing = %s "
+                                       "WHERE request_id = %s", request_id, datetime.now().date())
                         connection.commit()
                         return flash('Borrow Request Successfully Approved', 'success')
                     else:
@@ -125,33 +125,12 @@ class Librarian(User):
                 cursor.execute("UPDATE Copies SET copy_status = 'available' WHERE Copy_id = %s",
                                temp_request[2])
                 connection.commit()
-                cursor.execute("UPDATE Borrow SET status_of_request = 'approved' WHERE request_id = %s",
-                               request_id)
+                cursor.execute("UPDATE Borrow SET status_of_request = 'approved', date_of_borrowing = %s "
+                               "WHERE request_id = %s", request_id, datetime.now().date())
                 connection.commit()
                 return flash('Borrow Request Successfully Approved', 'success')
         else:
             return flash("The Borrow request was rejected because the book isn't available", 'danger')
-        #     cursor.execute("UPDATE Copies SET amount = amount - 1 WHERE Copy_id = %s", temp_request[2])
-        #     connection.commit()
-        #     cursor.execute("UPDATE Copies SET copy_status = WHERE Copy_id = %s", temp_request[2])
-        #     connection.commit()
-        #     # check if the copy was ordered
-        #     # if the current copy was ordered t the last 3 days
-        #     cursor.execute("SELECT order_status FROM Order_book "
-        #                    "WHERE copy_id = %s AND O.reader_email = %s AND O.date_of_order = %s",
-        #                    (temp_request[2], temp_request[3], temp_request[4]))
-        #     is_exist_order = cursor.fetchone()
-        #     if is_exist_order:
-        #         cursor.execute("UPDATE Order_book SET order_status = 'orderable'")
-        #         connection.commit()
-        #         cursor.execute("UPDATE Borrow SET date_of_borrowing = %s WHERE request_id = %s",
-        #                        (datetime.now().date(), request_id))
-        #         connection.commit()
-        #         return flash('Borrow Request Successfully Approved', 'success')
-        #     else:
-        #         return flash('Borrow Request Successfully Approved', 'success')
-        # else:
-        #     return flash("Borrow Request Denied Because The Book Isn't Available In Stock", 'success')
 
 
 class Reader(User):
