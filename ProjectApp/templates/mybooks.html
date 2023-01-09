@@ -1,63 +1,102 @@
 {% extends "reader_layout.html" %}
 {% block content %}
-  <div class="container">
-    <p>
-      {{ user.name }}'s Books
-    </p>
-    <div class="container">
-
-      <legend class="headline">Currently Borrowed</legend>
-    </div>
-    <div class="container">
-        <article class="media content-section">
-          <div class="media-body">
-            <h1><a class="article-title" href="#">Book Name</a></h1>
-            <p class="article-content">
-              <ul>
-                <li>
-                  Author Name:
-                </li>
-                <li>
-                  Borrowed Date:
-                </li>
-                <li>
-                  Return Date:
-                </li>
-                <li>
-                  Branch Name:
-                </li>
-                <input class="btn btn-outline-primary" type="submit" value="Return">
-                <input class="btn btn-outline-primary" type="submit" value="Extension">
-              </ul>
-            </p>
+  <div class="container-fluid">
+      <h2>{{ user.name }}'s Books</h2>
+  </div>
+        <div>
+        <legend class="border-bottom mb-4">Current Holding</legend>
+        </div>
+      {% for book in my_books %}
+        {% if book[6] == 'approved' %}
+          <div class="container">
+              <article class="media content-section">
+                <div class="media-body">
+                  <h3>Book Name: {{ book[0] }}</h3>
+                  <p class="article-content">
+                    <ul>
+                      <li>
+                        Author Name: {{ book[1] }}
+                      </li>
+                      <li>
+                        Branch Name: {{ book[3] }}
+                      </li>
+                      <li>
+                        Borrowed Date: {{ book[4] }}
+                      </li>
+                      <li>
+                        Return Date: {{ book[8] }}
+                      </li>
+                    </ul>
+                      <input class="btn btn-outline-primary" type="submit" value="Return">
+                      <input class="btn btn-outline-primary" type="submit" value="Extension">
+                  </p>
+                </div>
+              </article>
           </div>
-        </article>
-    </div>
-
-    <legend class="headline">Borrow History</legend>
-    </div>
-    <div class="container">
-        <article class="media content-section">
-          <div class="media-body">
-            <h1><a class="article-title" href="#">Book Name</a></h1>
-            <p class="article-content">
-              <ul>
-                <li>
-                  Author Name:
-                </li>
-                <li>
-                  Borrowed Date:
-                </li>
-                <li>
-                  Return Date:
-                </li>
-                <li>
-                  Branch Name:
-                </li>
-              </ul>
-            </p>
+        {% endif %}
+      {% endfor %}
+      <div>
+      <legend class="border-bottom mb-4">Pending Requests</legend>
+      </div>
+      {% for book in my_books %}
+        {% if book[6] == 'requested'%}
+          <div class="container">
+              <article class="media content-section">
+                <div class="media-body">
+                  <h3>Book Name: {{ book[0] }}</h3>
+                  <p class="article-content">
+                    <ul>
+                      <li>
+                        Author Name: {{ book[1] }}
+                      </li>
+                      <li>
+                        Branch Name: {{ book[3] }}
+                      </li>
+                      <input class="btn btn-outline-primary" type="submit" value="Return">
+                      <input class="btn btn-outline-primary" type="submit" value="Extension">
+                    </ul>
+                  </p>
+                </div>
+              </article>
           </div>
-        </article>
+        {% endif %}
+      {% endfor %}
+        <div>
+        <legend class="border-bottom mb-4">Borrow History</legend>
+        </div>
+      {% for book in my_books %}
+        {% if book[6] == 'returned'%}
+          <div class="container">
+              <article class="media content-section">
+                <div class="media-body">
+                  <h3>Book Name: {{ book[0] }}</h3>
+                  <p class="article-content">
+                    <ul>
+                      <li>
+                        Author Name: {{ book[1] }}
+                      </li>
+                      <li>
+                        Branch Name: {{ book[3] }}
+                      </li>
+                      <li>
+                        Borrowed Date: {{ book[4] }}
+                      </li>
+                      <li>
+                        Returned Date: {{ book[7] }}
+                      </li>
+                    </ul>
+                  </p>
+                </div>
+              </article>
+          </div>
+        {% endif %}
+      {% endfor %}
+  {% if my_books == NULL: %}
+    <div class="container">
+      <legend class="headline">
+        {{ user.name }}, You Currently Don't Hold Any Book, Don't Have Any Open Requests Or Borrow History
+      </legend>
     </div>
-
+  {% endif %}
 {% endblock %}
+

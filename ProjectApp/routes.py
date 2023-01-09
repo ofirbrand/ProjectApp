@@ -1,5 +1,6 @@
 from flask import render_template, url_for, request, flash, redirect, session
 from ProjectApp import app, connection, cursor, Session
+from datetime import datetime, timedelta
 import ProjectApp.entities as en
 
 
@@ -36,6 +37,7 @@ def welcome():
                 return redirect('/librarian2')
             else:
                 flash('Password Incorrect', 'danger')
+                return redirect('/')
         else:
             flash('The Email Address Is Not Saved In The System. Sign-Up Or Check For Email Typo', 'danger')
             return redirect('/')
@@ -196,8 +198,13 @@ def newbook():
 
 @app.route('/mybooks', methods=['GET', 'POST'])
 def mybooks():
-    session1 = session["email"]
-    return render_template('mybooks.html', user=session1)
+    if request.method == 'POST':
+        return redirect('/mybooks')
+    else:
+        session1 = session["email"]
+        title = f"{session1.name}'s Books"
+        my_books = session1.my_books()
+        return render_template('mybooks.html', user=session1, title=title, my_books=my_books)
 
 @app.route('/managerequest', methods=['GET', 'POST'])
 def managerequest():
@@ -205,9 +212,20 @@ def managerequest():
     if request.method == 'POST':
         request_id = request.form['request_id']
         session1.manage_request(request_id)
+        flash(f"Request number {request_id} is closed!", 'success')
+        requests = session1.show_requests()
+        if len(requests) > 0:
+            return render_template('managerequest.html', user=session1, requests=requests)
+        else:
+            flash("There Are No More Open Requests In Your Branch", 'success')
+            return render_template('managerequest.html', user=session1, requests=requests)
     else:
         requests = session1.show_requests()
-        return render_template('managerequest.html', user=session1, requests=requests)
+        if len(requests) > 0:
+            return render_template('managerequest.html', user=session1, requests=requests)
+        else:
+            flash("There Are No More Open Requests In Your Branch", 'success')
+            return render_template('managerequest.html', user=session1, requests=requests)
 
 
 @app.route('/requestbook', methods=['GET', 'POST'])
