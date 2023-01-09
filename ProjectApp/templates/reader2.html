@@ -1,16 +1,9 @@
 {% extends "reader_layout.html" %}
 {% block content %}
-<div class="container">
-    <legend class="headline">Don't Forget To Book A Trip To The Library!</legend>
-    <h1>Hi {{ user.name }}! </h1>
-    <p>
-    </p>
-        {% for key, value in user_dict %}
-        <article class="media content-section">
-          <div class="media-body">
-            <h2>{{ key }} : {{ value }}</h2>
-          </div>
-        </article>
-    {% endfor %}
-</div>
+<footer class="container-fluid text-center">
+  <form class="form-inline" action="{{ url_for('reader2') }}" method="POST">Search By Title Or Author :
+    <input type="text" name="word" class="form-control" size="50" placeholder="Book Name Or Author Name">
+    <button type="submit" class="btn btn-info">Search</button>
+  </form>
+</footer>
 {% endblock content %}
