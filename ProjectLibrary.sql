@@ -81,11 +81,12 @@ CREATE TABLE Branch_address
 -- drop table if exists Borrow;
 CREATE TABLE Borrow
 (
-  date_of_borrowing DATE,
   request_id INT AUTO_INCREMENT,
+  date_of_borrowing DATE,
   status_of_request VARCHAR(20) NOT NULL,
   copy_id INT NOT NULL,
   reader_email VARCHAR(50) NOT NULL,
+  returned_date DATE,
   PRIMARY KEY (request_id),
   FOREIGN KEY (copy_id) REFERENCES Copies(copy_id)
 );
@@ -114,3 +115,5 @@ CREATE TABLE Order_book
   FOREIGN KEY (reader_email) REFERENCES Reader(reader_email),
   FOREIGN KEY (copy_id) REFERENCES copies(copy_id)
 );
+
+
