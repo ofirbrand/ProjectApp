@@ -215,7 +215,7 @@ def requestbook():
     if request.method == 'POST':
         copy_id = request.form['copy_id']
         session1.borrow_request(copy_id)
-        return redirect('/borroworder')
+        return redirect('/reader2')
     else:
         return render_template('requestbook.html', user=session1)
 

@@ -14,7 +14,13 @@ c = a1-b
 print(a)
 print(b)
 print(c)
-
+# tuple_test = (('t', 'word'), ('second', 'test'))
+# new_test = list(map(list, tuple_test))
+# print(new_test)
+cursor.execute("select * from Copies where branch_name = 'Kerem Hateimanim'")
+test1 = cursor.fetchall()
+new_test = list(map(list, test1))
+print(new_test)
 # word = 'david'
 # books = reader_demo.search_book(word)
 # for b in books:
