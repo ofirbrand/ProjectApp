@@ -132,3 +132,6 @@ padding-bottom: 15px;
   margin-right: 20px;
 }
 
+.nobull {
+  list-style-type: none;
+ }

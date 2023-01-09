@@ -23,9 +23,22 @@
                       <li>
                         Borrowed Date: {{ book[4] }}
                       </li>
-                      <li>
-                        Return Date: {{ book[8] }}
-                      </li>
+                      {% if (book[8] - today).days >= 0 %}
+                        <li>
+                          Return Date: {{ book[8] }}
+                        </li>
+                        <li class="nobull">
+                          You Have {{(book[8] - today).days}} Days To Return '{{ book[0] }}'
+                        </li>
+                      {% else %}
+                        <li>
+                          Return Date: {{ book[8] }}
+                          The return date has passed! Please Hurry And Return It
+                        </li>
+                        <li class="nobull">
+                          The return date has passed! Please Hurry And Return It
+                        </li>
+                      {% endif %}
                     </ul>
                       <input class="btn btn-outline-primary" type="submit" value="Return">
                       <input class="btn btn-outline-primary" type="submit" value="Extension">

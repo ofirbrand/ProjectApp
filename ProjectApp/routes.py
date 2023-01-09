@@ -204,7 +204,8 @@ def mybooks():
         session1 = session["email"]
         title = f"{session1.name}'s Books"
         my_books = session1.my_books()
-        return render_template('mybooks.html', user=session1, title=title, my_books=my_books)
+        today = datetime.now().date()
+        return render_template('mybooks.html', user=session1, title=title, my_books=my_books, today=today)
 
 @app.route('/managerequest', methods=['GET', 'POST'])
 def managerequest():

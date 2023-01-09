@@ -22,8 +22,9 @@ librarian_demo = Librarian('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 11
 
 books = reader_demo.my_books()
 # my_books = list(map(list, books))
-for book in books:
-    print(book)
+print((books[0][8] - datetime.now().date()).days)
+# for book in books:
+#     print(book)
 
 
 
