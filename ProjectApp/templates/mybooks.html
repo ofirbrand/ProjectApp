@@ -8,45 +8,47 @@
         </div>
       {% for book in my_books %}
         {% if book[6] == 'approved' %}
-          <div class="container">
-              <article class="media content-section">
-                <div class="media-body">
-                  <h3>Book Name: {{ book[0] }}</h3>
-                  <p class="article-content">
-                    <ul>
-                      <li>
-                        Author Name: {{ book[1] }}
-                      </li>
-                      <li>
-                        Branch Name: {{ book[3] }}
-                      </li>
-                      <li>
-                        Borrowed Date: {{ book[4] }}
-                      </li>
-                      {% if (book[8] - today).days >= 0 %}
+          <form class="form-inline" action="{{ url_for('mybooks') }}" method="POST">
+            <div class="container">
+                <article class="media content-section">
+                  <div class="media-body">
+                    <h3>Book Name: {{ book[0] }}</h3>
+                    <p class="article-content">
+                      <ul>
                         <li>
-                          Return Date: {{ book[8] }}
+                          Author Name: {{ book[1] }}
                         </li>
-                        <li class="nobull">
-                          You Have {{(book[8] - today).days}} Days To Return '{{ book[0] }}'
-                        </li>
-                      {% else %}
                         <li>
-                          Return Date: {{ book[8] }}
-                          The return date has passed! Please Hurry And Return It
+                          Branch Name: {{ book[3] }}
                         </li>
-                        <li class="nobull">
-                          The return date has passed! Please Hurry And Return It
+                        <li>
+                          Borrowed Date: {{ book[4] }}
                         </li>
-                      {% endif %}
-                    </ul>
-                      <input type="hidden" name="request_id" value="{{ book[5] }}">
-                      <input class="btn btn-outline-primary" type="submit" value="Return">
-                      <input class="btn btn-outline-primary" type="submit" value="Extension">
-                  </p>
-                </div>
-              </article>
-          </div>
+                        {% if (book[8] - today).days >= 0 %}
+                          <li>
+                            Return Date: {{ book[8] }}
+                          </li>
+                          <li class="nobull">
+                            You Have {{(book[8] - today).days}} Days To Return '{{ book[0] }}'
+                          </li>
+                        {% else %}
+                          <li>
+                            Return Date: {{ book[8] }}
+                            The return date has passed! Please Hurry And Return It
+                          </li>
+                          <li class="nobull">
+                            The return date has passed! Please Hurry And Return It
+                          </li>
+                        {% endif %}
+                      </ul>
+                        <input type="hidden" name="request_id" value="{{ book[5] }}">
+                        <input class="btn btn-outline-primary" type="submit" value="Return">
+                        <input class="btn btn-outline-primary" type="submit" value="Extension">
+                    </p>
+                  </div>
+                </article>
+            </div>
+          </form>
         {% endif %}
       {% endfor %}
       <div>
@@ -54,26 +56,28 @@
       </div>
       {% for book in my_books %}
         {% if book[6] == 'requested'%}
-          <div class="container">
-              <article class="media content-section">
-                <div class="media-body">
-                  <h3>Book Name: {{ book[0] }}</h3>
-                  <p class="article-content">
-                    <ul>
-                      <li>
-                        Author Name: {{ book[1] }}
-                      </li>
-                      <li>
-                        Branch Name: {{ book[3] }}
-                      </li>
-                      <input type="hidden" name="request_id" value="{{ book[5] }}">
-                      <input class="btn btn-outline-primary" type="submit" value="Return">
-                      <input class="btn btn-outline-primary" type="submit" value="Extension">
-                    </ul>
-                  </p>
-                </div>
-              </article>
-          </div>
+          <form class="form-inline" action="{{ url_for('mybooks') }}" method="POST">
+            <div class="container">
+                <article class="media content-section">
+                  <div class="media-body">
+                    <h3>Book Name: {{ book[0] }}</h3>
+                    <p class="article-content">
+                      <ul>
+                        <li>
+                          Author Name: {{ book[1] }}
+                        </li>
+                        <li>
+                          Branch Name: {{ book[3] }}
+                        </li>
+                        <input type="hidden" name="request_id" value="{{ book[5] }}">
+                        <input class="btn btn-outline-primary" type="submit" value="Return">
+                        <input class="btn btn-outline-primary" type="submit" value="Extension">
+                      </ul>
+                    </p>
+                  </div>
+                </article>
+            </div>
+          </form>
         {% endif %}
       {% endfor %}
         <div>
@@ -99,7 +103,6 @@
                       <li>
                         Returned Date: {{ book[7] }}
                       </li>
-                      <input type="hidden" name="request_id" value="{{ book[5] }}">
                     </ul>
                   </p>
                 </div>

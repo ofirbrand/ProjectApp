@@ -200,7 +200,7 @@ def newbook():
 def mybooks():
     if request.method == 'POST':
         # catch the right submit: return/extension and apply the right function for that option
-        return redirect('/mybooks')
+        return redirect('/reader2')
     else:
         session1 = session["email"]
         title = f"{session1.name}'s Books"
