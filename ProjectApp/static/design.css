@@ -11,8 +11,9 @@ h1, h3, h4, h5 {
 
 h2{
  text-align: center;
-    text-shadow: 0 0 3px #0f0118;
     font-size: 220%;
+    text-shadow: 0 0 3px #c0aae4;;
+    color: #543684;
 }
 h6{
  text-align: center;
@@ -131,4 +132,9 @@ padding-bottom: 15px;
   padding: 15px;
   margin-right: 20px;
 }
-
+.down {
+  background-color: #ece6f5;
+  padding: 10px;
+  text-align: center;
+  font-size: 120%;
+  }

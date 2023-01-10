@@ -1,6 +1,7 @@
 {% extends "reader_layout.html" %}
 {% block content %}
 
+<button type="button" class="btn btn-secondary">return to search</button>
 <legend class="headline">Search Results:</legend>
     {% for book in books %}
         {% if book[5] > 0 %}
