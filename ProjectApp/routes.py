@@ -199,6 +199,7 @@ def newbook():
 @app.route('/mybooks', methods=['GET', 'POST'])
 def mybooks():
     if request.method == 'POST':
+        # catch the right submit: return/extension and apply the right function for that option
         return redirect('/mybooks')
     else:
         session1 = session["email"]

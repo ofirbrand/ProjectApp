@@ -40,6 +40,7 @@
                         </li>
                       {% endif %}
                     </ul>
+                      <input type="hidden" name="request_id" value="{{ book[5] }}">
                       <input class="btn btn-outline-primary" type="submit" value="Return">
                       <input class="btn btn-outline-primary" type="submit" value="Extension">
                   </p>
@@ -65,6 +66,7 @@
                       <li>
                         Branch Name: {{ book[3] }}
                       </li>
+                      <input type="hidden" name="request_id" value="{{ book[5] }}">
                       <input class="btn btn-outline-primary" type="submit" value="Return">
                       <input class="btn btn-outline-primary" type="submit" value="Extension">
                     </ul>
@@ -97,6 +99,7 @@
                       <li>
                         Returned Date: {{ book[7] }}
                       </li>
+                      <input type="hidden" name="request_id" value="{{ book[5] }}">
                     </ul>
                   </p>
                 </div>
