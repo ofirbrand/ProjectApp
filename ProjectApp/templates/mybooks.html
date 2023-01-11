@@ -24,12 +24,12 @@
                         <li>
                           Borrowed Date: {{ book[4] }}
                         </li>
-                        {% if (book[8] - today).days >= 0 %}
+                        {% if (book[7] - today).days >= 0 %}
                           <li>
-                            Return Date: {{ book[8] }}
+                            Expected Return Date: {{ book[7] }}
                           </li>
                           <li class="nobull">
-                            You Have {{(book[8] - today).days}} Days To Return '{{ book[0] }}'
+                            You Have {{(book[7] - today).days}} Days To Return '{{ book[0] }}'
                           </li>
                         {% else %}
                           <li>
