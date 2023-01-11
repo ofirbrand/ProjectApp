@@ -198,15 +198,25 @@ def newbook():
 
 @app.route('/mybooks', methods=['GET', 'POST'])
 def mybooks():
+    session1 = session["email"]
+    title = f"{session1.name}'s Books"
     if request.method == 'POST':
-        # catch the right submit: return/extension and apply the right function for that option
-        return redirect('/reader2')
+        request_id = request.form['request_id']
+        if request.form['action'] == 'Return':
+            session1.return_book(request_id)
+            return redirect('/reader2')
+        elif request.form['action'] == 'Extension':
+            session1.extension(request_id)
+            return redirect('/reader2')
+        else:
+            return redirect('/reader2')
     else:
-        session1 = session["email"]
-        title = f"{session1.name}'s Books"
         my_books = session1.my_books()
-        today = datetime.now().date()
-        return render_template('mybooks.html', user=session1, title=title, my_books=my_books, today=today)
+        if my_books:
+            today = datetime.now().date()
+            return render_template('mybooks.html', user=session1, title=title, my_books=my_books, today=today)
+        else:
+            return render_template('mybooks.html', user=session1, title=title)
 
 @app.route('/managerequest', methods=['GET', 'POST'])
 def managerequest():
@@ -234,11 +244,17 @@ def managerequest():
 def requestbook():
     session1 = session["email"]
     if request.method == 'POST':
-        copy_id = request.form['copy_id']
-        session1.borrow_request(copy_id)
-        return redirect('/reader2')
+        if request.form['action'] == 'Borrow':
+            copy_id = request.form['copy_id']
+            session1.borrow_request(copy_id)
+            return redirect('/reader2')
+        elif request.form['action'] == 'Order':
+            copy_id = request.form['copy_id']
+            session1.order_book(copy_id)
+            return redirect('/reader2')
+        else:
+            return redirect('/reader2')
     else:
-        cursor.execute("SELECT ")
         return render_template('requestbook.html', user=session1)
 
 

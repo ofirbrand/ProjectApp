@@ -2,13 +2,88 @@
 {% block content %}
   <div class="container-fluid">
       <h2>{{ user.name }}'s Books</h2>
-  </div>
+   </div>
+{% if my_books %}
+          <div>
+          <legend class="border-bottom mb-4">Current Holding</legend>
+          </div>
+        {% for book in my_books %}
+          {% if book[6] == 'approved' %}
+            <form class="form-inline" action="{{ url_for('mybooks') }}" method="POST">
+              <div class="container">
+                  <article class="media content-section">
+                    <div class="media-body">
+                      <h3>Book Name: {{ book[0] }}</h3>
+                      <p class="article-content">
+                        <ul>
+                          <li>
+                            Author Name: {{ book[1] }}
+                          </li>
+                          <li>
+                            Branch Name: {{ book[3] }}
+                          </li>
+                          <li>
+                            Borrowed Date: {{ book[4] }}
+                          </li>
+                          {% if (book[7] - today).days >= 0 %}
+                            <li>
+                              Expected Return Date: {{ book[7] }}
+                            </li>
+                            <li class="nobull">
+                              You Have {{(book[7] - today).days}} Days To Return '{{ book[0] }}'
+                            </li>
+                          {% else %}
+                            <li>
+                              Return Date: {{ book[7] }}
+                              The return date has passed! Please Hurry And Return It
+                            </li>
+                            <li class="nobull">
+                              The return date has passed! Please Hurry And Return It
+                            </li>
+                          {% endif %}
+                        </ul>
+                          <input type="hidden" name="request_id" value="{{ book[5] }}">
+                          <input class="btn btn-outline-primary" type="submit" value="Return" name="action">
+                          <input class="btn btn-outline-primary" type="submit" value="Extension" name="action">
+                      </p>
+                    </div>
+                  </article>
+              </div>
+            </form>
+          {% endif %}
+        {% endfor %}
         <div>
-        <legend class="border-bottom mb-4">Current Holding</legend>
+        <legend class="border-bottom mb-4">Pending Requests</legend>
         </div>
-      {% for book in my_books %}
-        {% if book[6] == 'approved' %}
-          <form class="form-inline" action="{{ url_for('mybooks') }}" method="POST">
+        {% for book in my_books %}
+          {% if book[6] == 'requested'%}
+            <form class="form-inline" action="{{ url_for('mybooks') }}" method="POST">
+              <div class="container">
+                  <article class="media content-section">
+                    <div class="media-body">
+                      <h3>Book Name: {{ book[0] }}</h3>
+                      <p class="article-content">
+                        <ul>
+                          <li>
+                            Author Name: {{ book[1] }}
+                          </li>
+                          <li>
+                            Branch Name: {{ book[3] }}
+                          </li>
+                          <input type="hidden" name="request_id" value="{{ book[5] }}">
+                        </ul>
+                      </p>
+                    </div>
+                  </article>
+              </div>
+            </form>
+          {% endif %}
+        {% endfor %}
+          <div>
+          <legend class="border-bottom mb-4">Borrow History</legend>
+          </div>
+        {% for book in my_books %}
+          {% if book[6] == 'returned'%}
             <div class="container">
                 <article class="media content-section">
                   <div class="media-body">
@@ -24,98 +99,27 @@
                         <li>
                           Borrowed Date: {{ book[4] }}
                         </li>
-                        {% if (book[7] - today).days >= 0 %}
-                          <li>
-                            Expected Return Date: {{ book[7] }}
-                          </li>
-                          <li class="nobull">
-                            You Have {{(book[7] - today).days}} Days To Return '{{ book[0] }}'
-                          </li>
-                        {% else %}
-                          <li>
-                            Return Date: {{ book[8] }}
-                            The return date has passed! Please Hurry And Return It
-                          </li>
-                          <li class="nobull">
-                            The return date has passed! Please Hurry And Return It
-                          </li>
-                        {% endif %}
+                        <li>
+                          Returned Date: {{ book[7] }}
+                        </li>
                       </ul>
-                        <input type="hidden" name="request_id" value="{{ book[5] }}">
-                        <input class="btn btn-outline-primary" type="submit" value="Return">
-                        <input class="btn btn-outline-primary" type="submit" value="Extension">
                     </p>
                   </div>
                 </article>
             </div>
-          </form>
-        {% endif %}
-      {% endfor %}
-      <div>
-      <legend class="border-bottom mb-4">Pending Requests</legend>
+          {% endif %}
+        {% endfor %}
+    {% if my_books == NULL: %}
+      <div class="container">
+        <legend class="headline">
+          {{ user.name }}, You Currently Don't Hold Any Book, Don't Have Any Open Requests Or Borrow History
+        </legend>
       </div>
-      {% for book in my_books %}
-        {% if book[6] == 'requested'%}
-          <form class="form-inline" action="{{ url_for('mybooks') }}" method="POST">
-            <div class="container">
-                <article class="media content-section">
-                  <div class="media-body">
-                    <h3>Book Name: {{ book[0] }}</h3>
-                    <p class="article-content">
-                      <ul>
-                        <li>
-                          Author Name: {{ book[1] }}
-                        </li>
-                        <li>
-                          Branch Name: {{ book[3] }}
-                        </li>
-                        <input type="hidden" name="request_id" value="{{ book[5] }}">
-                        <input class="btn btn-outline-primary" type="submit" value="Return">
-                        <input class="btn btn-outline-primary" type="submit" value="Extension">
-                      </ul>
-                    </p>
-                  </div>
-                </article>
-            </div>
-          </form>
-        {% endif %}
-      {% endfor %}
-        <div>
-        <legend class="border-bottom mb-4">Borrow History</legend>
-        </div>
-      {% for book in my_books %}
-        {% if book[6] == 'returned'%}
-          <div class="container">
-              <article class="media content-section">
-                <div class="media-body">
-                  <h3>Book Name: {{ book[0] }}</h3>
-                  <p class="article-content">
-                    <ul>
-                      <li>
-                        Author Name: {{ book[1] }}
-                      </li>
-                      <li>
-                        Branch Name: {{ book[3] }}
-                      </li>
-                      <li>
-                        Borrowed Date: {{ book[4] }}
-                      </li>
-                      <li>
-                        Returned Date: {{ book[7] }}
-                      </li>
-                    </ul>
-                  </p>
-                </div>
-              </article>
-          </div>
-        {% endif %}
-      {% endfor %}
-  {% if my_books == NULL: %}
-    <div class="container">
-      <legend class="headline">
-        {{ user.name }}, You Currently Don't Hold Any Book, Don't Have Any Open Requests Or Borrow History
-      </legend>
-    </div>
-  {% endif %}
+    {% endif %}
+{% else %}
+  <div class="container-fluid">
+      <h2>{{ user.name }}, You Don't Currently Own Any Books</h2>
+   </div>
+{% endif %}
 {% endblock %}
 

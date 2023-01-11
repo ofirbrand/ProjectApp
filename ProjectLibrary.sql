@@ -104,13 +104,13 @@ CREATE TABLE Copies
   FOREIGN KEY (book_id) REFERENCES book(book_id)
 );
 
-drop table if exists Order_book;
+-- drop table if exists Order_book;
 CREATE TABLE Order_book
 (
   copy_id INT NOT NULL,
   request_id INT NOT NULL,
   reader_email VARCHAR(50) NOT NULL,
-  order_status INT NOT NULL,
+  order_status VARCHAR(20) NOT NULL,
   returned_date date,
   PRIMARY KEY (reader_email, copy_id, request_id),
   FOREIGN KEY (reader_email) REFERENCES Reader(reader_email),

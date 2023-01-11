@@ -267,7 +267,7 @@ class Reader(User):
 
     def my_books(self):
         cursor.execute("""SELECT Book.book_name, Book.author, C.copy_id, C.branch_name, Bor.date_of_borrowing ,
-                            Bor.request_id, Bor.status_of_request
+                            Bor.request_id, Bor.status_of_request, Bor.returned_date
                             FROM Reader as R, Borrow as Bor, Copies as C, Book
                             WHERE R.reader_email = Bor.reader_email
                             AND Bor.copy_id = C.copy_id
@@ -304,13 +304,14 @@ class Reader(User):
                     cursor.execute("SELECT date_of_borrowing FROM Borrow WHERE request_id = %s", request_id)
                     date_of_borrowing = cursor.fetchone()
                     new_returned_date = date_of_borrowing + timedelta(days=21)
-                    cursor.execute("UPDATE borrow SET returned_date = %s WHERE request_id = %s", ( new_returned_date, request_id))
+                    cursor.execute("UPDATE borrow SET returned_date = %s WHERE request_id = %s",
+                                   (new_returned_date, request_id))
                     connection.commit()
                     return flash('Your Request For An Extension Has Been Accepted', 'success')
             else:
                 cursor.execute("SELECT date_of_borrowing FROM Borrow WHERE request_id = %s", request_id)
                 date_of_borrowing = cursor.fetchone()
-                new_returned_date = date_of_borrowing + timedelta(days=21)
+                new_returned_date = date_of_borrowing[0] + timedelta(days=21)
                 cursor.execute("UPDATE borrow SET returned_date = %s WHERE request_id = %s",
                                (new_returned_date, request_id))
                 connection.commit()
@@ -374,9 +375,8 @@ class Reader(User):
             cursor.execute("UPDATE Copies SET copy_status = 'available' WHERE copy_id = %s", current_request[1])
             cursor.execute("UPDATE Copies SET amount = %s WHERE book_id = %s",
                            (int(int(current_request[2]) + 1), current_request[0]))
-            cursor.execute(
-                "UPDATE Borrow SET returned_date = %s AND status_of_request = 'returned' WHERE request_id = %s",
-                (datetime.now().date(), request_id))
+            cursor.execute("UPDATE Borrow SET returned_date = %s, status_of_request = 'returned' "
+                           "WHERE request_id = %s", (datetime.now().date(), request_id))
             connection.commit()
             return flash("The Book Has Been Successfully Returned", 'success')
 
