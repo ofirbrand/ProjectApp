@@ -330,8 +330,9 @@ class Reader(User):
                     cursor.execute("UPDATE Copies SET copy_status = 'not-orderable' "
                                    "WHERE copy_id = %s", copy_id)
                     # Update the order status to "ordered"
-                    cursor.execute("UPDATE order_status SET order_status = 'ordered' "
+                    cursor.execute("UPDATE Order_book SET order_status = 'ordered' "
                                    "WHERE copy_id = %s AND request_id =%S", (copy_id, order[1]))
+                    connection.commit()
                     return flash("Your request has been approved. The book will be available for pickup soon.",
                                  'success')
         else:
@@ -343,6 +344,7 @@ class Reader(User):
             # Update the order status to "ordered"
             cursor.execute("INSERT INTO Order_book(copy_id, request_id, order_status, reader_email) "
                            "VALUES (%s, %s, %s, %s)", (copy_id, request_catch[0], 'ordered', request_catch[1]))
+            connection.commit()
             return flash("Your request has been approved. The book will be available for pickup soon.", 'success')
 
     def return_book(self, request_id):
