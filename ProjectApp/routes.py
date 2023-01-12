@@ -201,22 +201,39 @@ def mybooks():
     session1 = session["email"]
     title = f"{session1.name}'s Books"
     if request.method == 'POST':
-        request_id = request.form['request_id']
         if request.form['action'] == 'Return':
+            request_id = request.form['request_id']
             session1.return_book(request_id)
-            return redirect('/reader2')
+            return redirect('/mybooks')
         elif request.form['action'] == 'Extension':
+            request_id = request.form['request_id']
             session1.extension(request_id)
-            return redirect('/reader2')
+            return redirect('/mybooks')
+        elif request.form['action'] == 'Extension':
+            copy_id = request.form['copy_id']
+            session1.borrow_request(copy_id)
+            return redirect('/mybooks')
         else:
-            return redirect('/reader2')
+            return redirect('/mybooks')
     else:
         my_books = session1.my_books()
+        orders = session1.my_orders()
+        today = datetime.now().date()
         if my_books:
-            today = datetime.now().date()
-            return render_template('mybooks.html', user=session1, title=title, my_books=my_books, today=today)
+            if orders:
+                three_days = timedelta(days=3)
+                return render_template('mybooks.html', user=session1, title=title, my_books=my_books,
+                                       today=today, orders=orders, three_days=three_days)
+            else:
+                return render_template('mybooks.html', user=session1, title=title, my_books=my_books, today=today)
         else:
-            return render_template('mybooks.html', user=session1, title=title)
+            if orders:
+                three_days = timedelta(days=3)
+                return render_template('mybooks.html', user=session1, title=title, today=today, orders=orders,
+                                       three_days=three_days)
+            else:
+                return render_template('mybooks.html', user=session1, title=title)
+
 
 @app.route('/managerequest', methods=['GET', 'POST'])
 def managerequest():

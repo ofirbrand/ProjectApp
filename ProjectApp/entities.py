@@ -284,6 +284,21 @@ class Reader(User):
             return flash(f"{self.name}, You Currently Don't Hold Any Book, Don't Have Any Open Requests Or Borrow "
                          f"History", 'danger')
 
+    def my_orders(self):
+        cursor.execute("""SELECT Book.book_name, B.returned_date, B.copy_id 
+                            FROM Borrow AS B, Order_book AS O, Copies AS C, Book
+                            WHERE B.request_id = O.request_id
+                            AND B.copy_id = C.copy_id 
+                            AND C.book_id = Book.book_id
+                            AND O.reader_email = %s;""", self.email)
+        # change email to self.email
+        catch_orders = cursor.fetchall()
+        if catch_orders:
+            orders = list(map(list, catch_orders))
+            return orders
+        else:
+            return flash('No Orders')
+
     def extension(self, request_id):
         today = datetime.now().date()
         cursor.execute("SELECT * FROM Borrow WHERE request_id = %s", request_id)
