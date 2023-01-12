@@ -1,5 +1,6 @@
 from flask import render_template, url_for, request, flash, redirect, session
 from ProjectApp import app, connection, cursor, Session
+from datetime import datetime, timedelta
 import ProjectApp.entities as en
 
 
@@ -36,6 +37,7 @@ def welcome():
                 return redirect('/librarian2')
             else:
                 flash('Password Incorrect', 'danger')
+                return redirect('/')
         else:
             flash('The Email Address Is Not Saved In The System. Sign-Up Or Check For Email Typo', 'danger')
             return redirect('/')
@@ -133,16 +135,22 @@ def registerReader():
 @app.route('/reader2', methods=['GET', 'POST'])
 def reader2():
     session1 = session["email"]
-    # cursor.execute('SELECT * from Reader WHERE reader_email = %s', session1.email)
-    # user_reader = cursor.fetchone()
-    # cursor.execute('SELECT * from Librarian WHERE Librarian_email = %s', session1.email)
-    # user_librarian = cursor.fetchone()
-    if session1.user_type == "Reader":
-        user_dict = session1.__dict__.items()
-        return render_template('reader2.html', user=session1, user_dict=user_dict)
+    title = f"{session1.name}'s Home Page"
+    if request.method == 'POST':
+        word = str(request.form['word'])
+        test_word = "%" + word + "%"
+        cursor.execute("SELECT book_name FROM Book WHERE book_name LIKE %s", test_word)
+        is_book_exist = cursor.fetchall()
+        cursor.execute("SELECT author FROM Book WHERE author LIKE %s", test_word)
+        is_author_exist = cursor.fetchall()
+        if is_author_exist or is_book_exist:
+            books = session1.search_book(word)
+            return render_template('requestbook.html', user=session1, title=title, books=books)
+        else:
+            flash(f"No Book Or Author In The System Such As {word}", 'danger')
+            return render_template('reader2.html', user=session1, title=title)
     else:
-        user_dict = session1.__dict__.items()
-        return render_template('librarian2.html', user=session1, user_dict=user_dict)
+        return render_template('reader2.html', user=session1, title=title)
 
 
 @app.route('/librarian2', methods=['GET', 'POST'])
@@ -190,36 +198,37 @@ def newbook():
 
 @app.route('/mybooks', methods=['GET', 'POST'])
 def mybooks():
-    session1 = session["email"]
-    return render_template('mybooks.html', user=session1)
+    if request.method == 'POST':
+        # catch the right submit: return/extension and apply the right function for that option
+        return redirect('/mybooks')
+    else:
+        session1 = session["email"]
+        title = f"{session1.name}'s Books"
+        my_books = session1.my_books()
+        today = datetime.now().date()
+        return render_template('mybooks.html', user=session1, title=title, my_books=my_books, today=today)
 
 @app.route('/managerequest', methods=['GET', 'POST'])
 def managerequest():
     session1 = session["email"]
-    return render_template('managerequest.html', user=session1)
-
-@app.route('/borroworder', methods=['GET', 'POST'])
-def borroworder():
-    session1 = session["email"]
-    title = "Search Books"
     if request.method == 'POST':
-        word = str(request.form['word'])
-        test_word = "%" + word + "%"
-        cursor.execute("SELECT book_name FROM Book WHERE book_name LIKE %s", test_word)
-        is_book_exist = cursor.fetchall()
-        cursor.execute("SELECT author FROM Book WHERE author LIKE %s", test_word)
-        is_author_exist = cursor.fetchall()
-        if is_author_exist or is_book_exist:
-            books = session1.search_book(word)
-            # session['books'] = books
-            # session_books = session['books']
-            return render_template('requestbook.html', user=session1, title=title, books=books)
+        request_id = request.form['request_id']
+        session1.manage_request(request_id)
+        flash(f"Request number {request_id} is closed!", 'success')
+        requests = session1.show_requests()
+        if len(requests) > 0:
+            return render_template('managerequest.html', user=session1, requests=requests)
         else:
-            flash(f"No Book Or Author In The System Such As {word}", 'danger')
-            return render_template('borroworder.html', user=session1, title=title)
-
+            flash("There Are No More Open Requests In Your Branch", 'success')
+            return render_template('managerequest.html', user=session1, requests=requests)
     else:
-        return render_template('borroworder.html', user=session1, title=title)
+        requests = session1.show_requests()
+        if len(requests) > 0:
+            return render_template('managerequest.html', user=session1, requests=requests)
+        else:
+            flash("There Are No More Open Requests In Your Branch", 'success')
+            return render_template('managerequest.html', user=session1, requests=requests)
+
 
 @app.route('/requestbook', methods=['GET', 'POST'])
 def requestbook():
@@ -227,12 +236,30 @@ def requestbook():
     if request.method == 'POST':
         copy_id = request.form['copy_id']
         session1.borrow_request(copy_id)
-        return redirect('/borroworder')
+        return redirect('/reader2')
     else:
+        cursor.execute("SELECT ")
         return render_template('requestbook.html', user=session1)
-#     title = "Borrow/Order Book"
-#     session_books = session['books']
-#     if request.method == 'POST':
-#
-#         redirect()
 
+
+# @app.route('/borroworder', methods=['GET', 'POST'])
+# def borroworder():
+#     session1 = session["email"]
+#     title = "Search Books"
+#     if request.method == 'POST':
+#         word = str(request.form['word'])
+#         test_word = "%" + word + "%"
+#         cursor.execute("SELECT book_name FROM Book WHERE book_name LIKE %s", test_word)
+#         is_book_exist = cursor.fetchall()
+#         cursor.execute("SELECT author FROM Book WHERE author LIKE %s", test_word)
+#         is_author_exist = cursor.fetchall()
+#         if is_author_exist or is_book_exist:
+#             books = session1.search_book(word)
+#             # session['books'] = books
+#             # session_books = session['books']
+#             return render_template('requestbook.html', user=session1, title=title, books=books)
+#         else:
+#             flash(f"No Book Or Author In The System Such As {word}", 'danger')
+#             return render_template('borroworder.html', user=session1, title=title)
+#     else:
+#         return render_template('borroworder.html', user=session1, title=title)
