@@ -1,5 +1,5 @@
 from ProjectApp import connection, cursor
-from ProjectApp.routes import session, request
+from ProjectApp.routes import session, request, flash
 from ProjectApp.entities import Librarian, Reader, Copy, Book
 from datetime import datetime, date, timedelta
 
@@ -20,47 +20,50 @@ librarian_demo = Librarian('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 11
 # # new_test = list(map(list, tuple_test))
 # # print(new_test)
 
-books = reader_demo.my_books()
-# my_books = list(map(list, books))
-print(books[0])
-# for book in books:
-#     print(book)
+# books = reader_demo.my_books()
+# # my_books = list(map(list, books))
+# print(books[0])
 
-
-
-
+# cursor.execute("SELECT * FROM Borrow")
+# current_request = cursor.fetchone()
+# print(current_request)
+request_id = 2
+# cursor.execute("""SELECT C.amount, C.copy_status, C.copy_id, BOR.reader_email, BOR.returned_date
+#                             FROM Borrow AS Bor, Copies AS C
+#                             WHERE Bor.copy_id = C.copy_id
+#                             AND Bor.request_id = %s;""", request_id)
+# temp_request = cursor.fetchone()
+# if temp_request[0] > 0 and temp_request[1] == "available":
+#     print(temp_request)
+# else:
+#     print("you fucking idiot")
 
 # today = datetime.now().date()
-# return_date = today + timedelta(days=14)
-# print((return_date - today).days)
-# cursor.execute("""SELECT Book.book_name, C.copy_id, C.branch_name, Bor.date_of_borrowing,
-#                     Bor.request_id, Bor.status_of_request
-#                     FROM Reader as R, Borrow as Bor, Copies as C, Book
-#                     WHERE R.reader_email = Bor.reader_email
-#                     AND Bor.copy_id = C.copy_id
-#                     AND C.book_id = Book.book_id
-#                     AND Bor.reader_email = %s ;""", reader_demo.email)
-# books_caught = cursor.fetchall()
-# my_books = list(map(list, books_caught))
-# for book in my_books:
-#     print(book)
-### my current books query:
-# """
-# select Book.book_name, C.copy_id, C.branch_name, Bor.date_of_borrowing ,Bor.request_id
-# from Reader as R, Borrow_Extension as Bor, Copies as C, Book
-# where R.reader_email = Bor.reader_email
-# and Bor.copy_id = C.copy_id
-# and C.book_id = Book.book_id
-# and Bor.status_of_request = 'borrowed';
-# """
+# another_date = date(year=2023, month=2, day=3)
+# print((another_date - today).days)
 
-### my books history
-# """SELECT Book.book_name, C.amount, C.copy_status
-#     FROM Borrow AS Bor, Copies AS C, Book
-#     WHERE Bor.book_id = C.book_id
-#     AND Book.book_id = C.book_id
-#     AND C.branch_name = 'Ramat Aviv'
-#     AND Bor.request_id = 1;
-# """
-### Borrow_show
-# need to add connect to the database
+copy_id = 2
+
+def show_orders(email):
+    cursor.execute("""SELECT Book.book_name, B.returned_date 
+                        FROM Borrow AS B, Order_book AS O, Copies AS C, Book
+                        WHERE B.request_id = O.request_id
+                        AND B.copy_id = C.copy_id 
+                        AND C.book_id = Book.book_id
+                        AND O.reader_email = %s;""", email)
+                        # change email to self.email
+    catch_orders = cursor.fetchall()
+    if catch_orders:
+        orders = list(map(list, catch_orders))
+        return orders
+    else:
+        print('No orders for this you')
+email = reader_demo.email
+# print(show_orders(email))
+
+orders = reader_demo.my_orders()
+today = datetime.now().date()
+if orders:
+    three_days = timedelta(days=3)
+    for order in orders:
+        print((order[1] + three_days))

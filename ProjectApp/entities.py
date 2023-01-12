@@ -63,11 +63,12 @@ class Librarian(User):
             return flash(f"{book.book_name} Created As A New Book", 'success')
 
     def show_requests(self):
-        cursor.execute("""SELECT C.copy_id, Book.book_name, C.amount, C.copy_status, Bor.request_id, Bor.reader_email 
+        cursor.execute("""SELECT C.copy_id, Book.book_name, C.amount, C.copy_status, Bor.request_id, 
+                          Bor.reader_email, Bor.status_of_request 
                           FROM Borrow AS Bor, Copies AS C, Book
                           WHERE Bor.copy_id = C.copy_id
                           AND Book.book_id = C.book_id
-                          AND C.copy_status = 'available'
+                          AND Bor.status_of_request  = 'requested'
                           AND C.branch_name = %s""", self.branch_name)
         requests_catch = cursor.fetchall()
         requests_caught = list(map(list, requests_catch))
@@ -91,7 +92,7 @@ class Librarian(User):
         return requests
 
     def manage_request(self, request_id):
-        cursor.execute("""SELECT C.amount, C.copy_status, C.copy_id, BOR.reader_email
+        cursor.execute("""SELECT C.amount, C.copy_status, C.copy_id, BOR.reader_email, BOR.returned_date
                             FROM Borrow AS Bor, Copies AS C 
                             WHERE Bor.copy_id = C.copy_id
                             AND Bor.request_id = %s;""", request_id)
@@ -107,33 +108,54 @@ class Librarian(User):
                 orders = list(map(list, orders_catch))
                 for order in orders:
                     if order[0] != 'waiting':
-                        # update: copy_amount, copy_status, borrow_status, borrow_date
+                        # update: copy_amount, copy_status, borrow_status, borrow_date, return_date to default + 14
                         cursor.execute("UPDATE Copies SET amount = amount - 1 WHERE Copy_id = %s", temp_request[2])
                         connection.commit()
                         cursor.execute("UPDATE Copies SET copy_status = 'orderable' WHERE Copy_id = %s",
                                        temp_request[2])
                         connection.commit()
-                        cursor.execute("UPDATE Borrow SET status_of_request = 'approved', date_of_borrowing = %s"
-                                       "WHERE request_id = %s", (today, request_id))
+                        cursor.execute("UPDATE Borrow SET status_of_request = 'approved', date_of_borrowing = %s, "
+                                       "returned_date = %s WHERE request_id = %s", (today, request_id, return_date))
                         connection.commit()
                         return flash('Borrow Request Successfully Approved', 'success')
                     else:
-                        if temp_request[3] == order[2]:
+                        if (today - temp_request[4]).days < 3:
+                            if temp_request[3] == order[2]:
+                                # update: copy_amount, copy_status, borrow_status, borrow_date, order_status
+                                cursor.execute("UPDATE Copies SET amount = amount - 1 WHERE Copy_id = %s",
+                                               temp_request[2])
+                                connection.commit()
+                                cursor.execute("UPDATE Copies SET copy_status = 'orderable' WHERE Copy_id = %s",
+                                               temp_request[2])
+                                connection.commit()
+                                cursor.execute("UPDATE Borrow SET status_of_request = 'approved', "
+                                               "date_of_borrowing = %s, returned_date = %s WHERE request_id = %s",
+                                               (today, request_id, return_date))
+                                connection.commit()
+                                cursor.execute("UPDATE Order_book SET order_status = 'orderable' "
+                                               "WHERE copy_id = %s AND reader_email = %s AND date_of_order = %s",
+                                               (order[3], order[2], order[1]))
+                                connection.commit()
+                                return flash('Borrow Request Successfully Approved', 'success')
+                            else:
+                                return flash("The Borrow request was rejected because the book is reserved", 'danger')
+                        else:
                             # update: copy_amount, copy_status, borrow_status, borrow_date, order_status
-                            cursor.execute("UPDATE Copies SET amount = amount - 1 WHERE Copy_id = %s", temp_request[2])
+                            cursor.execute("UPDATE Copies SET amount = amount - 1 WHERE Copy_id = %s",
+                                           temp_request[2])
                             connection.commit()
-                            cursor.execute("UPDATE Copies SET copy_status = 'orderable' WHERE Copy_id = %s", temp_request[2])
+                            cursor.execute("UPDATE Copies SET copy_status = 'orderable' WHERE Copy_id = %s",
+                                           temp_request[2])
                             connection.commit()
-                            cursor.execute("UPDATE Borrow SET status_of_request = 'approved', date_of_borrowing = %s"
-                                           "WHERE request_id = %s", (today, request_id))
+                            cursor.execute("UPDATE Borrow SET status_of_request = 'approved', "
+                                           "date_of_borrowing = %s, returned_date = %s WHERE request_id = %s",
+                                           (today, request_id, return_date))
                             connection.commit()
                             cursor.execute("UPDATE Order_book SET order_status = 'orderable' "
                                            "WHERE copy_id = %s AND reader_email = %s AND date_of_order = %s",
                                            (order[3], order[2], order[1]))
                             connection.commit()
                             return flash('Borrow Request Successfully Approved', 'success')
-                        else:
-                            return flash("The Borrow request was rejected because the book is reserved", 'danger')
             else:
                 # update: copy_amount, copy_status, borrow_status, borrow_date
                 cursor.execute("UPDATE Copies SET amount = amount - 1 WHERE Copy_id = %s", temp_request[2])
@@ -141,8 +163,8 @@ class Librarian(User):
                 cursor.execute("UPDATE Copies SET copy_status = 'orderable' WHERE Copy_id = %s",
                                temp_request[2])
                 connection.commit()
-                cursor.execute("UPDATE Borrow SET status_of_request = 'approved', date_of_borrowing = %s "
-                               "WHERE request_id = %s", (today, request_id))
+                cursor.execute("UPDATE Borrow SET status_of_request = 'approved', date_of_borrowing = %s, "
+                               "returned_date = %s WHERE request_id = %s", (today, return_date, request_id))
                 connection.commit()
                 return flash('Borrow Request Successfully Approved', 'success')
         else:
@@ -243,9 +265,6 @@ class Reader(User):
             else:
                 return flash("This Book Isn't Available So It Cannot Be Borrowed", 'danger')
 
-    def return_book(self, book):
-        pass
-
     def my_books(self):
         cursor.execute("""SELECT Book.book_name, Book.author, C.copy_id, C.branch_name, Bor.date_of_borrowing ,
                             Bor.request_id, Bor.status_of_request, Bor.returned_date
@@ -265,10 +284,118 @@ class Reader(User):
             return flash(f"{self.name}, You Currently Don't Hold Any Book, Don't Have Any Open Requests Or Borrow "
                          f"History", 'danger')
 
+    def my_orders(self):
+        cursor.execute("""SELECT Book.book_name, B.returned_date, B.copy_id 
+                            FROM Borrow AS B, Order_book AS O, Copies AS C, Book
+                            WHERE B.request_id = O.request_id
+                            AND B.copy_id = C.copy_id 
+                            AND C.book_id = Book.book_id
+                            AND O.reader_email = %s;""", self.email)
+        # change email to self.email
+        catch_orders = cursor.fetchall()
+        if catch_orders:
+            orders = list(map(list, catch_orders))
+            return orders
+        else:
+            return flash('No Orders')
 
-    def book_extension(self, book):
-        pass
+    def extension(self, request_id):
+        today = datetime.now().date()
+        cursor.execute("SELECT * FROM Borrow WHERE request_id = %s", request_id)
+        request_catch = cursor.fetchone()
+        # check if the expected return date has expired
+        if (today - request_catch[1]).days <= 0:
+            return flash("The book return date has passed! "
+                         "An extension cannot be requested and the book must be returned as soon as possible", 'danger')
+        else:
+            # check if the book has been ordered
+            cursor.execute("SELECT order_status FROM Order_book WHERE request_id = %s", request_id)
+            order_catch = cursor.fetchone()
+            if order_catch:
+                if order_catch[0] == 'ordered':
+                    return flash("It Is Not Possible To Extend The Borrow Period Due To The Book Being Ordered "
+                                 "By Another Reader", 'danger')
+                else:
+                    cursor.execute("SELECT date_of_borrowing FROM Borrow WHERE request_id = %s", request_id)
+                    date_of_borrowing = cursor.fetchone()
+                    new_returned_date = date_of_borrowing + timedelta(days=21)
+                    cursor.execute("UPDATE borrow SET returned_date = %s WHERE request_id = %s",
+                                   (new_returned_date, request_id))
+                    connection.commit()
+                    return flash('Your Request For An Extension Has Been Accepted', 'success')
+            else:
+                cursor.execute("SELECT date_of_borrowing FROM Borrow WHERE request_id = %s", request_id)
+                date_of_borrowing = cursor.fetchone()
+                new_returned_date = date_of_borrowing[0] + timedelta(days=21)
+                cursor.execute("UPDATE borrow SET returned_date = %s WHERE request_id = %s",
+                               (new_returned_date, request_id))
+                connection.commit()
+                return flash('Your Request For An Extension Has Been Accepted', 'success')
 
+    def order_book(self, copy_id):
+        cursor.execute("SELECT order_status, request_id FROM Order_book WHERE copy_id = %s", copy_id)
+        orders_catch = cursor.fetchall()
+        if orders_catch:
+            orders = list(map(list, orders_catch))
+            for order in orders:
+                if order[0] == 'ordered':
+                    return flash("Sorry, The Book Cannot Be Ordered Because It Has Already Been "
+                                 "Ordered By Another Reader", 'danger')
+                else:
+                    cursor.execute("UPDATE Copies SET copy_status = 'not-orderable' "
+                                   "WHERE copy_id = %s", copy_id)
+                    # Update the order status to "ordered"
+                    cursor.execute("UPDATE Order_book SET order_status = 'ordered' "
+                                   "WHERE copy_id = %s AND request_id =%S", (copy_id, order[1]))
+                    connection.commit()
+                    return flash("Your request has been approved. The book will be available for pickup soon.",
+                                 'success')
+        else:
+            cursor.execute("UPDATE Copies SET copy_status = 'not-orderable' "
+                           "WHERE copy_id = %s", copy_id)
+            cursor.execute("SELECT request_id, reader_email FROM Borrow WHERE copy_id = %s "
+                           "AND (status_of_request = 'approved' or status_of_request = 'expired')", copy_id)
+            request_catch = cursor.fetchone()
+            # Update the order status to "ordered"
+            cursor.execute("INSERT INTO Order_book(copy_id, request_id, order_status, reader_email) "
+                           "VALUES (%s, %s, %s, %s)", (copy_id, request_catch[0], 'ordered', request_catch[1]))
+            connection.commit()
+            return flash("Your request has been approved. The book will be available for pickup soon.", 'success')
+
+    def return_book(self, request_id):
+        cursor.execute("SELECT * FROM Order_Book WHERE request_id = %s", request_id)
+        is_order = cursor.fetchone()
+        if is_order:
+            cursor.execute("SELECT B.book_id, C.copy_id, C.amount "
+                           "FROM Book as B, Borrow AS BOR, Copies AS C "
+                           "WHERE B.book_id = C.book_id "
+                           "AND C.copy_id = BOR.copy_id "
+                           "AND BOR.request_id = %s", request_id)
+            current_request = cursor.fetchone()
+            cursor.execute("UPDATE Order_book SET order_status = 'waiting' AND returned_date = %s "
+                           "WHERE request_id = %s", (request_id, datetime.now().date()))
+            cursor.execute("UPDATE Copies SET copy_status = 'available' WHERE copy_id = %s", current_request[1])
+            cursor.execute("UPDATE Copies SET amount = %s WHERE book_id = %s",
+                           (int(int(current_request[2]) + 1), current_request[0]))
+            cursor.execute(
+                "UPDATE Borrow SET returned_date = %s AND status_of_request = 'returned' WHERE request_id = %s",
+                (datetime.now().date(), request_id))
+            connection.commit()
+            return flash("The Book Has Been Successfully Returned", 'success')
+        else:
+            cursor.execute("SELECT B.book_id, C.copy_id, C.amount "
+                           "FROM Book as B, Borrow AS BOR, Copies AS C "
+                           "WHERE B.book_id = C.book_id "
+                           "AND C.copy_id = BOR.copy_id "
+                           "AND BOR.request_id = %s", request_id)
+            current_request = cursor.fetchone()
+            cursor.execute("UPDATE Copies SET copy_status = 'available' WHERE copy_id = %s", current_request[1])
+            cursor.execute("UPDATE Copies SET amount = %s WHERE book_id = %s",
+                           (int(int(current_request[2]) + 1), current_request[0]))
+            cursor.execute("UPDATE Borrow SET returned_date = %s, status_of_request = 'returned' "
+                           "WHERE request_id = %s", (datetime.now().date(), request_id))
+            connection.commit()
+            return flash("The Book Has Been Successfully Returned", 'success')
 
 class Book:
     counter = 0
@@ -304,14 +431,7 @@ class Copy(Book):
         # return flash('This Book Is Already Exist. A New Copy Has Been Added', 'success')
         return flash("A New Copy Has Been Added And Copies Are Up To Date", 'success')
 
-class Branch:
-    counter = 0
 
-    def __init__(self, name, phone, address):
-        self.name = name
-        self.phone = phone
-        self.address = address
-        Branch.counter += 1
 
 
 
