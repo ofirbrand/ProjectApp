@@ -138,3 +138,7 @@ padding-bottom: 15px;
   text-align: center;
   font-size: 120%;
   }
+
+.nobull {
+  list-style-type: none;
+ }

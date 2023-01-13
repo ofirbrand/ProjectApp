@@ -147,7 +147,7 @@ def reader2():
             books = session1.search_book(word)
             return render_template('requestbook.html', user=session1, title=title, books=books)
         else:
-            flash(f"No Book Or Author In The System Such As {word}", 'danger')
+            flash(f"No Book Or Author In The System Such As '{word}' ", 'danger')
             return render_template('reader2.html', user=session1, title=title)
     else:
         return render_template('reader2.html', user=session1, title=title)
