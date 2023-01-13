@@ -5,10 +5,8 @@ from datetime import datetime, date, timedelta
 
 reader_demo = Reader('read@mail.com', 'ofir brand', 123445, 'Tel Aviv', 1111, datetime.now().date())
 librarian_demo = Librarian('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 1111, datetime.now().date(),
-                           'City Center')
-books = reader_demo.my_books()
-for book in books:
-    print(book)
+                           'Ramat Aviv')
+print(librarian_demo.show_requests())
 
 
 # print(librarian_demo.show_requests())

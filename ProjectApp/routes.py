@@ -209,7 +209,7 @@ def mybooks():
             request_id = request.form['request_id']
             session1.extension(request_id)
             return redirect('/mybooks')
-        elif request.form['action'] == 'Extension':
+        elif request.form['action'] == 'Borrow':
             copy_id = request.form['copy_id']
             session1.borrow_request(copy_id)
             return redirect('/mybooks')

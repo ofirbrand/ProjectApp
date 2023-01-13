@@ -19,20 +19,35 @@
                     <li>
                       Borrower's Email: {{ request[5] }}
                     </li>
-                    {% if request[6] == 'waiting' %}
+                    {% if request[7] == 'waiting' %}
                         <li>
-                        There Is An Order For This Copy. Deny This Borrow Request.
-                        </li>
-                    {% else %}
-                        <li>
-                        There Is No Order For This Copy. Approve This Borrow Request.
+                        There Is An Order For This Copy
                         </li>
                         <li class="nobull">
-                        Approve This Borrow Request.
+                            This request cannot be approved
                         </li>
+                        <input class="btn btn-outline-info" type="submit" value="Decline">
+                    {% else %}
+                        {% if request[6] == 'available' %}
+                            <li>
+                            There Is No Order For This Copy. Approve This Borrow Request
+                            </li>
+                            <li class="nobull">
+                            This request can be approve
+                            </li>
+                            <input class="btn btn-outline-info" type="submit" value="Approve">
+                        {% else %}
+                            <li>
+                            This Book is already borrowed
+                            </li>
+                            <li class="nobull">
+                            This request cannot be approved
+                            </li>
+                            <input class="btn btn-outline-info" type="submit" value="Decline">
+                        {% endif %}
                     {% endif %}
-                    <input class="btn btn-outline-info" type="submit" value="Approve">
-                    <input class="btn btn-outline-info" type="submit" value="Decline">
+<!--                    <input class="btn btn-outline-info" type="submit" value="Approve">-->
+<!--                    <input class="btn btn-outline-info" type="submit" value="Decline">-->
                   </ul>
                 </p>
               </div>

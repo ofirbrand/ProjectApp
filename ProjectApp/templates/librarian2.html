@@ -1,25 +1,18 @@
 {% extends "librarian_layout.html" %}
 {% block content %}
-
-
 <div class="container">
-
-    <h2>Hi {{ user.name }}! </h2>
-    <p>
-        great success of loging in with librarian's class
-    </p>
-        {% for key, value in user_dict %}
-        <article class="media content-section">
-          <div class="media-body">
-            <h2>{{ key }} : {{ value }}</h2>
-          </div>
-        </article>
-    {% endfor %}
-
-<img src=https://img.money.com/2016/08/gettyimages-605378563.jpg?quality=60&w=1600" alt="libarian">
-<div class="down">
-  <p>Stay true to your-shelf</p>
+    <h1>Hi {{ user.name }}! </h1>
 </div>
+<div class="container">
+    <p>
+        to see if there's any open request in your branch please click 'Manage Borrows' on your menu
+    </p>
+</div>
+<div class="container">
+    <img src=https://img.money.com/2016/08/gettyimages-605378563.jpg?quality=60&w=1600" alt="libarian">
+    <div class="down">
+      <p>Stay true to your-shelf</p>
+    </div>
 </div>
 
 {% endblock content %}
