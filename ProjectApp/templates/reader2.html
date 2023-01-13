@@ -7,16 +7,50 @@
     <legend class="headline">Which Book Are You Looking For?</legend>
     <footer class="container-fluid text-center">
         <form class="form-inline" action="{{ url_for('reader2') }}" method="POST">Search By Title Or Author :
-            <input type="text" name="word" class="form-control" size="50" placeholder="Book Name Or Author Name">
+            <input type="text" name="word" class="form-control" size="40" placeholder="Book Name Or Author Name">
             <button type="submit" class="btn btn-info">Search</button>
         </form>
     </footer>
 </div>
 
-<div class="container">
-    <legend class="headline">Don't Forget To Book A Trip To The Library!</legend>
-</div>
 <div class="container-fluid">
     <img src="https://images.contentstack.io/v3/assets/bltf6a42d9e46f07d48/blt8ae88c31eeeed222/62d03aaf1b2225113da05acd/brickwork-covers-top.jpg" alt="books">
 </div>
+<h3>How Does It Work?</h3>
+  <ul class="list-group">
+  <li class="list-group-item">Search the book you want by Name or Author </li>
+  <li class="list-group-item">If it's available you can borrow it by clicking the 'borrow' button</li>
+  <li class="list-group-item">if it's not available right now, you can order it by clicking the 'order' button</li>
+   <li class="list-group-item">If we don't have the book you are looking for, we are very sorry.</li>
+</ul>
+
+<div class="container-fluid text-center bg-grey">
+  <h2>Keep Reading!</h2>
+  <div class="row text-center">
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="https://watermark.lovepik.com/photo/20211204/large/lovepik-girl-reading-fairytale-book-outdoors-picture_501508254.jpg" alt="reader">
+         <p>“Today a reader, tomorrow a leader"</p>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="https://ounews.co/wp-content/uploads/2016/04/ThinkstockPhotos-637824332-e1488386443610.jpg" alt="reader">
+        <p>"Reading one book is like eating one potato chip"</p>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="https://st.depositphotos.com/2313517/4716/i/950/depositphotos_47169853-stock-photo-mother-reading-story-book-to.jpg" alt="reader">
+          <p>“Reading brings us unknown friends”</p>
+      </div>
+    </div>
+</div>
+</div>
+
+
+<div class="bot">
+  <p>Don't Forget To Book A Trip To The Library</p>
+</div>
+
 {% endblock content %}
