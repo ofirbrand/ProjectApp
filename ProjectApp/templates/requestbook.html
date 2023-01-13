@@ -1,12 +1,8 @@
 {% extends "reader_layout.html" %}
 {% block content %}
 
+<button type="button" class="btn btn-secondary">return to search</button>
 <legend class="headline">Search Results:</legend>
-<form action="" class="from-inline">
-    <div class="container">
-        <input class="btn btn-primary active" type="submit" value="Back To Search">
-    </div>
-</form>
     {% for book in books %}
         {% if book[5] > 0 %}
             <form class="form-inline" action="{{ url_for('requestbook') }}" method="POST">
@@ -45,7 +41,6 @@
                             <p class="article-content">
                               <ul>
                                 <li>
-                                <input type="hidden" name="copy_id" value="{{ book[7] }}">
                                   Author Name: {{ book[1] }}
                                 </li>
                                 <li>
