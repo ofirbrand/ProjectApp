@@ -3,6 +3,41 @@
   <div class="container-fluid">
       <h2>{{ user.name }}'s Books</h2>
   </div>
+{% if orders %}
+  {% for order in orders %}
+    <div>
+      <legend class="border-bottom mb-4">Open Orders</legend>
+    </div>
+    <form class="form-inline" action="{{ url_for('mybooks') }}" method="POST">
+        <div class="container">
+            <article class="media content-section">
+              <div class="media-body">
+                <h3>Book Name: {{ order[0] }}</h3>
+                <p class="article-content">
+                  <ul>
+                    {% if (order[1] - today).days >= 0 %}
+                      <li>
+                        Expected Return Date: {{ order[1] }}
+                      </li>
+                    {% else %}
+                      <li>
+                        The book has returned to the library and will be kept for you until {{ (order[1] + three_days) }}
+                      </li>
+                      <input type="hidden" name="copy_id" value="{{ order[2] }}">
+                      <input class="btn btn-outline-primary" type="submit" value="Borrow" name="action">
+<!--                            <li class="nobull">-->
+<!--                                  <input class="btn btn-outline-primary" type="submit" value="Return" name="action">-->
+<!--                            </li>-->
+                    {% endif %}
+                  </ul>
+                </p>
+              </div>
+            </article>
+        </div>
+    </form>
+  {% endfor %}
+{% endif %}
+{% if my_books %}
         <div>
         <legend class="border-bottom mb-4">Current Holding</legend>
         </div>
@@ -107,12 +142,13 @@
           </div>
         {% endif %}
       {% endfor %}
-  {% if my_books == NULL: %}
+{% endif %}
+{% if my_books == NULL: %}
     <div class="container">
       <legend class="headline">
         {{ user.name }}, You Currently Don't Hold Any Book, Don't Have Any Open Requests Or Borrow History
       </legend>
     </div>
-  {% endif %}
+{% endif %}
 {% endblock %}
 
