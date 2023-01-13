@@ -3,8 +3,7 @@
   <legend class="border-bottom mb-4">Manage Borrow Requests</legend>
     {% for request in requests %}
       <form class="form-inline" action="{{ url_for('managerequest') }}" method="POST">
-      </div>
-        <div class="container">
+        <div class="container-fluid">
             <article class="media content-section">
               <div class="media-body">
                 <h2>Request ID: {{ request[4] }}</h2>
@@ -20,17 +19,35 @@
                     <li>
                       Borrower's Email: {{ request[5] }}
                     </li>
-                    {% if request[6] == 'waiting' %}
+                    {% if request[7] == 'waiting' %}
                         <li>
-                        Orders For This Copy: There Is An Order For This Copy. Deny This Borrow Request.
+                        There Is An Order For This Copy
                         </li>
+                        <li class="nobull">
+                            This request cannot be approved
+                        </li>
+                        <input class="btn btn-outline-info" type="submit" value="Decline">
                     {% else %}
-                        <li>
-                        Orders For This Copy: There Is No Order For This Copy. Approve This Borrow Request.
-                        </li>
+                        {% if request[6] == 'available' %}
+                            <li>
+                            There Is No Order For This Copy. Approve This Borrow Request
+                            </li>
+                            <li class="nobull">
+                            This request can be approve
+                            </li>
+                            <input class="btn btn-outline-info" type="submit" value="Approve">
+                        {% else %}
+                            <li>
+                            This Book is already borrowed
+                            </li>
+                            <li class="nobull">
+                            This request cannot be approved
+                            </li>
+                            <input class="btn btn-outline-info" type="submit" value="Decline">
+                        {% endif %}
                     {% endif %}
-                    <input class="btn btn-outline-info" type="submit" value="Approve">
-                    <input class="btn btn-outline-info" type="submit" value="Decline">
+<!--                    <input class="btn btn-outline-info" type="submit" value="Approve">-->
+<!--                    <input class="btn btn-outline-info" type="submit" value="Decline">-->
                   </ul>
                 </p>
               </div>

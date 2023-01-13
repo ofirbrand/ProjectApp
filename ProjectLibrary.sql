@@ -118,4 +118,24 @@ CREATE TABLE Order_book
   FOREIGN KEY (request_id) REFERENCES Borrow(request_id)
 );
 
+-- INSERT INTO Book (book_name, author, publisher, publish_year) VALUES
+-- ('Harry Potter And The Philosophers Stone', 'J.K.Rowling', 'Bloomsbury', '1997-06-26'),
+-- ('Harry Potter And The Goblet Of Fire', 'J.K.Rowling', 'Bloomsbury', '2000-07-08'),
+-- ('Parnassus On Wheels', 'Christopher Morley', '	Doubleday', '1917-03-12'),
+-- ('Night', 'Elie Wiesel', 'Central Union of Polish Jews in Argentina', '1956-01-01'),
+-- ('Thinking, Fast And Slow', 'Daniel Kahneman', 'Farrar, Straus and Giroux', '2011-01-01'),
+-- ('Life Plays With Me', 'David Grossman', 'Hakibutz Hameuchad', '2019-03-12');
 
+-- ADD ALSO INTO COPIES IF NOT ENTERING BOOKS THREW THE APP
+
+-- INSERT INTO Branch (branch_name, phone_number) VALUES
+-- ('City Centrt', 1123456),
+-- ('Downtown', 9983456),
+-- ('Uppuer City', 9876553),
+-- ('Periphery', 4321567);
+
+-- INSERT INTO Branch_address (city, street, house_number, branch_name) VALUES
+-- ('Tel Aviv','Arlozerov', 120,'City Centrt'),
+-- ('Tel Aviv', 'Begin',35 ,'Downtown'),
+-- ('Tel Aviv', 'Einstein', 25,'Uppuer City'),
+-- ('Tel Aviv', 'Yad Eliyahu', 8,'Periphery');

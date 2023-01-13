@@ -5,7 +5,10 @@ from datetime import datetime, date, timedelta
 
 reader_demo = Reader('read@mail.com', 'ofir brand', 123445, 'Tel Aviv', 1111, datetime.now().date())
 librarian_demo = Librarian('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 1111, datetime.now().date(),
-                           'City Center')
+                           'Ramat Aviv')
+print(librarian_demo.show_requests())
+
+
 # print(librarian_demo.show_requests())
 # print(librarian_demo.show_requests())
 # a = datetime.now().date()
@@ -42,28 +45,28 @@ request_id = 2
 # another_date = date(year=2023, month=2, day=3)
 # print((another_date - today).days)
 
-copy_id = 2
 
-def show_orders(email):
-    cursor.execute("""SELECT Book.book_name, B.returned_date 
-                        FROM Borrow AS B, Order_book AS O, Copies AS C, Book
-                        WHERE B.request_id = O.request_id
-                        AND B.copy_id = C.copy_id 
-                        AND C.book_id = Book.book_id
-                        AND O.reader_email = %s;""", email)
-                        # change email to self.email
-    catch_orders = cursor.fetchall()
-    if catch_orders:
-        orders = list(map(list, catch_orders))
-        return orders
-    else:
-        print('No orders for this you')
-email = reader_demo.email
-# print(show_orders(email))
 
-orders = reader_demo.my_orders()
-today = datetime.now().date()
-if orders:
-    three_days = timedelta(days=3)
-    for order in orders:
-        print((order[1] + three_days))
+# def show_orders(email):
+#     cursor.execute("""SELECT Book.book_name, B.returned_date
+#                         FROM Borrow AS B, Order_book AS O, Copies AS C, Book
+#                         WHERE B.request_id = O.request_id
+#                         AND B.copy_id = C.copy_id
+#                         AND C.book_id = Book.book_id
+#                         AND O.reader_email = %s;""", email)
+#                         # change email to self.email
+#     catch_orders = cursor.fetchall()
+#     if catch_orders:
+#         orders = list(map(list, catch_orders))
+#         return orders
+#     else:
+#         print('No orders for this you')
+# email = reader_demo.email
+# # print(show_orders(email))
+#
+# orders = reader_demo.my_orders()
+# today = datetime.now().date()
+# if orders:
+#     three_days = timedelta(days=3)
+#     for order in orders:
+#         print((order[1] + three_days))
