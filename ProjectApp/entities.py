@@ -93,6 +93,7 @@ class Librarian(User):
                         order_status = 'orderable'
                         lst.append(order_status)
             else:
+                order_status = 'orderable'
                 lst.append(order_status)
             requests.append(lst)
         return requests
@@ -340,7 +341,7 @@ class Reader(User):
         cursor.execute("SELECT * FROM Borrow WHERE request_id = %s", request_id)
         request_catch = cursor.fetchone()
         # check if the expected return date has expired
-        if (today - request_catch[1]).days <= 0:
+        if (request_catch[5] - today).days <= 0:
             return flash("The book return date has passed! "
                          "An extension cannot be requested and the book must be returned as soon as possible", 'danger')
         else:
