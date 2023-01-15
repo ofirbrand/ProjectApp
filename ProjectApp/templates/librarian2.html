@@ -1,18 +1,53 @@
 {% extends "librarian_layout.html" %}
 {% block content %}
+
+
 <div class="container">
-    <h1>Hi {{ user.name }}! </h1>
-</div>
-<div class="container">
+
+    <h2>Hi {{ user.name }}! </h2>
     <p>
-        to see if there's any open request in your branch please click 'Manage Borrows' on your menu
+        great success of loging in with librarian's class
     </p>
-</div>
-<div class="container">
-    <img src=https://img.money.com/2016/08/gettyimages-605378563.jpg?quality=60&w=1600" alt="libarian">
-    <div class="down">
-      <p>Stay true to your-shelf</p>
+        {% for key, value in user_dict %}
+        <article class="media content-section">
+          <div class="media-body">
+            <h2>{{ key }} : {{ value }}</h2>
+          </div>
+        </article>
+    {% endfor %}
+
+<div class="container-fluid text-center bg-grey">
+  <h2>Don't forget to smile!</h2>
+  <div class="row text-center">
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="https://s2982.pcdn.co/wp-content/uploads/2019/08/checking-you-out-pun.jpg.optimal.jpg" alt="reader">
+         <p>“Reading brings us unknown friends"</p>
+      </div>
     </div>
+    <div class="col-sm-4">
+      <div class="thumbnail">
+          <img src="https://pbs.twimg.com/media/DktfwmMXgAAUkcS.jpg" alt="reader">
+        <p>"Reading one book is like eating one potato chip"</p>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="https://s2982.pcdn.co/wp-content/uploads/2018/09/sorry-im-booked-pin.jpg.optimal.jpg" alt="reader">
+          <p>“A good book is an event in my life.”</p>
+      </div>
+    </div>
+</div>
+</div>
+
+
+
+<div class="bot">
+<img src=https://img.money.com/2016/08/gettyimages-605378563.jpg?quality=60&w=1600" alt="libarian">
+    </div>
+<div class="down">
+  <p>Stay true to your-shelf</p>
+</div>
 </div>
 
 {% endblock content %}

@@ -2,7 +2,7 @@ body {
   background: #fafafa;
   color: #333333;
   margin-top: 5rem;
-  background-color: #edf4f4;
+  background-image: linear-gradient(rgb(243, 247, 250),rgb(241, 235, 246),#f8f2ff);
 }
 
 h1, h3, h4, h5 {
@@ -13,7 +13,9 @@ h2{
  text-align: center;
     font-size: 220%;
     text-shadow: 0 0 3px #c0aae4;;
-    color: #543684;
+    color: rgb(35, 13, 137);
+    margin-top: 5px;
+    padding-bottom: 8px;
 }
 h6{
  text-align: center;
@@ -102,6 +104,7 @@ text-align: center;
     text-shadow: 0 0 2.5px #330552;
     font-size: 220%;
     color:#2d185f;
+    padding: 3px;
 }
 footer {
     background-color: #e0e7e7;
@@ -133,16 +136,18 @@ padding-bottom: 15px;
   margin-right: 20px;
 }
 .down {
-  background-color: #ece6f5;
-  padding: 10px;
+  background-color: #e7dce9;
+  padding: 5px;
   text-align: center;
   font-size: 120%;
+  margin-top: 8px;
+
   }
 .thumbnail {
   padding: 0 0 15px 0;
   border: none;
   border-radius: 0;
-  size: 150%;
+  size: 180%;
   background-image: linear-gradient(rgb(232, 227, 241), rgb(242, 220, 239));
   padding: 13px;
   padding-top: 20px;
@@ -154,14 +159,14 @@ padding-bottom: 15px;
   width: 150%;
   height: 120%;
   margin-bottom: 10px;
-  padding: 2px;
+  padding: 3px;
 }
 
 .rules{
 margin-bottom: 5px;
 width: 100%;
 height: 80%;
-margin-left: 16px;
+margin-left: 1px;
 }
 
 .bot{
@@ -173,6 +178,16 @@ margin-top: 18px;
 
 }
 .bg-1 {
-    background-color: #1abc9c; /* Green */
-    color: #ffffff;
-  }
+ background-image: linear-gradient(rgb(213, 192, 252),rgb(238, 247, 254), rgb(174, 224, 246));
+color: #ffffff;
+size: 90%;
+padding: 4px;
+margin-top: 30px;
+margin: 12px;
+margin-bottom: 20px;
+ }
+
+.nobull{
+color: red;
+font-size: 130%;
+}
