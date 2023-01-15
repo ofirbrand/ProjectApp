@@ -319,19 +319,18 @@ class Reader(User):
                     for request in requests:
                         if request[0] == "requested":
                             is_requested = "yes"
-                            order.append(is_requested)
                         elif request[0] == "approved":
                             today = datetime.now().date()
                             borrow_duration = timedelta(days=14)
                             if (today - (request[1] - borrow_duration)).days <= 3:
                                 is_requested = "yes"
-                                order.append(is_requested)
                             else:
                                 is_requested = "no"
-                                order.append(is_requested)
+                    order.append(is_requested)
                 else:
                     is_requested = "no"
                     order.append(is_requested)
+                print(order)
             return orders
         else:
             return flash('No Orders')
