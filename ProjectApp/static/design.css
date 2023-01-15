@@ -188,6 +188,9 @@ margin-bottom: 20px;
  }
 
 .nobull{
+font-size: 100%;
+}
+.nobull red{
 color: red;
 font-size: 130%;
 }

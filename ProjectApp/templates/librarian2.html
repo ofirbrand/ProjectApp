@@ -1,23 +1,11 @@
 {% extends "librarian_layout.html" %}
 {% block content %}
-
-
-<div class="container">
-
+<div class="container-fluid">
     <h2>Hi {{ user.name }}! </h2>
-    <p>
-        great success of loging in with librarian's class
-    </p>
-        {% for key, value in user_dict %}
-        <article class="media content-section">
-          <div class="media-body">
-            <h2>{{ key }} : {{ value }}</h2>
-          </div>
-        </article>
-    {% endfor %}
+</div>
 
-<div class="container-fluid text-center bg-grey">
-  <h2>Don't forget to smile!</h2>
+<div class="container text-center bg-grey">
+<!--  <h2>Don't forget to smile!</h2>-->
   <div class="row text-center">
     <div class="col-sm-4">
       <div class="thumbnail">
@@ -37,10 +25,12 @@
           <p>“A good book is an event in my life.”</p>
       </div>
     </div>
-</div>
+  </div>
 </div>
 
-
+<div class="container">
+    <h2>Don't forget to smile!</h2>
+</div>
 
 <div class="bot">
 <img src=https://img.money.com/2016/08/gettyimages-605378563.jpg?quality=60&w=1600" alt="libarian">
@@ -49,5 +39,4 @@
   <p>Stay true to your-shelf</p>
 </div>
 </div>
-
 {% endblock content %}
