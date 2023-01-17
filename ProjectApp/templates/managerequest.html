@@ -28,12 +28,12 @@
                         </li>
                         <input class="btn btn-outline-info" type="submit" value="Decline">
                     {% else %}
-                        {% if request[6] == 'available' %}
+                        {% if request[3] == 'available' %}
                             <li>
-                            There Is No Order For This Copy. Approve This Borrow Request
+                            There Is No Order For This Copy
                             </li>
                             <li class="nobull">
-                            This request can be approve
+                            This request can be approved
                             </li>
                             <input class="btn btn-outline-info" type="submit" value="Approve">
                         {% else %}

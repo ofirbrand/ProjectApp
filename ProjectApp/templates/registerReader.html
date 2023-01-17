@@ -25,7 +25,7 @@
                     <div class="form-control-label">
                         Password
                     </div>
-                        <input class="form-control form-control-lg" type="number" name="password">
+                        <input class="form-control form-control-lg" type="text" name="password">
                 </div>
                 <div class="form-group">
                     <div class="form-control-label">
@@ -61,4 +61,17 @@
                 </div>
         </fieldset>
     </form>
+    <script>
+        function required(){
+            var empt = document.forms["form1"]["text1"].value;
+            if (empt == ""){
+                alert("Please input a Value");
+                return false;
+                }
+            else {
+                alert('Code has accepted : you can try another');
+                return true;
+            }
+        }
+    </script>
 {% endblock content %}

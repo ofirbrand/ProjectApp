@@ -24,6 +24,7 @@ def welcome():
                 return redirect('/reader2')
             else:
                 flash('Password Incorrect', 'danger')
+                return redirect('/')
         elif librarian_temp:
             if librarian_temp[3] == password:
                 cursor.execute("SELECT city, street, house_number FROM Librarian_Address WHERE librarian_email = %s",
@@ -52,26 +53,52 @@ def logout():
 
 
 @app.route('/registerLibrarian', methods=['GET', 'POST'])
-def registerLibrarian():
+def registerLibrarian():  # create new librarian user
     if request.method == 'POST':
         email = str(request.form['email'])
-        name = str(request.form['name'])
-        phone_num = str(request.form['phone'])
-        city = str(request.form['city'])
-        street = str(request.form['street'])
-        house_num = int(request.form['house'])
-        address = str(city + ", " + street + ", " + str(house_num))
-        password = str(request.form['password'])
-        begin_work_date = request.form['begin_work_date']
-        branch_name = request.form['branch']
-        # creating python Librarian class
-        cursor.execute("SELECT reader_email FROM Reader WHERE reader_email = %s", email)
+        cursor.execute(f"SELECT reader_email FROM Reader WHERE reader_email = %s", email)
         is_email_exist = cursor.fetchone()
         connection.commit()
-        if is_email_exist:
-            flash("This Email Address Already Exists. Please Try New One", 'danger')
+        if is_email_exist:  # check if the email already exist - because it's a primary key
+            flash(f"This Email Address Already Exists. Please Try New One", 'danger')
             return redirect('/registerLibrarian')
         else:
+            name = str(request.form['name'])
+            if not name:
+                flash(f"You Must Enter Reader Name", 'danger')
+                return redirect('/registerLibrarian')
+            phone_num = request.form['phone']
+            if not phone_num:
+                flash(f"You Must Enter Phone Number", 'danger')
+                return redirect('/registerLibrarian')
+            city = str(request.form['city'])
+            if not city:
+                flash(f"You Must Enter City Name", 'danger')
+                return redirect('/registerLibrarian')
+            street = str(request.form['street'])
+            if not street:
+                flash(f"You Must Enter Street Name", 'danger')
+                return redirect('/registerLibrarian')
+            house_num = request.form['house']
+            if not house_num:
+                flash(f"You Must Enter House Number", 'danger')
+                return redirect('/registerLibrarian')
+            password = str(request.form['password'])
+            if not password:
+                flash(f"You Must Enter Password", 'danger')
+                return redirect('/registerLibrarian')
+            begin_work_date = request.form['begin_work_date']
+            if not begin_work_date:
+                flash(f"You Must Enter Begin Date Work", 'danger')
+                return redirect('/registerLibrarian')
+            branch_name = request.form['branch']
+            if not branch_name:
+                flash(f"You Must Enter Branch Name", 'danger')
+                return redirect('/registerLibrarian')
+            # creating python Librarian class
+            cursor.execute("SELECT reader_email FROM Reader WHERE reader_email = %s", email)
+            is_email_exist = cursor.fetchone()
+            connection.commit()
             # insert data to Librarian table
             cursor.execute("INSERT INTO Librarian(phone_number, librarian_email, full_name, librarian_password, "
                            "begin_work_date, branch_name) VALUES(%s, %s, %s, %s, %s, %s)",
@@ -93,28 +120,44 @@ def registerLibrarian():
 
 
 @app.route('/registerReader', methods=['POST', 'GET'])
-def registerReader():
+def registerReader():  # create new reader user
     if request.method == 'POST':
         email = str(request.form['email'])
         cursor.execute(f"SELECT reader_email FROM Reader WHERE reader_email = %s", email)
         is_email_exist = cursor.fetchone()
         connection.commit()
-        if is_email_exist:
-            flash(f"This Email Address Already Exists. Please Try New One", 'error')
+        if is_email_exist:  # check if the email already exist - because it's a primary key
+            flash(f"This Email Address Already Exists. Please Try New One", 'danger')
             return redirect('/registerReader')
-        else:
+        else:  # tests that check that all the fields are not empty
             name = str(request.form['name'])
-            phone_num = int(request.form['phone'])
+            if not name:
+                flash(f"You Must Enter Reader Name", 'danger')
+                return redirect('/registerReader')
+            phone_num = request.form['phone']
+            if not phone_num:
+                flash(f"You Must Enter Phone Number", 'danger')
+                return redirect('/registerReader')
             city = str(request.form['city'])
+            if not city:
+                flash(f"You Must Enter City Name", 'danger')
+                return redirect('/registerReader')
             street = str(request.form['street'])
-            house_num = int(request.form['house'])
+            if not street:
+                flash(f"You Must Enter Street Name", 'danger')
+                return redirect('/registerReader')
+            house_num = request.form['house']
+            if not house_num:
+                flash(f"You Must Enter House Number", 'danger')
+                return redirect('/registerReader')
             password = str(request.form['password'])
+            if not password:
+                flash(f"You Must Enter Password", 'danger')
+                return redirect('/registerReader')
             date = request.form['date']
-            # creating python Librarian class
-            # address = city + " " + str(street) + " " + str(house_num)
-            # implement the Reader class  to the full_name content
-            # user = en.Reader(email, name, phone_num, address, password, date)
-            # insert data to Librarian table
+            if not date:
+                flash(f"You Must Enter Date of Birth", 'danger')
+                return redirect('/registerReader')
             cursor.execute("INSERT INTO Reader(phone_number, reader_email, full_name, reader_password, "
                            "date_of_birth) VALUES(%s, %s, %s, %s, %s)",
                            (phone_num, email, name, password, date))
@@ -203,11 +246,12 @@ def mybooks():
     if request.method == 'POST':
         if request.form['action'] == 'Return':
             request_id = request.form['request_id']
-            session1.return_book(request_id)
+            copy_id = request.form['copy_id']
+            session1.return_book(request_id=request_id, copy_id=copy_id)
             return redirect('/mybooks')
         elif request.form['action'] == 'Extension':
-            request_id = request.form['request_id']
-            session1.extension(request_id)
+            copy_id = request.form['copy_id']
+            session1.extension(copy_id)
             return redirect('/mybooks')
         elif request.form['action'] == 'Borrow':
             copy_id = request.form['copy_id']
@@ -267,7 +311,8 @@ def requestbook():
             return redirect('/reader2')
         elif request.form['action'] == 'Order':
             copy_id = request.form['copy_id']
-            session1.order_book(copy_id)
+            reader_email = request.form['reader_email']
+            session1.order_book(copy_id=copy_id, reader_email=reader_email)
             return redirect('/reader2')
         else:
             return redirect('/reader2')

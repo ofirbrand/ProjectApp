@@ -189,8 +189,14 @@ margin-bottom: 20px;
 
 .nobull{
 font-size: 100%;
+list-style-type: none;
 }
-.nobull red{
+.red{
 color: red;
-font-size: 130%;
+list-style-type: none;
+font-size: 110%;
+}
+
+.denied{
+color: gray;
 }

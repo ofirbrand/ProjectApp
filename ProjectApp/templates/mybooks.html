@@ -5,38 +5,40 @@
   </div>
 {% if orders %}
   {% for order in orders %}
-    {% if order[4] == 'no' %}
-      {% if ((order[1] + three_days) - today).days > 0 %}
-        <div>
-          <legend class="border-bottom mb-4">Open Orders</legend>
-        </div>
-        <form class="form-inline" action="{{ url_for('mybooks') }}" method="POST">
-            <div class="container">
-                <article class="media content-section">
-                  <div class="media-body">
-                    <h3>Book Name: {{ order[0] }}</h3>
-                    <p class="article-content">
-                      <ul>
-                        {% if (order[1] - today).days > 0 %}
-                          <li>
-                            Expected Return Date: {{ order[1] }}
-                          </li>
-                        {% else %}
-                          <li>
-                            The book has returned to the library and will be kept for you until {{ (order[1] + three_days) }}
-                          </li>
-                          <input type="hidden" name="copy_id" value="{{ order[2] }}">
-                          <input class="btn btn-outline-primary" type="submit" value="Borrow" name="action">
-    <!--                            <li class="nobull">-->
-    <!--                                  <input class="btn btn-outline-primary" type="submit" value="Return" name="action">-->
-    <!--                            </li>-->
-                        {% endif %}
-                      </ul>
-                    </p>
-                  </div>
-                </article>
-            </div>
-        </form>
+    {% if order[6] == 'yes' %}
+      {% if order[7] == 'show' %}
+        {% if ((order[1] + three_days) - today).days > 0 %}
+          <div>
+            <legend class="border-bottom mb-4">Open Orders</legend>
+          </div>
+          <form class="form-inline" action="{{ url_for('mybooks') }}" method="POST">
+              <div class="container">
+                  <article class="media content-section">
+                    <div class="media-body">
+                      <h3>Book Name: {{ order[0] }}</h3>
+                      <p class="article-content">
+                        <ul>
+                          {% if (order[1] - today).days > 0 %}
+                            <li>
+                              Expected Return Date: {{ order[1] }}
+                            </li>
+                          {% else %}
+                            <li>
+                              The book has returned to the library and will be kept for you until {{ (order[1] + three_days) }}
+                            </li>
+                            <input type="hidden" name="copy_id" value="{{ order[2] }}">
+                            <input class="btn btn-outline-primary" type="submit" value="Borrow" name="action">
+      <!--                            <li class="nobull">-->
+      <!--                                  <input class="btn btn-outline-primary" type="submit" value="Return" name="action">-->
+      <!--                            </li>-->
+                          {% endif %}
+                        </ul>
+                      </p>
+                    </div>
+                  </article>
+              </div>
+          </form>
+        {% endif %}
       {% endif %}
     {% endif %}
   {% endfor %}
@@ -70,18 +72,24 @@
                           <li class="nobull">
                             You Have {{(book[7] - today).days}} Days To Return '{{ book[0] }}'
                           </li>
+                          <input type="hidden" name="copy_id" value="{{ book[2] }}">
+                          <input type="hidden" name="request_id" value="{{ book[5] }}">
+                          <input class="btn btn-outline-primary" type="submit" value="Return" name="action">
+                          <input class="btn btn-outline-primary" type="submit" value="Extension" name="action">
                         {% else %}
                           <li>
                             Return Date: {{ book[7] }}
                           </li>
-                          <li class="nobull red">
+                          <li class="red">
                             The return date has passed! Please Hurry And Return It
                           </li>
+                          <input type="hidden" name="copy_id" value="{{ book[2] }}">
+                          <input type="hidden" name="request_id" value="{{ book[5] }}">
+                          <input class="btn btn-outline-primary" type="submit" value="Return" name="action">
                         {% endif %}
                       </ul>
-                        <input type="hidden" name="request_id" value="{{ book[5] }}">
-                        <input class="btn btn-outline-primary" type="submit" value="Return" name="action">
-                        <input class="btn btn-outline-primary" type="submit" value="Extension" name="action">
+<!--                        <input class="btn btn-outline-primary" type="submit" value="Return" name="action">-->
+<!--                        <input class="btn btn-outline-primary" type="submit" value="Extension" name="action">-->
                     </p>
                   </div>
                 </article>
@@ -113,6 +121,28 @@
           </div>
         {% endif %}
       {% endfor %}
+      <div>
+      <legend class="border-bottom mb-4">Denied Requests</legend>
+      </div>
+      {% for book in my_books %}
+        {% if book[6] == 'denied'%}
+          <div class="container">
+              <article class="media content-section">
+                <div class="media-body">
+                  <h3 class="denied">Book Name: {{ book[0] }}</h3>
+                  <p class="article-content">
+                    <h5 class="denied">
+                        Your request to borrow this book has been denied because it is reserved for another reader.
+                    </h5>
+                    <h5 class="denied">
+                        Please try to apply for this book at another time.
+                    </h5>
+                  </p>
+                </div>
+              </article>
+          </div>
+        {% endif %}
+      {% endfor %}
         <div>
         <legend class="border-bottom mb-4">Borrow History</legend>
         </div>
@@ -121,9 +151,9 @@
           <div class="container">
               <article class="media content-section">
                 <div class="media-body">
-                  <h3>Book Name: {{ book[0] }}</h3>
+                  <h3 class="denied">Book Name: {{ book[0] }}</h3>
                   <p class="article-content">
-                    <ul>
+                    <ul class="denied">
                       <li>
                         Author Name: {{ book[1] }}
                       </li>
