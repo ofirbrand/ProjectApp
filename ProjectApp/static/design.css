@@ -1,28 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Semi+Condensed:ital@1&display=swap');
 body {
   background: #fafafa;
   color: #333333;
   margin-top: 5rem;
   background-image: linear-gradient(rgb(243, 247, 250),rgb(241, 235, 246),#f8f2ff);
+  font-family: 'Sofia Sans Semi Condensed', sans-serif;
 }
 
 
 h1, h3, h4, h5 {
   color: #444444;
+  font-family: 'Sofia Sans Semi Condensed', sans-serif;
 }
 
 h2{
  text-align: center;
-    font-size: 220%;
-    text-shadow: 0 0 3px #c0aae4;;
-    color: rgb(35, 13, 137);
+    font-size: 150%;
+    /*text-shadow: 0 0 3px #c0aae4;;*/
+    /*color: rgb(35, 13, 137);*/
     margin-top: 5px;
     padding-bottom: 8px;
+    font-family: 'Sofia Sans Semi Condensed', sans-serif;
 }
 h6{
  text-align: center;
-    text-shadow: 0 0 3px #0f0118;
+    /*text-shadow: 0 0 3px #0f0118;*/
     font-size: 220%;
-    color: #bf9cd6:
+    color: #bf9cd6;
+    font-family: 'Sofia Sans Semi Condensed', sans-serif;
 }
 
 .bg-steel {
@@ -102,22 +107,19 @@ img {
     height: auto;
 }
 .headline{
-text-align: center;
-    text-shadow: 0 0 2.5px #330552;
+    text-align: center;
     font-size: 220%;
-    color:#2d185f;
     padding: 3px;
 }
 footer {
-    background-color: #e0e7e7;
+    /*background-color: #e0e7e7;8*/
     font size: 180%;
     width: 50px;
-   margin-bottom: 5px;
-
-
+    margin-bottom: 5px;
     }
+
 .container-fluid {
-    padding-top: 20px;
+    padding-top: 10px;
     padding-bottom: 40px;
   }
 .bg-3 {
@@ -194,6 +196,7 @@ margin-bottom: 20px;
 font-size: 100%;
 list-style-type: none;
 }
+
 .red{
 color: red;
 list-style-type: none;
@@ -218,10 +221,22 @@ color: gray;
   padding-left: 20px;
 }
 
-
 /* Add a card effect for articles */
 .card {
   background-color: white;
   padding: 20px;
   margin-top: 20px;
 }
+
+.btn{
+background-color: #5f788a;
+border: none;
+border-radius: 30px;
+color: #ffffff;
+}
+
+.form-control{
+border-radius: 30px;
+margin-right: 10px;
+}
+

@@ -358,7 +358,7 @@ class Reader(User):
             # print(requests_status)
             return orders
         else:
-            return flash('No Orders')
+            return None
 
     def extension(self, request_id):
         today = datetime.now().date()

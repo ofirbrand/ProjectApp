@@ -10,6 +10,10 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design.css') }}">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Semi+Condensed&display=swap" rel="stylesheet">
+
     {% if title %}
         <title>Flask Blog - {{ title }}</title>
     {% else %}
@@ -47,7 +51,7 @@
       </nav>
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-8">
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}

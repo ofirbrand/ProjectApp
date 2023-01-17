@@ -140,3 +140,37 @@ CREATE TABLE Order_book
 -- ('Tel Aviv', 'Begin',35 ,'Downtown'),
 -- ('Tel Aviv', 'Einstein', 25,'Uppuer City'),
 -- ('Tel Aviv', 'Yad Eliyahu', 8,'Periphery');
+
+INSERT INTO Copies (Book_id, branch_name, amount, copy_status) VALUES
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available'),
+(1, 'City Centrt', 1, 'available');
+
+INSERT INTO Copies (Book_id, branch_name, amount, copy_status) VALUES;
