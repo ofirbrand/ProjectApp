@@ -3,10 +3,12 @@ from ProjectApp import app, connection, cursor, Session
 from datetime import datetime, timedelta
 import ProjectApp.entities as en
 
-
+# login page view function
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/welcome', methods=['POST', 'GET'])
 def welcome():
+    # user login by catching his details and direct him to right page for reader or librarian
+
     if request.method == 'POST':
         email = str(request.form['email'])
         password = str(request.form['password'])
@@ -14,13 +16,13 @@ def welcome():
         reader_temp = cursor.fetchone()
         cursor.execute("SELECT * FROM Librarian WHERE librarian_email = %s", email)
         librarian_temp = cursor.fetchone()
-        if reader_temp:
+        if reader_temp:  # validate that user details are correct as reader
             if reader_temp[3] == password:
                 cursor.execute("SELECT city, street, house_number FROM Reader_Address WHERE reader_email = %s", email)
                 address = cursor.fetchone()
                 session["email"] = en.Reader(email=reader_temp[1], name=reader_temp[2], phone_num=reader_temp[0],
                                              address=address, password=reader_temp[3], d_birth=reader_temp[4])
-                # session["email"] = request.form.get("email")  # change the session value to the correct class
+                # create session with reader class
                 return redirect('/reader2')
             else:
                 flash('Password Incorrect', 'danger')
@@ -34,7 +36,7 @@ def welcome():
                                                 phone_num=librarian_temp[0], address=address,
                                                 password=librarian_temp[3], work_date_begin=librarian_temp[4],
                                                 branch_name=librarian_temp[5])
-                # session["email"] = request.form.get("email")  # change the session value to the correct class
+                # create session with librarian class
                 return redirect('/librarian2')
             else:
                 flash('Password Incorrect', 'danger')
@@ -42,12 +44,12 @@ def welcome():
         else:
             flash('The Email Address Is Not Saved In The System. Sign-Up Or Check For Email Typo', 'danger')
             return redirect('/')
-    else:
+    else:  # default get request
         return render_template('welcome.html')
 
 
 @app.route('/logout')
-def logout():
+def logout():  # log out by changing the session to null
     session["email"] = None
     return redirect('/')
 
@@ -62,7 +64,7 @@ def registerLibrarian():  # create new librarian user
         if is_email_exist:  # check if the email already exist - because it's a primary key
             flash(f"This Email Address Already Exists. Please Try New One", 'danger')
             return redirect('/registerLibrarian')
-        else:
+        else:  # check that all the fields are not empty
             name = str(request.form['name'])
             if not name:
                 flash(f"You Must Enter Reader Name", 'danger')
@@ -111,7 +113,7 @@ def registerLibrarian():  # create new librarian user
             connection.commit()
             flash(f"Librarian User Created Successfully for {name}. You Are Now Able To Login", 'success')
             return redirect('/')
-    else:
+    else:  # default register librarian page
         title = "Librarian Register"
         cursor.execute("SELECT branch_name FROM Branch")
         branches_query = cursor.fetchall()
@@ -171,23 +173,22 @@ def registerReader():  # create new reader user
             return redirect('/')
     else:
         title = "Reader Register"
-        # add query that raise the Branches names to implement into the librarian register form
         return render_template('registerReader.html', title=title)
 
 
 @app.route('/reader2', methods=['GET', 'POST'])
-def reader2():
+def reader2():  # reader homepage - include search line to search books in the library
     session1 = session["email"]
     title = f"{session1.name}'s Home Page"
-    if request.method == 'POST':
+    if request.method == 'POST':  # catch searched word
         word = str(request.form['word'])
         test_word = "%" + word + "%"
         cursor.execute("SELECT book_name FROM Book WHERE book_name LIKE %s", test_word)
         is_book_exist = cursor.fetchall()
         cursor.execute("SELECT author FROM Book WHERE author LIKE %s", test_word)
         is_author_exist = cursor.fetchall()
-        if is_author_exist or is_book_exist:
-            books = session1.search_book(word)
+        if is_author_exist or is_book_exist:  # if the word is part of book/author name show this book
+            books = session1.search_book(word)  # OOP description is on 'entities.py'
             return render_template('requestbook.html', user=session1, title=title, books=books)
         else:
             flash(f"No Book Or Author In The System Such As '{word}' ", 'danger')
@@ -197,18 +198,13 @@ def reader2():
 
 
 @app.route('/librarian2', methods=['GET', 'POST'])
-def librarian2():
+def librarian2():  # librarian homepage
     session1 = session["email"]
-    # cursor.execute('SELECT * from Reader WHERE reader_email = %s', session1)
-    # user_reader = cursor.fetchone()
-    # cursor.execute('SELECT * from Librarian WHERE Librarian_email = %s', session1)
-    # user_librarian = cursor.fetchone()
     if session1.user_type == "Librarian":
-        user_dict = session1.__dict__.items()
-        return render_template('librarian2.html', user=session1, user_dict=user_dict)
+        return render_template('librarian2.html', user=session1)
     else:
-        user_dict = session1.__dict__.items()
-        return render_template('reader2.html', user=session1, user_dict=user_dict)
+        return render_template('reader2.html', user=session1)
+
 
 @app.route('/newbook', methods=['GET', 'POST'])
 def newbook():
@@ -222,20 +218,19 @@ def newbook():
         cursor.execute('SELECT book_id FROM Book WHERE book_name like %s AND author like %s',
                        (book_name, author))
         is_book = cursor.fetchone()
-        if is_book:
+        if is_book:  # if the book exist - update the copy amount
             book = en.Book(book_id=is_book[0], book_name=book_name, author=author, publisher=publisher,
                            year_published=publish_year)
-            session1.add_new_book(book)
+            session1.add_new_book(book)  # OOP description is on 'entities.py'
             return render_template('newbook.html', user=session1, title=title)
-        else:
+        else:  # if the book isnt exist - create new instance of book
             cursor.execute("SELECT max(book_id) FROM Book")
             id_num = cursor.fetchone()
-            book_id = int(''.join(map(str, id_num))) + 1
+            book_id = int(''.join(map(str, id_num))) + 1  # add book_id because it usually happened with auto-increment
             book = en.Book(book_id=book_id, book_name=book_name, author=author, publisher=publisher,
                            year_published=publish_year)
-            session1.add_new_book(book)
+            session1.add_new_book(book)  # OOP description is on 'entities.py'
             return render_template('newbook.html', user=session1, title=title)
-            # create an instance of book class
     else:
         return render_template('newbook.html', user=session1, title=title)
 
@@ -243,26 +238,30 @@ def newbook():
 def mybooks():
     session1 = session["email"]
     title = f"{session1.name}'s Books"
+    # catch the right variables and apply the function chosen by the reader
     if request.method == 'POST':
         if request.form['action'] == 'Return':
             request_id = request.form['request_id']
-            copy_id = request.form['copy_id']
+            copy_id = request.form['copy_id']  # OOP functions are written on 'entities.py'
             session1.return_book(request_id=request_id, copy_id=copy_id)
             return redirect('/mybooks')
         elif request.form['action'] == 'Extension':
             copy_id = request.form['copy_id']
-            session1.extension(copy_id)
+            session1.extension(copy_id)  # OOP functions are written on 'entities.py'
             return redirect('/mybooks')
         elif request.form['action'] == 'Borrow':
             copy_id = request.form['copy_id']
-            session1.borrow_request(copy_id)
+            session1.borrow_request(copy_id)  # OOP functions are written on 'entities.py'
             return redirect('/mybooks')
         else:
             return redirect('/mybooks')
     else:
+        # OOP description is on 'entities.py'
+        # catch my books and my orders
         my_books = session1.my_books()
         orders = session1.my_orders()
         today = datetime.now().date()
+        # show orders and books - if any of them exists
         if my_books:
             if orders:
                 three_days = timedelta(days=3)
@@ -286,15 +285,15 @@ def managerequest():
         request_id = request.form['request_id']
         session1.manage_request(request_id)
         flash(f"Request number {request_id} is closed!", 'success')
-        requests = session1.show_requests()
+        requests = session1.show_requests()  # OOP description is on 'entities.py'
         if len(requests) > 0:
             return render_template('managerequest.html', user=session1, requests=requests)
         else:
             flash("There Are No More Open Requests In Your Branch", 'success')
             return render_template('managerequest.html', user=session1, requests=requests)
     else:
-        requests = session1.show_requests()
-        if len(requests) > 0:
+        requests = session1.show_requests()  # OOP description is on 'entities.py'
+        if len(requests) > 0:  # check if there are any requests in the librarian's branch
             return render_template('managerequest.html', user=session1, requests=requests)
         else:
             flash("There Are No More Open Requests In Your Branch", 'success')
@@ -305,39 +304,18 @@ def managerequest():
 def requestbook():
     session1 = session["email"]
     if request.method == 'POST':
+        # catch the right variables and apply the function chosen by the reader
         if request.form['action'] == 'Borrow':
             copy_id = request.form['copy_id']
-            session1.borrow_request(copy_id)
+            session1.borrow_request(copy_id)  # OOP description is on 'entities.py'
             return redirect('/reader2')
         elif request.form['action'] == 'Order':
             copy_id = request.form['copy_id']
             reader_email = request.form['reader_email']
-            session1.order_book(copy_id=copy_id, reader_email=reader_email)
+            session1.order_book(copy_id=copy_id, reader_email=reader_email)  # OOP description is on 'entities.py''
             return redirect('/reader2')
         else:
             return redirect('/reader2')
     else:
         return render_template('requestbook.html', user=session1)
 
-
-# @app.route('/borroworder', methods=['GET', 'POST'])
-# def borroworder():
-#     session1 = session["email"]
-#     title = "Search Books"
-#     if request.method == 'POST':
-#         word = str(request.form['word'])
-#         test_word = "%" + word + "%"
-#         cursor.execute("SELECT book_name FROM Book WHERE book_name LIKE %s", test_word)
-#         is_book_exist = cursor.fetchall()
-#         cursor.execute("SELECT author FROM Book WHERE author LIKE %s", test_word)
-#         is_author_exist = cursor.fetchall()
-#         if is_author_exist or is_book_exist:
-#             books = session1.search_book(word)
-#             # session['books'] = books
-#             # session_books = session['books']
-#             return render_template('requestbook.html', user=session1, title=title, books=books)
-#         else:
-#             flash(f"No Book Or Author In The System Such As {word}", 'danger')
-#             return render_template('borroworder.html', user=session1, title=title)
-#     else:
-#         return render_template('borroworder.html', user=session1, title=title)

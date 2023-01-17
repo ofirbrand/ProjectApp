@@ -3,7 +3,7 @@ from ProjectApp.routes import flash
 from ProjectApp import cursor, connection
 
 
-class User:
+class User:  # reader and librarian classes inherit from user classs
     counter = 0
 
     def __init__(self, email, name, phone_num, address, password):
@@ -25,11 +25,12 @@ class Librarian(User):
         self.user_type = "Librarian"
         Librarian.counter += 1
 
+    # add new book function
     def add_new_book(self, book):
         cursor.execute("SELECT * FROM Book WHERE book_name like %s and author like %s;",
                        (book.book_name, book.author))
         is_book = cursor.fetchone()
-        if is_book:  # if the book exists so there is at list 1 copy
+        if is_book:  # check if the book already exists
             cursor.execute("SELECT * FROM Copies WHERE Book_id = %s and branch_name = %s;",
                            (book.book_id, self.branch_name))
             is_copy = cursor.fetchone()
@@ -62,6 +63,7 @@ class Librarian(User):
             connection.commit()
             return flash(f"{book.book_name} Created As A New Book", 'success')
 
+    # show all the relevant requests for each librarian (for books from his branch)
     def show_requests(self):
         cursor.execute("""SELECT C.copy_id, Book.book_name, C.amount, C.copy_status, Bor.request_id, 
                           Bor.reader_email, Bor.status_of_request 
@@ -73,15 +75,13 @@ class Librarian(User):
         requests_catch = cursor.fetchall()
         requests_caught = list(map(list, requests_catch))
         requests = []
-        for request in requests_caught:
+        for request in requests_caught:  # this loop check if there is an order for every branch
             lst = list(request)
             cursor.execute("SELECT order_status, reader_email FROM Order_book WHERE copy_id = %s", request[0])
             order_catch = cursor.fetchall()
             if order_catch:
                 orders = list(map(list, order_catch))
-                for order in orders:
-                    # cursor.execute("SELECT reader_email FROM Order_book WHERE request_id = %s", request[4])
-                    # order_reader_email = cursor.fetchone()
+                for order in orders:  # check if the order made by the same person who ask to borrow this copy
                     if order[0] == str('waiting'):
                         if request[5] == order[1]:
                             order_status = 'orderable'
@@ -98,6 +98,7 @@ class Librarian(User):
             requests.append(lst)
         return requests
 
+    # function that deals with all the borrow requests - both decline or approve buttons direct to this function
     def manage_request(self, request_id):
         cursor.execute("""SELECT C.amount, C.copy_status, C.copy_id, BOR.reader_email, BOR.returned_date
                             FROM Borrow AS Bor, Copies AS C 
@@ -193,13 +194,14 @@ class Reader(User):
         self.user_type = "Reader"
         Reader.counter += 1
 
+    # search function from reader homepage
     def search_book(self, word):  # book[7] is the copy id with the smallest value from the same book.id in this branch
-        word = "%" + word + "%"
+        word = "%" + word + "%"  # to search if this word is part of book or author name
         cursor.execute("SELECT book_name FROM Book WHERE book_name LIKE %s", word)
         is_book_exist = cursor.fetchall()
         cursor.execute("SELECT author FROM Book WHERE author LIKE %s", word)
         is_author_exist = cursor.fetchall()
-        if is_author_exist:
+        if is_author_exist:  # search by author name
             authors = [''.join(i) for i in is_author_exist]
             books_list = []
             for author in authors:
@@ -228,7 +230,7 @@ class Reader(User):
                 book.append(copy_id[0])
             # end new content
             return books_list
-        elif is_book_exist:
+        elif is_book_exist:  # search by author name
             books = [''.join(i) for i in is_book_exist]
             books_list = []
             for book in books:
@@ -254,9 +256,11 @@ class Reader(User):
                 copy_id = cursor.fetchone()
                 book.append(copy_id[0])
             return books_list
-        else:
+        else:  # the word isn't of any boor or author name
             return flash(f"No Book Or Author In The System Such As '{word[1:-1]}' ", 'danger')
 
+    # borrow request - reader side (only send request for a specific copy)
+    # wait for librarian answer for this request
     def borrow_request(self, copy_id):
         # check if the reader holds more than 3 books
         cursor.execute("SELECT count(request_id) "
@@ -266,7 +270,7 @@ class Reader(User):
         amount_of_books = cursor.fetchone()
         if amount_of_books[0] >= 3:
             return flash(f"{self.name}, We Are Sorry But Reader's Can Hold Only 3 Books Every Time", 'danger')
-        else:
+        else:  # check if the wanted copy is available
             cursor.execute("SELECT copy_status FROM Copies WHERE copy_id = %s", copy_id)
             is_copy_available = cursor.fetchone()
             if is_copy_available[0] == 'available':
@@ -278,6 +282,7 @@ class Reader(User):
             else:
                 return flash("This Book Isn't Available So It Cannot Be Borrowed", 'danger')
 
+    # this function show my books: current holding, open requests and books history (returned books)
     def my_books(self):
         cursor.execute("""SELECT Book.book_name, Book.author, C.copy_id, C.branch_name, Bor.date_of_borrowing ,
                             Bor.request_id, Bor.status_of_request, Bor.returned_date
@@ -289,7 +294,7 @@ class Reader(User):
         books_caught = cursor.fetchall()
         if books_caught:
             my_books = list(map(list, books_caught))
-            for book in my_books:
+            for book in my_books:  # this loop enters the expected return date for each book
                 if book[4]:
                     return_date = book[4] + timedelta(days=14)
                     book.append(return_date)
@@ -301,6 +306,7 @@ class Reader(User):
             return flash(f"{self.name}, You Currently Don't Hold Any Book, Don't Have Any Open Requests Or Borrow "
                          f"History", 'danger')
 
+    # this function show my orders - to my books page
     def my_orders(self):  # check if there are any orders for this reader to show in my books
         cursor.execute("""SELECT Book.book_name, B.returned_date, B.copy_id, O.reader_email, O.order_status, Book.book_id  
                             FROM Borrow AS B, Order_book AS O, Copies AS C, Book
@@ -313,12 +319,12 @@ class Reader(User):
             orders = list(map(list, catch_orders))
             # print(orders)
             for order in orders:  # check if the order is still relevant
-                if order[4] == 'orderable':
+                if order[4] == 'orderable':  # check if the order status is orderable
                     show_order = 'no'
                     order.append(show_order)
-                elif order[4] == 'waiting':
+                elif order[4] == 'waiting':  # check if the order status is waiting
                     today = datetime.now().date()
-                    if (today - order[1]).days < 3:
+                    if (today - order[1]).days < 3:  # check if the order wait more than 3 days
                         show_order = 'yes'
                         order.append(show_order)
                     else:
@@ -327,7 +333,7 @@ class Reader(User):
                 else:
                     show_order = 'yes'
                     order.append(show_order)
-                # check if he already asks to borrow this book
+                # check if this reader already asks to borrow this book (after he ordered it)
                 cursor.execute("""SELECT B.status_of_request, B.returned_date
                                     FROM Borrow AS B, Copies AS C
                                     WHERE C.copy_id = B.copy_id AND B.reader_email = %s AND C.book_id = %s;""",
@@ -335,9 +341,8 @@ class Reader(User):
                 other_requests = cursor.fetchall()
                 if other_requests:
                     requests = list(map(list, other_requests))
-                    #print(requests)
                     requests_status = []
-                    for request in requests:
+                    for request in requests:  # this loop check what is the status of the other requests of this user
                         if request[0] == "requested":
                             stat = 'requested'
                             requests_status.append(stat)
