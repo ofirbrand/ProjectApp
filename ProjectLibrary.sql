@@ -88,7 +88,8 @@ CREATE TABLE Borrow
   reader_email VARCHAR(50) NOT NULL,
   returned_date DATE,
   PRIMARY KEY (request_id),
-  FOREIGN KEY (copy_id) REFERENCES Copies(copy_id)
+  FOREIGN KEY (copy_id) REFERENCES Copies(copy_id),
+  FOREIGN KEY (reader_email) REFERENCES Reader(reader_email)
 );
 
 -- drop table if exists Copies;
