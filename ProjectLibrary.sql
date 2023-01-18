@@ -76,7 +76,7 @@ CREATE TABLE Book
   book_name VARCHAR(100) NOT NULL,
   author VARCHAR(100) NOT NULL,
   publisher VARCHAR(100) NOT NULL,
-  publish_year YEAR NOT NULL,
+  publish_year DATE NOT NULL,
   PRIMARY KEY (book_id)
 );
 
@@ -148,21 +148,21 @@ CREATE TABLE Order_book
 
 -- COPIES
 -- INSERT INTO Copies (Book_id, branch_name, amount, copy_status) VALUES
--- (1, 'City Center', 1 , 'available'),
--- (2, 'City Center', 3 , 'available'),
--- (3, 'City Center', 1 , 'available'),
--- (4, 'City Center', 3, 'available'),
+-- (1, 'City Center', 2 , 'available'),
+-- (2, 'City Center', 2 , 'available'),
+-- (3, 'City Center', 2 , 'available'),
+-- (4, 'City Center', 2, 'available'),
 -- (5, 'City Center', 2 , 'available'),
 -- (6, 'City Center', 2 , 'available'),
--- (7, 'City Center', 1 , 'available'),
--- (8, 'City Center', 1 , 'available'),
--- (1, 'Ramat-Aviv', 1 , 'available'),
--- (2, 'Ramat-Aviv', 2 , 'available'),
--- (3, 'Ramat-Aviv', 2 , 'available'),
--- (4, 'Ramat-Aviv', 1 , 'available'),
--- (5, 'Ramat-Aviv', 3 , 'available'),
--- (6,'Ramat-Aviv', 1 , 'available'),
--- (7, 'Ramat-Aviv', 2 , 'available'),
--- (8, 'Ramat-Aviv', 1 , 'available');
+-- (7, 'City Center', 2 , 'available'),
+-- (8, 'City Center', 2 , 'available'),
+-- (1, 'Ramat Aviv', 2 , 'available'),
+-- (2, 'Ramat Aviv', 2 , 'available'),
+-- (3, 'Ramat Aviv', 2 , 'available'),
+-- (4, 'Ramat Aviv', 2 , 'available'),
+-- (5, 'Ramat Aviv', 2 , 'available'),
+-- (6,'Ramat Aviv', 2 , 'available'),
+-- (7, 'Ramat Aviv', 2 , 'available'),
+-- (8, 'Ramat Aviv', 2 , 'available');
 
 

@@ -74,7 +74,7 @@ CREATE TABLE Book
   book_name VARCHAR(100) NOT NULL,
   author VARCHAR(100) NOT NULL,
   publisher VARCHAR(100) NOT NULL,
-  publish_year YEAR NOT NULL,
+  publish_year DATE NOT NULL,
   PRIMARY KEY (book_id)
 );
 
@@ -101,6 +101,7 @@ CREATE TABLE Borrow
   copy_id INT NOT NULL,
   reader_email VARCHAR(50) NOT NULL,
   returned_date DATE,
+  extension_date DATE,
   PRIMARY KEY (request_id),
   FOREIGN KEY (copy_id) REFERENCES Copies(copy_id),
   FOREIGN KEY (reader_email) REFERENCES Reader(reader_email)
@@ -114,12 +115,15 @@ CREATE TABLE Order_book
   request_id INT NOT NULL,
   reader_email VARCHAR(50) NOT NULL,
   order_status VARCHAR(20) NOT NULL,
+  order_date date NOT NULL,
   returned_date date,
-  PRIMARY KEY (reader_email, copy_id, request_id),
+  PRIMARY KEY (reader_email, request_id),
   FOREIGN KEY (reader_email) REFERENCES Reader(reader_email),
   FOREIGN KEY (copy_id) REFERENCES Copies(copy_id),
   FOREIGN KEY (request_id) REFERENCES Borrow(request_id)
 );
+
+
 
 -- INSERT INTO Branch (branch_name, phone_number) VALUES
 -- ('City Center', 1123456),
@@ -151,37 +155,55 @@ CREATE TABLE Order_book
 -- (333301037, 'tomer@gmai.com', "tomer vernik", 1234, '1979-07-01'),
 -- (333303827, 'devin@gmai.com', "devin booker", 1234, '1979-09-01');
 
+
 INSERT INTO Reader_address (city, street, house_number, reader_email) VALUES
 ('Tel Aviv', 'King Georg', 62,'ofir@gmail.com'),
-('Hod Hasharon', 'Ben Gurion', 100,'amit@gmail.com');
+('Hod Hasharon', 'Ben Gurion', 100,'amit@gmail.com'),
+('lod', 'Herzel', 100,'doron@gmail.com'),
+('lod', 'Hapaamonin', 122,'nofar@gmail.com'),
+('Tel Aviv', 'Ben Shitrit', 194,'Tal@gmail.com'),
+('Gdera', 'Zakay', 43,'avi@gmail.com'),
+('Kathmandu', 'Thamel', 45,'soonil@gmail.com'),
+('Los Angeles', 'Star', 92,'roby@gmail.com'),
+('Ashkelon', 'Hadror', 32,'lior@gmail.com'),
+('Ramat Hasharon', 'Halotus', 04,'tomer@gmail.com'),
+('Raanana', 'Klausner', 38,'devin@gmail.com');
+
 
 -- BOOKS
--- INSERT INTO Book (book_name, author, publisher, publish_year) VALUES
--- ('Harry Potter And The Philosophers Stone', 'J.K.Rowling', 'Bloomsbury', year('1997-06-26')),
--- ('Harry Potter And The Goblet Of Fire', 'J.K.Rowling', 'Bloomsbury', year('2000-07-08')),
--- ('Parnassus On Wheels', 'Christopher Morley', '	Doubleday', year('1917-03-12')),
--- ('Night', 'Elie Wiesel', 'Central Union of Polish Jews in Argentina', year('1956-01-01')),
--- ('Thinking, Fast And Slow', 'Daniel Kahneman', 'Farrar, Straus and Giroux', year('2011-01-01')),
--- ('My Michael', 'Amos Oz', 'Keter' , year('1968-02-01')),
--- ('Life Plays With Me', 'David Grossman', 'Hakibutz Hameuchad', year('2019-03-12'));
+INSERT INTO Book (book_name, author, publisher, publish_year) VALUES
+('Harry Potter And The Philosophers Stone', 'J.K.Rowling', 'Bloomsbury', '1997-06-26'),
+('Harry Potter And The Goblet Of Fire', 'J.K.Rowling', 'Bloomsbury', '2000-07-08'),
+('Parnassus On Wheels', 'Christopher Morley', '	Doubleday', '1917-03-12'),
+('Night', 'Elie Wiesel', 'Central Union of Polish Jews in Argentina', '1956-01-01'),
+('Thinking, Fast And Slow', 'Daniel Kahneman', 'Farrar, Straus and Giroux', '2011-01-01'),
+('My Michael', 'Amos Oz', 'Keter' , '1968-02-01'),
+('Life Plays With Me', 'David Grossman', 'Hakibutz Hameuchad', '2019-03-12'),
+('The Hunger Games', 'Suzanne Collins', 'Scholastic', '2008-03-12');
 
 -- COPIES
--- INSERT INTO Copies (Book_id, branch_name, amount, copy_status) VALUES
--- (1, 'City Center', 1 , 'available'),
--- (2, 'City Center', 3 , 'available'),
--- (3, 'City Center', 1 , 'available'),
--- (4, 'City Center', 3, 'available'),
--- (5, 'City Center', 2 , 'available'),
--- (6, 'City Center', 2 , 'available'),
--- (7, 'City Center', 1 , 'available'),
--- (8, 'City Center', 1 , 'available'),
--- (1, 'Ramat-Aviv', 1 , 'available'),
--- (2, 'Ramat-Aviv', 2 , 'available'),
--- (3, 'Ramat-Aviv', 2 , 'available'),
--- (4, 'Ramat-Aviv', 1 , 'available'),
--- (5, 'Ramat-Aviv', 3 , 'available'),
--- (6,'Ramat-Aviv', 1 , 'available'),
--- (7, 'Ramat-Aviv', 2 , 'available'),
--- (8, 'Ramat-Aviv', 1 , 'available');
+INSERT INTO Copies (Book_id, branch_name, amount, copy_status) VALUES
+(1, 'City Center', 2 , 'available'),
+(2, 'City Center', 2 , 'available'),
+(3, 'City Center', 2 , 'available'),
+(4, 'City Center', 2, 'available'),
+(5, 'City Center', 2 , 'available'),
+(6, 'City Center', 2 , 'available'),
+(7, 'City Center', 2 , 'available'),
+(8, 'City Center', 2 , 'available'),
+(1, 'Ramat Aviv', 2 , 'available'),
+(2, 'Ramat Aviv', 2 , 'available'),
+(3, 'Ramat Aviv', 2 , 'available'),
+(4, 'Ramat Aviv', 2 , 'available'),
+(5, 'Ramat Aviv', 2 , 'available'),
+(6,'Ramat Aviv', 2 , 'available'),
+(7, 'Ramat Aviv', 2 , 'available'),
+(8, 'Ramat Aviv', 2 , 'available');
+
+
+
+
+
+
 
 
