@@ -54,7 +54,7 @@ class Librarian(User):
         else:  # the book isn't exists, add new book and new copy
             # add new book to the database
             cursor.execute("INSERT INTO Book(book_id, book_name, author, publisher, publish_year) "
-                           "VALUES(%s, %s, %s, %s, %s)",
+                           "VALUES(%s, %s, %s, %s, year(%s))",
                            (book.book_id, book.book_name, book.author, book.publisher, book.year_published))
             connection.commit()
             # add new copy to the database

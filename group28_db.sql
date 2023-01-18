@@ -1,6 +1,4 @@
-CREATE DATABASE IF NOT EXISTS `ProjectLibraries`;
-
-USE ProjectLibraries;
+use group28_db;
 
 drop table if exists Branch;
 CREATE TABLE Branch
@@ -90,7 +88,7 @@ CREATE TABLE Copies
   copy_status VARCHAR(15) NOT NULL,
   PRIMARY KEY (copy_id),
   FOREIGN KEY (branch_name) REFERENCES Branch(branch_name),
-  FOREIGN KEY (book_id) REFERENCES book(book_id)
+  FOREIGN KEY (book_id) REFERENCES Book(book_id)
 );
 
 
@@ -119,7 +117,7 @@ CREATE TABLE Order_book
   returned_date date,
   PRIMARY KEY (reader_email, copy_id, request_id),
   FOREIGN KEY (reader_email) REFERENCES Reader(reader_email),
-  FOREIGN KEY (copy_id) REFERENCES copies(copy_id),
+  FOREIGN KEY (copy_id) REFERENCES Copies(copy_id),
   FOREIGN KEY (request_id) REFERENCES Borrow(request_id)
 );
 
@@ -128,13 +126,34 @@ CREATE TABLE Order_book
 -- ('Ramat Aviv', 9983456);
 
 -- INSERT INTO Branch_address (city, street, house_number, branch_name) VALUES
--- ('Tel Aviv','Arlozerov', 120,'City Center'),
--- ('Tel Aviv', 'Einstein', 25,'Ramat Aviv');
+-- ('Tel Aviv','Arlozerov', 120, 'City Center'),
+-- ('Tel Aviv', 'Einstein', 25, 'Ramat Aviv');
 
 -- INSERT INTO Librarian (phone_number, librarian_email, full_name, librarian_password, begin_work_date, branch_name) VALUES
--- (878734, 'moshe@mail.com', 'moshe cohen','1111', '2019-06-26'),
--- (878734, 'david@mail.com', 'David Levy','1111', '2121-03-12');
+-- (878734, 'moshe@mail.com', 'moshe cohen','1111', '2019-06-26', 'City Center'),
+-- (878734, 'david@mail.com', 'David Levy','1111', '2121-03-12', 'Ramat Aviv');
 
+-- INSERT INTO Librarian_address (city, street, house_number, librarian_email) VALUES
+-- ('Tel Aviv', 'Arlozerov', 23,'moshe@mail.com'),
+-- ('Tel Aviv', 'Dizingof', 100,'david@mail.com');
+
+
+-- INSERT into Reader(phone_number, reader_email, full_name, reader_password, date_of_birth) VALUES
+-- (526738977, "ofir@gmail.com", 'Ofir Brand', 1111, '1995-08-22'),
+-- (833274864, 'amit@gmail.com', 'Amit Meyron', 1111, '2000-04-17'),
+-- (528390987, 'doron@gmail.com', "Doron Dahan", 1234, "1995-10-02"),
+-- (632898880, 'nofar@gmail.com', "Nofar Wagner", 1234, "1996-09-24"),
+-- (536789767, 'Tal@gmail.com', "Tal Eliram", 1234, "1996-06-27"),
+-- (765890868, 'avi@gmail.com', "avi shalom", 1234, '1959-09-08'),
+-- (999948373, 'soonil@gmai.com', "Soonil giaro", 1234, '1979-07-01'),
+-- (333303827, 'roby@gmai.com', "roby gordon", 1234, '1979-07-18'),
+-- (339873827, 'lior@gmai.com', "lior atedgi", 1234, '1979-01-28'),
+-- (333301037, 'tomer@gmai.com', "tomer vernik", 1234, '1979-07-01'),
+-- (333303827, 'devin@gmai.com', "devin booker", 1234, '1979-09-01');
+
+INSERT INTO Reader_address (city, street, house_number, reader_email) VALUES
+('Tel Aviv', 'King Georg', 62,'ofir@gmail.com'),
+('Hod Hasharon', 'Ben Gurion', 100,'amit@gmail.com');
 
 -- BOOKS
 -- INSERT INTO Book (book_name, author, publisher, publish_year) VALUES

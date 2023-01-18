@@ -18,7 +18,7 @@ def welcome():
         librarian_temp = cursor.fetchone()
         if reader_temp:  # validate that user details are correct as reader
             if reader_temp[3] == password:
-                cursor.execute("SELECT city, street, house_number FROM Reader_Address WHERE reader_email = %s", email)
+                cursor.execute("SELECT city, street, house_number FROM Reader_address WHERE reader_email = %s", email)
                 address = cursor.fetchone()
                 session["email"] = en.Reader(email=reader_temp[1], name=reader_temp[2], phone_num=reader_temp[0],
                                              address=address, password=reader_temp[3], d_birth=reader_temp[4])
@@ -29,7 +29,7 @@ def welcome():
                 return redirect('/')
         elif librarian_temp:
             if librarian_temp[3] == password:
-                cursor.execute("SELECT city, street, house_number FROM Librarian_Address WHERE librarian_email = %s",
+                cursor.execute("SELECT city, street, house_number FROM Librarian_address WHERE librarian_email = %s",
                                email)
                 address = cursor.fetchone()
                 session["email"] = en.Librarian(email=librarian_temp[1], name=librarian_temp[2],
@@ -212,9 +212,21 @@ def newbook():
     session1 = session["email"]
     if request.method == 'POST':
         book_name = str(request.form['book_name'])
+        if not book_name:
+            flash(f"You Must Enter Book Name", 'danger')
+            return redirect('/newbook')
         author = str(request.form['author'])
+        if not author:
+            flash(f"You Must Enter Author Name", 'danger')
+            return redirect('/newbook')
         publisher = str(request.form['publisher'])
+        if not publisher:
+            flash(f"You Must Enter Publisher Name", 'danger')
+            return redirect('/newbook')
         publish_year = request.form['publish_year']
+        if not publish_year:
+            flash(f"You Must Enter Published Date", 'danger')
+            return redirect('/newbook')
         cursor.execute('SELECT book_id FROM Book WHERE book_name like %s AND author like %s',
                        (book_name, author))
         is_book = cursor.fetchone()

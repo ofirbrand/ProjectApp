@@ -8,4 +8,6 @@ librarian_demo = Librarian('ofir@mail.com', 'ofir brand', 123445, 'Tel Aviv', 11
                            'Ramat Aviv')
 print(reader_demo.my_orders())
 
-
+cursor.execute("INSERT INTO Book (book_name, author, publisher, publish_year) "
+               "VALUES ('My Michael', 'Amos Oz', 'Keter' ,year('1968-02-01'))")
+connection.commit()
