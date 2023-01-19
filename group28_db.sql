@@ -201,6 +201,38 @@ INSERT INTO Copies (Book_id, branch_name, amount, copy_status) VALUES
 (8, 'Ramat Aviv', 2 , 'available');
 
 
+INSERT INTO Borrow (date_of_borrowing, status_of_request, copy_id, reader_email, returned_date) VALUES
+("2021-03-01", 'returned', 1, "doron@gmail.com", "2021-03-08"),                 
+("2022-04-02", 'returned', 1, "amit@gmail.com", "2022-04-10"),                 
+("2020-05-03", 'returned', 1, "ofir@gmail.com", "2020-05-11"),                 
+("2019-10-04", 'returned', 15, "tal@gmail.com", "2019-10-06"),                 
+("2022-07-15", 'returned', 3, "nofar@gmail.com", "2022-07-21"),                 
+("2022-01-06", 'returned', 5, "lior@gmail.com", "2022-01-18"),                 
+("2022-08-07", 'returned', 7, "doron@gmail.com", "2022-08-15"),                 
+("2022-05-08", 'returned', 9, "amit@gmail.com", "2022-05-11"),                 
+("2020-09-09", 'returned', 2, "devin@gmail.com", "2020-09-20"),                 
+("2018-01-10", 'returned', 19, "amit@gmail.com", "2018-01-22"),                 
+("2021-01-11", 'returned', 2, "tal@gmail.com", "2022-01-25"),                
+("2022-01-12", 'returned', 1, "ofir@gmail.com", "2022-01-19"),                 
+("2020-01-13", 'returned', 3, "soonil@gmail.com", "2020-01-24"),                 
+("2020-05-14", 'returned', 1, "amit@gmail.com", "2020-05-22"),                 
+("2020-01-15", 'returned', 1, "doron@gmail.com", "2020-01-26"),                 
+("2021-02-16", 'returned', 3, "nofar@gmail.com", "2021-02-28"),                 
+("2021-04-17", 'returned', 4, "tomer@gmail.com", "2021-04-24"),                 
+("2021-10-18", 'returned', 5, "roby@gmail.com", "2021-10-25"),                 
+("2021-12-05", 'returned', 6, "avi@gmail.com", "2021-12-13"),                 
+("2019-01-07", 'returned', 12, "tomer@gmail.com", "2019-01-16"),                 
+("2019-03-01", 'returned', 16, "roby@gmail.com", "2019-03-09"),                
+("2022-07-10", 'returned', 11, "devin@gmail.com", "2022-07-18"),                 
+("2022-03-11", 'returned', 1, "nofar@gmail.com", "2022-03-20"),                 
+("2022-09-03", 'returned', 2, "tal@gmail.com", "2022-09-11"),                 
+("2022-07-23", 'returned', 5, "soonil@gmail.com", "2022-07-29"),                 
+("2022-01-29", 'returned', 13, "lior@gmail.com", "2022-02-06"),                 
+("2021-11-16", 'returned', 7, "avi@gmail.com", "2021-11-26"),                 
+("2022-04-24", 'returned', 1, "lior@gmail.com", "2022-05-01");
+
+
+
 
 
 
