@@ -258,8 +258,8 @@ def mybooks():
             session1.return_book(request_id=request_id, copy_id=copy_id)
             return redirect('/mybooks')
         elif request.form['action'] == 'Extension':
-            copy_id = request.form['copy_id']
-            session1.extension(copy_id)  # OOP functions are written on 'entities.py'
+            request_id = request.form['request_id']
+            session1.extension(request_id)  # OOP functions are written on 'entities.py'
             return redirect('/mybooks')
         elif request.form['action'] == 'Borrow':
             copy_id = request.form['copy_id']
@@ -294,7 +294,7 @@ def mybooks():
 def managerequest():
     session1 = session["email"]
     if request.method == 'POST':
-        request_id = request.form['request_id']
+        request_id = int(request.form['request_id'])
         session1.manage_request(request_id)
         flash(f"Request number {request_id} is closed!", 'success')
         requests = session1.show_requests()  # OOP description is on 'entities.py'
@@ -318,11 +318,11 @@ def requestbook():
     if request.method == 'POST':
         # catch the right variables and apply the function chosen by the reader
         if request.form['action'] == 'Borrow':
-            copy_id = request.form['copy_id']
+            copy_id = int(request.form['copy_id'])
             session1.borrow_request(copy_id)  # OOP description is on 'entities.py'
             return redirect('/reader2')
         elif request.form['action'] == 'Order':
-            copy_id = request.form['copy_id']
+            copy_id = int(request.form['copy_id'])
             reader_email = request.form['reader_email']
             session1.order_book(copy_id=copy_id, reader_email=reader_email)  # OOP description is on 'entities.py''
             return redirect('/reader2')
