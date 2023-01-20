@@ -1,6 +1,9 @@
 {% extends "reader_layout.html" %}
 {% block content %}
-<button type="button" class="btn btn-secondary"><a class="article-title" href="{{ url_for('reader2') }}">Return To Search</a></button>
+<!--class="article-title"-->
+<div class="card-btn">
+    <button type="button" class="btn btn-outline-primary" ><a class="btn btn-outline-primary" href="{{ url_for('reader2') }}">Return To Search</a></button>
+</div>
 <legend class="headline">Search Results:</legend>
     {% for book in books %}
         {% if book[5] > 0 %}
@@ -23,8 +26,10 @@
                             <li>
                               Stock: {{ book[3] }}
                             </li>
+                          <div class="card-btn">
                             <input type="hidden" name="copy_id" value="{{ book[7] }}">
-                            <input class="btn btn-primary active" type="submit" value="Borrow" name="action">
+                            <input class="btn btn-outline-primary" type="submit" value="Borrow" name="action">
+                          </div>
                           </ul>
                         </p>
                       </div>
@@ -51,9 +56,11 @@
                                  <li>
                                   Stock: {{ book[3] }}
                                 </li>
+                              <div class="card-btn">
                                 <input type="hidden" name="reader_email" value="{{ user.email }}">
                                 <input type="hidden" name="copy_id" value="{{ book[7] }}">
-                                <input class="btn btn-primary active" type="submit" value="Order" name="action">
+                                <input class="btn btn-outline-primary" type="submit" value="Order" name="action">
+                              </div>
                               </ul>
                             </p>
                           </div>

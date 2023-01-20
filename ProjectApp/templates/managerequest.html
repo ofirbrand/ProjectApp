@@ -26,7 +26,9 @@
                         <li class="nobull">
                             This request cannot be approved
                         </li>
-                        <input class="btn btn-outline-info" type="submit" value="Decline">
+                        <div class="card-btn">
+                            <input class="btn btn-outline-info" type="submit" value="Decline">
+                        </div>
                     {% else %}
                         {% if request[3] == 'available' %}
                             <li>
@@ -35,7 +37,9 @@
                             <li class="nobull">
                             This request can be approved
                             </li>
-                            <input class="btn btn-outline-info" type="submit" value="Approve">
+                            <div class="card-btn">
+                                <input class="btn btn-outline-info" type="submit" value="Approve">
+                            </div>
                         {% else %}
                             <li>
                             This Book is already borrowed
@@ -43,11 +47,11 @@
                             <li class="nobull">
                             This request cannot be approved
                             </li>
-                            <input class="btn btn-outline-info" type="submit" value="Decline">
+                            <div class="card-btn">
+                                <input class="btn btn-outline-info" type="submit" value="Decline">
+                            </div>
                         {% endif %}
                     {% endif %}
-<!--                    <input class="btn btn-outline-info" type="submit" value="Approve">-->
-<!--                    <input class="btn btn-outline-info" type="submit" value="Decline">-->
                   </ul>
                 </p>
               </div>

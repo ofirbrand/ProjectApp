@@ -235,6 +235,7 @@ padding-bottom: 15px;
     border: none;
     border-radius: 30px;
     color: #ffffff;
+    margin-right: 3%;
 }
 
 .form-control{
@@ -251,5 +252,5 @@ padding-bottom: 15px;
 }
 
 .card-btn{
-padding: 3%;
+padding-top: 3%;
 }
