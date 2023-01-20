@@ -1,11 +1,21 @@
 {% extends "librarian_layout.html" %}
 {% block content %}
 <div class="container-fluid">
-    <h2>Hi {{ user.name }}! </h2>
+    <h1>Hi {{ user.name }}! </h1>
+</div>
+<div class="terms-list">
+    <h3>How Does It Work?</h3>
+    <ul class="list-group">
+      <li class="list-group-item">Each reader can borrow a book for a period of 14 days</li>
+      <li class="list-group-item">Each reader can hold up to 3 books at any given moment</li>
+      <li class="list-group-item">If the reader has 3 books, the loan request cannot be approved</li>
+      <li class="list-group-item">Order requests are kept in the system for 3 days from the moment the book is returned</li>
+      <li class="list-group-item">If a copy is ordered by a reader, borrow requests of other readers cannot be approved for this copy</li>
+      <li class="list-group-item">You can add a new book or an additional copy of an existing book to the system in the 'Add New Book' tab</li>
+    </ul>
 </div>
 
 <div class="container text-center bg-grey">
-    <h2>Nice To See You Again!</h2>
 <div class="row text-center">
     <div class="col-sm-4">
       <div class="thumbnail">
@@ -29,13 +39,12 @@
 </div>
 
 <div class="bot">
-<img src="https://www.keepingintouchwith.co.uk/wp-content/uploads/2020/04/Librarian-830x625-1.jpg" alt="libarian">
-    </div>
+    <img src="https://www.keepingintouchwith.co.uk/wp-content/uploads/2020/04/Librarian-830x625-1.jpg" alt="libarian">
+</div>
 
 
 <div class="down">
   <p>Stay true to your-shelf</p>
-</div>
 </div>
 
 {% endblock content %}

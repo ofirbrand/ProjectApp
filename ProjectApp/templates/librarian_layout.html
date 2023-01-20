@@ -42,7 +42,7 @@
       </nav>
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-8">
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
@@ -60,7 +60,7 @@
             <p class='text-muted'>
               <ul class="list-group">
                 <li class="list-group-item list-group-item-light">Email: {{ user.email }}</li>
-                <li class="list-group-item list-group-item-info">Phone Number: {{ user.phone_num }}</li>
+                <li class="list-group-item list-group-item-light">Phone Number: {{ user.phone_num }}</li>
                 <li class="list-group-item list-group-item-light">Branch : {{ user.branch_name }}</li>
               </ul>
               <div class="rules">

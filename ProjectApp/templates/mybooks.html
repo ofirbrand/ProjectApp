@@ -26,11 +26,10 @@
                             <li>
                               The book has returned to the library and will be kept for you until {{ (order[1] + three_days) }}
                             </li>
-                            <input type="hidden" name="copy_id" value="{{ order[2] }}">
-                            <input class="btn btn-outline-primary" type="submit" value="Borrow" name="action">
-      <!--                            <li class="nobull">-->
-      <!--                                  <input class="btn btn-outline-primary" type="submit" value="Return" name="action">-->
-      <!--                            </li>-->
+                            <div class="card-btn">
+                                <input type="hidden" name="copy_id" value="{{ order[2] }}">
+                                <input class="btn btn-outline-primary" type="submit" value="Borrow" name="action">
+                            </div>
                           {% endif %}
                         </ul>
                       </p>
@@ -72,10 +71,12 @@
                           <li class="nobull">
                             You Have {{(book[7] - today).days}} Days To Return '{{ book[0] }}'
                           </li>
-                          <input type="hidden" name="copy_id" value="{{ book[2] }}">
-                          <input type="hidden" name="request_id" value="{{ book[5] }}">
-                          <input class="btn btn-outline-primary" type="submit" value="Return" name="action">
-                          <input class="btn btn-outline-primary" type="submit" value="Extension" name="action">
+                          <div class="card-btn">
+                              <input type="hidden" name="copy_id" value="{{ book[2] }}">
+                              <input type="hidden" name="request_id" value="{{ book[5] }}">
+                              <input class="btn btn-outline-primary" type="submit" value="Return" name="action">
+                              <input class="btn btn-outline-primary" type="submit" value="Extension" name="action">
+                          </div>
                         {% else %}
                           <li>
                             Return Date: {{ book[7] }}
@@ -83,11 +84,14 @@
                           <li class="red">
                             The return date has passed! Please Hurry And Return It
                           </li>
-                          <input type="hidden" name="copy_id" value="{{ book[2] }}">
-                          <input type="hidden" name="request_id" value="{{ book[5] }}">
-                          <input class="btn btn-outline-primary" type="submit" value="Return" name="action">
-                        {% endif %}
+                          <div class="card-btn">
+                              <input type="hidden" name="copy_id" value="{{ book[2] }}">
+                              <input type="hidden" name="request_id" value="{{ book[5] }}">
+                              <input class="btn btn-outline-primary" type="submit" value="Return" name="action">
+                          </div>
                       </ul>
+                        {% endif %}
+
 <!--                        <input class="btn btn-outline-primary" type="submit" value="Return" name="action">-->
 <!--                        <input class="btn btn-outline-primary" type="submit" value="Extension" name="action">-->
                     </p>
@@ -177,17 +181,11 @@
       {% endfor %}
 {% endif %}
 {% if my_books == NULL: %}
-<!--    <div class="container">-->
-<!--      <legend class="headline">-->
-<!--        {{ user.name }}, You Currently Don't Hold Any Book, Don't Have Any Open Requests Or Borrow History-->
-<!--      </legend>-->
-<!--    </div>-->
 {% endif %}
+
 <div class="container-fluid text-center">
-
-      <img src="https://quotefancy.com/media/wallpaper/3840x2160/216320-Epictetus-Quote-Books-are-the-training-weights-of-the-mind.jpg" alt="Forest" width="500" height="280">
-
-  </div>
+    <img src="https://quotefancy.com/media/wallpaper/3840x2160/216320-Epictetus-Quote-Books-are-the-training-weights-of-the-mind.jpg" alt="Forest" width="500" height="280">
+</div>
 
 {% endblock %}
 
