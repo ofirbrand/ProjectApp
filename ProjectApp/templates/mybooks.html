@@ -1,8 +1,10 @@
+<!--inherit navigation bar and side menu from reader_layout-->
 {% extends "reader_layout.html" %}
 {% block content %}
   <div class="container text-center">
       <h1>{{ user.name }}'s Books:</h1>
   </div>
+<!--show open orders if they exist-->
 {% if orders %}
   {% for order in orders %}
     {% if order[6] == 'yes' %}
@@ -42,6 +44,7 @@
     {% endif %}
   {% endfor %}
 {% endif %}
+<!--show my books: current hold, pending requests, denied requests and borrow history-->
 {% if my_books %}
         <div>
         <legend class="border-bottom mb-4">Current Holding</legend>
@@ -91,9 +94,6 @@
                           </div>
                       </ul>
                         {% endif %}
-
-<!--                        <input class="btn btn-outline-primary" type="submit" value="Return" name="action">-->
-<!--                        <input class="btn btn-outline-primary" type="submit" value="Extension" name="action">-->
                     </p>
                   </div>
                 </article>

@@ -1,6 +1,8 @@
+<!--inherit navigation bar and side menu from librarian_layout-->
 {% extends "librarian_layout.html" %}
 {% block content %}
   <legend class="border-bottom mb-4">Manage Borrow Requests</legend>
+    <!-- loop over the request in the librarian branch-->
     {% for request in requests %}
       <form class="form-inline" action="{{ url_for('managerequest') }}" method="POST">
         <div class="container-fluid">

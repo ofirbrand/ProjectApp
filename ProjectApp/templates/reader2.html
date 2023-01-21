@@ -1,8 +1,9 @@
+<!--inherit navigation bar and side menu from reader_layout-->
 {% extends "reader_layout.html" %}
 {% block content %}
 <div class="container">
     <legend class="headline">Which Book Are You Looking For?</legend>
-
+<!--search line-->
     <div class="container-fluid" style="padding-left:0px">
         <form class="form-inline" action="{{ url_for('reader2') }}" method="POST">
             <input type="text" name="word" class="form-control" size="65" placeholder="Book Name Or Author Name">
@@ -10,7 +11,7 @@
         </form>
     </div>
 </div>
-
+<!--terms & conditions-->
 <div class="terms-list">
     <h3>How Does It Work?</h3>
     <ul class="list-group">

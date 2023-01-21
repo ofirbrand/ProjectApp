@@ -1,31 +1,8 @@
+<!--inherit navigation bar and side menu from basic_layout-->
 {% extends "basic_layout.html" %}
 {% block content %}
 
 <h2>WELCOME TO OUR LIBRARY!</h2>
-
-
-    <!--form action="{{ url_for('welcome') }}" method="POST">
-        <table>
-            <tr>
-                <td>Email</td>
-                <td>
-                    <input type="email" name="email">
-                </td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td>
-                    <input type="number" name="password">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" value="Sign In">
-                </td>
-                <td></td>
-            </tr>
-        </table>
-    </form-->
      <form action="{{ url_for('welcome') }}" method="POST">
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Sign In</legend>
@@ -46,8 +23,6 @@
                 </div>
         </fieldset>
     </form>
-
-
 
 <h3>Our Policy:</h3>
   <ul class="list-group">

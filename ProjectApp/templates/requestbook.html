@@ -1,11 +1,13 @@
+<!--inherit navigation bar and side menu from reader_layout-->
 {% extends "reader_layout.html" %}
 {% block content %}
-<!--class="article-title"-->
 <div class="card-btn">
     <button type="button" class="btn btn-outline-primary" ><a class="btn btn-outline-primary" href="{{ url_for('reader2') }}">Return To Search</a></button>
 </div>
 <legend class="headline">Search Results:</legend>
+<!--show books that found in the search-->
     {% for book in books %}
+<!--borrow if available-->
         {% if book[5] > 0 %}
             <form class="form-inline" action="{{ url_for('requestbook') }}" method="POST">
               <div class="container">
@@ -36,7 +38,8 @@
                     </article>
                 </div>
             </form>
-          {% else %}
+            <!--order if not available but orderable-->
+            {% else %}
             <form class="form-inline" action="{{ url_for('requestbook') }}" method="POST">
                 <div class="container">
                         <article class="media content-section">

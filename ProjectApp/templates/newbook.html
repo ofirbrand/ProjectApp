@@ -1,5 +1,7 @@
+<!--inherit navigation bar and side menu from librarian_layout-->
 {% extends "librarian_layout.html" %}
 {% block content %}
+<!--form to enter new book-->
  <form action="{{ url_for('newbook') }}" method="POST">
     <fieldset class="form-group">
         <legend class="border-bottom mb-4">Please Insert The Book Details</legend>
